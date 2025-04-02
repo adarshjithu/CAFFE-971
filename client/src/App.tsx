@@ -1,21 +1,18 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
 import NotFound from "./pages/OtherPage/NotFound";
-
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Userlist from "./pages/Admin/Users/Users";
 import Blank from "./pages/OtherPage/Blank";
 import Home from "./pages/User/Home";
-import ProductDetails from "./pages/User/PackageDetails";
-import FillDetails from "./pages/User/FillDetails";
-import EventDetails from "./pages/User/EventDetails";
-
+import Address from "./pages/User/Address";          // From addressfeature
+import ProductDetails from "./pages/User/PackageDetails";  // From master
+import FillDetails from "./pages/User/FillDetails";        // From master
+import EventDetails from "./pages/User/EventDetails";      // From master
 
 export default function App() {
     return (
         <Router>
-            
             <ScrollToTop />
             <Routes>
                 {/* Dashboard Layout */}
@@ -24,12 +21,12 @@ export default function App() {
                     <Route path="users" element={<Userlist />} />
                 </Route>
                 
-                   <Route path="/" element={<Home/>}/>
-                   <Route path="/product" element={<ProductDetails/>}/>
-                   <Route path="/fill-details" element={<FillDetails/>}/>
-                    <Route path="event-details" element={<EventDetails/>}/>
-
-                {/* Auth Layout */}
+                {/* User Routes */}
+                <Route path="/" element={<Home/>} />
+                <Route path="/address" element={<Address/>} />       {/* From addressfeature */}
+                <Route path="/product" element={<ProductDetails/>} />  {/* From master */}
+                <Route path="/fill-details" element={<FillDetails/>} /> {/* From master */}
+                <Route path="/event-details" element={<EventDetails/>} /> {/* From master */}
 
                 {/* Fallback Route */}
                 <Route path="*" element={<NotFound />} />
