@@ -7,6 +7,7 @@ import { ScrollToTop } from "./components/common/ScrollToTop";
 import Userlist from "./pages/Admin/Users/Users";
 import Blank from "./pages/OtherPage/Blank";
 import Home from "./pages/User/Home";
+import Address from "./pages/User/Address";
 
 
 export default function App() {
@@ -21,6 +22,7 @@ export default function App() {
                 </Route>
                 
                    <Route path="/" element={<Home/>}/>
+                   <Route path="/address" element={<Address/>}/>
               
 
                 {/* Auth Layout */}
