@@ -1,5 +1,5 @@
-import React from 'react'
-import PackageCard from '../../ui/card/PackageCard'
+
+import PackageCard from './PackageCard'
 
 function Packages() {
   return (
@@ -7,14 +7,12 @@ function Packages() {
       {/* Section Header */}
       <div className="text-center mb-10">
         <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Our Packages</h2>
-        <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-          Choose the perfect package for your needs
-        </p>
+      
       </div>
 
       {/* Package Cards Grid */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {/* Package Cards - Repeat for each package */}
+    
         <PackageCard />
         <PackageCard />
         <PackageCard />
