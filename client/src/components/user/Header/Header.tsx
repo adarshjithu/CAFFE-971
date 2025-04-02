@@ -14,13 +14,14 @@ const Header = () => {
       {/* Desktop Navigation */}
       <nav className="hidden md:flex space-x-6 text-lg">
         <a href="#" className="hover:text-gray-600 transition">Home</a>
-        <a href="#" className="hover:text-gray-600 transition">Menu</a>
-        <a href="#" className="hover:text-gray-600 transition">Services</a>
-        <a href="#" className="hover:text-gray-600 transition">Contact</a>
+        <a href="#" className="hover:text-gray-600 transition">Order</a>
+        <a href="#" className="hover:text-gray-600 transition">Events</a>
+        <a href="#" className="hover:text-gray-600 transition">Offers</a>
+        <a href="#" className="hover:text-gray-600 transition">Specials</a>
       </nav>
 
       {/* Desktop Order Button */}
-      <button className="hidden md:block bg-black text-white px-4 py-2 rounded-full font-semibold shadow-md hover:bg-gray-800 transition">
+      <button className="hidden md:block bg-[#BD9455] text-white px-4 py-2 rounded-full font-semibold shadow-md hover:bg-gray-800 transition">
         Order Now
       </button>
 
@@ -39,7 +40,7 @@ const Header = () => {
           <a href="#" className="hover:text-gray-600 transition">Menu</a>
           <a href="#" className="hover:text-gray-600 transition">Services</a>
           <a href="#" className="hover:text-gray-600 transition">Contact</a>
-          <button className="bg-black text-white px-4 py-2 rounded-full font-semibold shadow-md hover:bg-gray-800 transition">
+          <button className="bg-[#BD9455] text-white px-4 py-2 rounded-full font-semibold shadow-md hover:bg-gray-800 transition">
             Order Now
           </button>
         </div>
