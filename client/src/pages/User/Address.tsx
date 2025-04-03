@@ -5,7 +5,7 @@ import Header from "../../components/user/Header/Header"
 function Address() {
   return (
     <div>
-      <Header></Header>
+
         
         <AddressForm/>
     </div>
