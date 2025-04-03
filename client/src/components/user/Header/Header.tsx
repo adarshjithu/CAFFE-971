@@ -1,52 +1,46 @@
-import { Utensils, X } from "lucide-react";
+import { Utensils, X, Home, ShoppingBag, Calendar, Tag, Star } from "lucide-react";
 import { useState } from "react";
 
-const Header = () => {
+const Sidebar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="w-full bg-white text-black py-4 px-6 flex justify-between items-center shadow-lg md:px-10 lg:px-20">
-      <div className="flex items-center space-x-2">
-        <Utensils className="text-2xl" />
-        <h1 className="text-2xl font-bold">CAFFE 971</h1>
-      </div>
+    <div className="flex">
+      {/* Sidebar */}
+      <aside className={`bg-white text-black h-screen w-20 p-6 shadow-lg flex flex-col space-y-6 fixed transition-transform ${isMenuOpen ? "translate-x-0" : "-translate-x-20"} md:translate-x-0 items-center`}>
+        <div className="flex flex-col items-center space-y-4">
+          <Utensils className="text-2xl" />
+          <h1 className="text-sm font-bold">971</h1>
+        </div>
 
-      {/* Desktop Navigation */}
-      <nav className="hidden md:flex space-x-6 text-lg">
-        <a href="#" className="hover:text-gray-600 transition">Home</a>
-        <a href="#" className="hover:text-gray-600 transition">Order</a>
-        <a href="#" className="hover:text-gray-600 transition">Events</a>
-        <a href="#" className="hover:text-gray-600 transition">Offers</a>
-        <a href="#" className="hover:text-gray-600 transition">Specials</a>
-      </nav>
+        <nav className="flex flex-col space-y-6 text-lg items-center">
+          <Home className="hover:text-gray-600 transition cursor-pointer" />
+          <ShoppingBag className="hover:text-gray-600 transition cursor-pointer" />
+          <Calendar className="hover:text-gray-600 transition cursor-pointer" />
+          <Tag className="hover:text-gray-600 transition cursor-pointer" />
+          <Star className="hover:text-gray-600 transition cursor-pointer" />
+        </nav>
 
-      {/* Desktop Order Button */}
-      <button className="hidden md:block bg-[#BD9455] text-white px-4 py-2 rounded-full font-semibold shadow-md hover:bg-gray-800 transition">
-        Order Now
-      </button>
+        <button className="bg-[#BD9455] text-white px-4 py-2 rounded-full font-semibold shadow-md hover:bg-gray-800 transition">
+          <ShoppingBag />
+        </button>
+      </aside>
 
       {/* Mobile Menu Button */}
       <button 
-        className="md:hidden text-black text-2xl" 
+        className="md:hidden text-black text-2xl absolute top-4 left-4" 
         onClick={() => setIsMenuOpen(!isMenuOpen)}
       >
         {isMenuOpen ? <X /> : "☰"}
       </button>
 
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="absolute top-16 left-0 w-full bg-white text-black flex flex-col space-y-4 py-4 text-center shadow-lg">
-          <a href="#" className="hover:text-gray-600 transition">Home</a>
-          <a href="#" className="hover:text-gray-600 transition">Menu</a>
-          <a href="#" className="hover:text-gray-600 transition">Services</a>
-          <a href="#" className="hover:text-gray-600 transition">Contact</a>
-          <button className="bg-[#BD9455] text-white px-4 py-2 rounded-full font-semibold shadow-md hover:bg-gray-800 transition">
-            Order Now
-          </button>
-        </div>
-      )}
-    </header>
+      {/* Main Content */}
+      <main className="flex-1 ml-0 md:ml-20 p-6">
+        <h2 className="text-3xl font-bold">Welcome to CAFFE 971</h2>
+        <p className="mt-4 text-lg">Enjoy the best coffee and food experience.</p>
+      </main>
+    </div>
   );
 };
 
-export default Header;
+export default Sidebar;
