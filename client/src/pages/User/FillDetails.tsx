@@ -4,7 +4,7 @@ import Header from "../../components/user/Header/Header";
 function FillDetails() {
     return (
         <div className="w-full h-full ">
-            <Header />
+       
             <FillDetailsForm/>
         </div>
     );
