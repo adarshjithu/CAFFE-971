@@ -9,6 +9,9 @@ import Address from "./pages/User/Address";          // From addressfeature
 import ProductDetails from "./pages/User/PackageDetails";  // From master
 import FillDetails from "./pages/User/FillDetails";        // From master
 import EventDetails from "./pages/User/EventDetails";      // From master
+import AccountDetails from "./pages/User/AccountDetails";
+import Profile from "./pages/User/Profile";
+import AboutUs from "./pages/User/AboutUs";
 
 export default function App() {
     return (
@@ -27,6 +30,9 @@ export default function App() {
                 <Route path="/product" element={<ProductDetails/>} />  {/* From master */}
                 <Route path="/fill-details" element={<FillDetails/>} /> {/* From master */}
                 <Route path="/event-details" element={<EventDetails/>} /> {/* From master */}
+                <Route path="/account-details" element={<AccountDetails/>}/>
+                <Route path="/my-profile" element={<Profile/>}/>
+                <Route path="/about-us" element={<AboutUs/>}/>
 
                 {/* Fallback Route */}
                 <Route path="*" element={<NotFound />} />

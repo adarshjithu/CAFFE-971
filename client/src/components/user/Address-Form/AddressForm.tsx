@@ -16,22 +16,7 @@ export default function AddressForm() {
     "France", "Japan", "China", "India", "Brazil"
   ];
 
-  if (isSubmitted) {
-    return (
-      <div className="w-full max-w-md mx-auto bg-white p-6 shadow-md rounded-lg text-center mt-50">
-        <div className="flex justify-center mb-4">
-          <div className="relative">
-            <div className="w-16 h-16 rounded-full bg-green-600 flex items-center justify-center">
-              <Check className="h-8 w-8 text-white" />
-            </div>
-          </div>
-        </div>
-        <h2 className="text-2xl font-bold mb-1">Thank You</h2>
-        <p className="font-medium mb-1">Your Order Is Confirmed</p>
-        <p className="text-gray-500 text-sm">Enjoy our service</p>
-      </div>
-    );
-  }
+  
 
   return (
     <div className="w-full max-w-4xl mx-auto grid md:grid-cols-1">
@@ -77,7 +62,7 @@ export default function AddressForm() {
             <label htmlFor="saveAddress" className="text-sm">Save address</label>
           </div>
 
-          <button type="submit" className="w-full bg-amber-600 hover:bg-amber-700 text-white p-2 rounded-md">
+          <button type="submit" className="w-full bg-[#BD9455] text-white p-2 rounded-md">
             Submit
           </button>
         </form>
