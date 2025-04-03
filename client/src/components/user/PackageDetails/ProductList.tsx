@@ -11,7 +11,7 @@ const ProductList = () => {
         { id: 6, name: "Fresh Juice", image: "https://images.unsplash.com/photo-1603569283847-aa295f0d016a" },
     ];
 
-    const handleRemove = (productId) => {
+    const handleRemove = (productId:any) => {
         console.log(`Removing product ${productId}`);
         // Add your removal logic here
     };

@@ -12,7 +12,7 @@ function EventDetailsForm() {
     liveFoodStation: false
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e:any) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -20,7 +20,7 @@ function EventDetailsForm() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e:any) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
     // Add your form submission logic here
