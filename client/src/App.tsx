@@ -10,6 +10,7 @@ import ProductDetails from "./pages/User/PackageDetails"; // From master
 import FillDetails from "./pages/User/FillDetails"; // From master
 import EventDetails from "./pages/User/EventDetails"; // From master
 import UserLayout from "./layout/UserLayout";
+import LiveFoodStations from "./pages/User/LiveFoodStations";
 
 export default function App() {
     return (
@@ -29,6 +30,7 @@ export default function App() {
                     <Route path="product" element={<ProductDetails />} />
                     <Route path="fill-details" element={<FillDetails />} />
                     <Route path="event-details" element={<EventDetails />} />
+                    <Route path="/live-food-station" element={<LiveFoodStations/>}/>
                 </Route>
 
                 {/* Fallback Route */}
