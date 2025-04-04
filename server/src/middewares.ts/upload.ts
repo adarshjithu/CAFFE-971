@@ -1,6 +1,6 @@
 import { Request } from 'express';
 import multer, { StorageEngine } from 'multer';
-import path from 'path';
+
 
 // Configure Multer storage options
 const storage: StorageEngine = multer.diskStorage({

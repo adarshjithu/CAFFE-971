@@ -2,7 +2,7 @@ import { Table, TableBody, TableCell, TableHeader, TableRow } from "../../ui/tab
 import Badge from "../../ui/badge/Badge";
 import { Children, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { getAllUsers } from "../../../services/users";
+import { getAllUsers } from "../../../services/userService";
 import { useDispatch, useSelector } from "react-redux";
 import { IRootState } from "../../../app/store";
 import { setUsers } from "../../../features/userSlice";

@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from '../features/userSlice'
 
+import categoryReducer from '../features/categorySlice'
 export interface IRootState{
-    users:Record<string,any>
+
+    category:Record<string,any>;
 }
 
 export const store = configureStore({reducer:{
-    users:userReducer
+    
+    category:categoryReducer
 }})
