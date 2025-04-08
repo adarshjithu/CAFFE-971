@@ -30,9 +30,9 @@ export const deleteCategory = async (id:string) => {
         return erroHandler(error);
     }
 };
-export const updateCategory = async (id:string,categoryData:Partial<ICategory>) => {
+export const updateCategory = async (id:string,categoryData:any) => {
     try {
-        const response = await baseUrl.put(`/admin/category/categoryId=${id}`,categoryData);
+        const response = await baseUrl.put(`/admin/category?categoryId=${id}`,categoryData,{headers:{"Content-Type":"multipart/form-data"}});
         return response;
     } catch (error) {
         return erroHandler(error);
@@ -44,5 +44,55 @@ export const updateCategoryImage = async (id:string,image:any) => {
         return response;
     } catch (error) {
         return erroHandler(error);
+    }
+};
+
+
+
+// ---------------------------------------Product-----------------------------------------
+export const addProduct = async (product:any) => {
+    try {
+        const response = await baseUrl.post("/admin/product",product,{headers:{'Content-Type':"multipart/form-data"}});
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+export const updateProduct = async (product:any,productId:string) => {
+    try {
+        const response = await baseUrl.put(`/admin/product?productId=${productId}`,product,{headers:{'Content-Type':"multipart/form-data"}});
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+export const getAllProducts = async () => {
+    try {
+        const response = await baseUrl.get("/admin/products");
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+export const deleteProduct = async (productId:string) => {
+    try {
+        
+        const response = await baseUrl.delete(`/admin/product?productId=${productId}`);
+        return response;                       
+    } catch (error) {
+        return erroHandler(error);    
+    }
+};
+
+// ---------------------------------------Packages-----------------------------------------
+
+
+export const getProductsAndCategory = async () => {
+    try {
+        
+        const response = await baseUrl.get(`/admin/package/details`);
+        return response;                       
+    } catch (error) {
+        return erroHandler(error);    
     }
 };

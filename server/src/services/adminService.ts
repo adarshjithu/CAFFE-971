@@ -1,6 +1,8 @@
 import { BadRequestError, NotFoundError } from "../constants/customErrors";
 import { ICategory } from "../interface/Models/ICategory";
+import { IProduct } from "../interface/Models/IProduct";
 import { AdminRepository } from "../repositories/adminRepository";
+import { deleteImageFromCloudinary } from "../utils/cloudinary/deleteImageFromCloudinary";
 import { uploadImageToCloudinary } from "../utils/cloudinary/uploadToCloudinary";
 
 export class AdminService {
@@ -26,9 +28,84 @@ export class AdminService {
             throw error;
         }
     }
-    async deleteCategory(categoryId:string): Promise<any | null> {
+    async deleteCategory(categoryId: string): Promise<ICategory | null> {
         try {
-            return await this.adminRepository.findByIdAndDelete(categoryId)
+            return await this.adminRepository.findByIdAndDelete(categoryId);
+        } catch (error) {
+            throw error;
+        }
+    }
+    async updateCategory(categoryId: string, categoryData: any, files: any): Promise<ICategory | null> {
+        try {
+            if (files.length > 0) {
+                const images: any = await uploadImageToCloudinary(files);
+                if (!images?.success) throw new BadRequestError("Failed to update category image");
+                const image = images?.results[0].url;
+                const category = await this.adminRepository.findCatgoryById(categoryId);
+                if (!category) throw new NotFoundError("Something went wrong");
+                await deleteImageFromCloudinary(category?.image);
+                return await this.adminRepository.findByIdAndUpdate(categoryId, { name: categoryData?.name, image: image });
+            } else {
+                return await this.adminRepository.findByIdAndUpdate(categoryId, { name: categoryData?.name });
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async addProduct(productData: any, files: any): Promise<IProduct | null> {
+        try {
+            const images: any = await uploadImageToCloudinary(files);
+            if (!images.success) throw new BadRequestError("Product image faild to upload");
+            const image = images.results[0].url;
+            return await this.adminRepository.createProduct({ ...productData, image: image });
+        } catch (error) {
+            throw error;
+        }
+    }
+    async getProducts(): Promise<IProduct[] | null> {
+        try {
+            return await this.adminRepository.findProducts();
+        } catch (error) {
+            throw error;
+        }
+    }
+    async deleteProduct(productId: string): Promise<IProduct | null> {
+        try {
+            const result = await this.adminRepository.deleteProductById(productId);
+            if (!result) throw new NotFoundError("Failed to delete the product, Product not found");
+            return result;
+        } catch (error) {
+            throw error;
+        }
+    }
+    async updateProduct(productId: string, productData: any, files: any): Promise<IProduct | null> {
+        try {
+            if (files.length > 0) {
+                const product = await this.adminRepository.findProductById(productId);
+                if (!product) throw new NotFoundError("Product data not found in the database");
+                await deleteImageFromCloudinary(product?.image);
+                const images: any = await uploadImageToCloudinary(files);
+                if (!images?.success) throw new BadRequestError("Some error occured while uploading image to cloud server");
+                const image = images?.results[0]?.url;
+                const newProductObj = {
+                    ...productData,
+                    image: image,
+                };
+                
+                return await this.adminRepository.findProductByIdAndUpdate(productId, newProductObj);
+            } else {
+                console.log(productData, files);
+                return await this.adminRepository.findProductByIdAndUpdate(productId, productData)
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getProductsAndCategory(): Promise<any | null> {
+        try {
+           return await this.adminRepository.getProductsAndCategory()
         } catch (error) {
             throw error;
         }

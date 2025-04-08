@@ -8,15 +8,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { Pencil, Plus } from "lucide-react";
 import { Trash } from "lucide-react";
 import AddButton from "../../ui/button/AddButton";
-import AddCategoryModal from "./AddCategoryModal";
+
 import { deleteCategory, getCategories } from "../../../services/adminService";
 import { IRootState } from "../../../app/store";
 import { addCategoryAction, deleteCategoryAction } from "../../../features/categorySlice";
 import DeleteModal from "../../ui/modal/DeleteModal";
 import { ICategory } from "../../../interface/ICategory";
-import UpdateCategoryModal from "./UpdateCategoryModal";
+import AddPackageModal from "./AddPackageModal";
 
-export default function UserTable() {
+
+export default function PackageTable() {
 
     const [isOpen, setIsOpen] = useState(false);
     const [category,setCategory]=useState<ICategory>()
@@ -58,10 +59,10 @@ export default function UserTable() {
     }, []);
     return (
         <>
-            <AddButton onClick={onClick} text="Add Category" />
-            <UpdateCategoryModal isOpen={editModalOpen} setIsOpen={setEditModalOpen} category={category}/>
+            <AddButton onClick={onClick} text="Add Package" />
+            {isOpen&&<AddPackageModal isOpen={isOpen} setIsOpen={setIsOpen}/>}
             <DeleteModal isDeleteModalOpen={isDeleteModalOpen} handleDelete={handleDelete} text={'category'}/>
-            <AddCategoryModal isOpen={isOpen} setIsOpen={setIsOpen} />
+           
             <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
                 <div className="max-w-full overflow-x-auto">
                     {/* <DeleteModal isOpen={isOpen} handleDelete={handleDelete} /> */}

@@ -41,7 +41,7 @@ class AdminController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const result = yield this.adminService.getCategory();
-                res.status(CREATED).json({ success: true, message: "New category successfully added", data: result });
+                res.status(OK).json({ success: true, message: "New category successfully added", data: result });
             }
             catch (error) {
                 next(error);
@@ -55,7 +55,99 @@ class AdminController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const result = yield this.adminService.deleteCategory(req.query.categoryId);
-                res.status(CREATED).json({ success: true, message: "Category successfully removed", data: result });
+                res.status(OK).json({ success: true, message: "Category successfully removed", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   Update category
+    // @route  POST admin/category
+    // @access Admin
+    updateCategory(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                // const result = await this.adminService.updateCategory(req.query.categoryId as string, req.body, req.files);
+                // res.status(CREATED).json({ success: true, message: "Category successfully updated", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   Add product
+    // @route  POST admin/product
+    // @access Admin
+    addProduct(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                if (((_a = req.files) === null || _a === void 0 ? void 0 : _a.length) == 0 || !req.body)
+                    throw new customErrors_1.EmptyRequestBodyError();
+                const result = yield this.adminService.addProduct(req.body, req.files);
+                res.status(CREATED).json({ success: true, message: "New product successfully added", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   Get products
+    // @route  GET admin/product
+    // @access Admin
+    getProducts(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield this.adminService.getProducts();
+                res.status(OK).json({ success: true, message: "", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   Delete product
+    // @route  DELETE admin/product
+    // @access Admin
+    deleteProduct(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (!(req === null || req === void 0 ? void 0 : req.query.productId))
+                    throw new customErrors_1.EmptyRequestBodyError();
+                const result = yield this.adminService.deleteProduct(req.query.productId);
+                res.status(OK).json({ success: true, message: "Product successfully deleted", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   Update product
+    // @route  PUT admin/product
+    // @access Admin
+    updateProduct(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                if (!((_a = req === null || req === void 0 ? void 0 : req.query) === null || _a === void 0 ? void 0 : _a.productId))
+                    throw new customErrors_1.EmptyRequestBodyError("Product ID required");
+                const result = yield this.adminService.updateProduct(req.query.productId, req.body, req.files);
+                res.status(OK).json({ success: true, message: "Product successfully deleted", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   Get package details
+    // @route  GET admin/package/details
+    // @access Admin
+    getProductsAndCategory(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield this.adminService.getProductsAndCategory();
+                res.status(OK).json({ success: true, message: "", data: result });
             }
             catch (error) {
                 next(error);

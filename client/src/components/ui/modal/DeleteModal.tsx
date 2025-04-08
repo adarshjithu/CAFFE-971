@@ -2,8 +2,9 @@
 interface IProps{
     isDeleteModalOpen:boolean;
     handleDelete:any
+    text:string
   }
-  function DeleteModal({isDeleteModalOpen,handleDelete}:IProps) {
+  function DeleteModal({isDeleteModalOpen,handleDelete,text}:IProps) {
   
     if(!isDeleteModalOpen) return null;
       return (
@@ -51,7 +52,7 @@ interface IProps{
                 />
               </svg>
               <h3 className="mb-5 text-lg font-medium text-gray-700 dark:text-gray-300">
-                Are you sure you want to delete this product?
+                Are you sure you want to delete this {text}?
               </h3>
     
               {/* Confirm Delete Button */}

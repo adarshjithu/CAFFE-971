@@ -121,10 +121,10 @@ export class UnsupportedMediaTypeError extends Error {
 // Empty request body error
 export class EmptyRequestBodyError extends Error {
     status: number;
-    constructor() {
-        super("Please provide the required information");
+    constructor(message?:string) {
+        super(message||"Please provide the required information");
         this.status = 400; // Bad Request
-        this.name = "Please provide the required information";
+        this.name =message|| "Please provide the required information";
        
     }
 }

@@ -1,9 +1,12 @@
-import React from 'react'
+import PackageTable from "../../components/admin/packages/PackageTable"
+import PageBreadcrumb from "../../components/common/PageBreadCrumb"
+
 
 function Packages() {
   return (
-    <div>
-      
+    <div className="w-full">
+      <PageBreadcrumb pageTitle="Packages"/>
+      <PackageTable/>
     </div>
   )
 }
