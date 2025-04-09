@@ -5,4 +5,5 @@ var FoodTypes;
 (function (FoodTypes) {
     FoodTypes["VEG"] = "veg";
     FoodTypes["NON_VEG"] = "nonVeg";
+    FoodTypes["NONE"] = "none";
 })(FoodTypes || (exports.FoodTypes = FoodTypes = {}));

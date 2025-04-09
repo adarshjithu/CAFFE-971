@@ -5,8 +5,9 @@ export interface IPackage extends Document{
     name: string,
     description?: string,
     price: number,
-    mainCourse: ObjectId[],
-    sides: ObjectId[],
-    beverages: ObjectId[],
-    accompaniments: ObjectId[]
+   image:string;
+   products:any
+   isActive:boolean;
+   minQuantity:number;
+   maxQuantity:number;
 }

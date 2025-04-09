@@ -29,9 +29,14 @@ const cateringPackageSchema = new mongoose_1.Schema({
     name: { type: String, required: true },
     description: { type: String },
     price: { type: Number, required: true },
-    mainCourse: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "Product" }],
-    sides: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "Product" }],
-    beverages: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "Product" }],
-    accompaniments: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "Product" }]
+    image: { type: String, required: true },
+    products: {
+        type: Map,
+        of: [{ type: mongoose_1.default.Types.ObjectId, ref: "Product" }],
+        default: {},
+    },
+    isActive: { type: Boolean, default: true },
+    minQuantity: { type: Number },
+    maxQuantity: { type: Number }
 }, { timestamps: true });
-exports.Package = mongoose_1.default.model("CateringPackage", cateringPackageSchema);
+exports.Package = mongoose_1.default.model("Package", cateringPackageSchema);

@@ -151,5 +151,76 @@ class AdminService {
             }
         });
     }
+    getProductsByfilter(query) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.adminRepository.findProductsByFiltering(query);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    createPackage(packages, files) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const images = yield (0, uploadToCloudinary_1.uploadImageToCloudinary)(files);
+                if (!images.success)
+                    throw new customErrors_1.BadRequestError("Failed to upload package image");
+                const image = images === null || images === void 0 ? void 0 : images.results[0].url;
+                const products = JSON.parse(packages === null || packages === void 0 ? void 0 : packages.products);
+                const newPackage = Object.assign(Object.assign({}, packages), { products, image });
+                return yield this.adminRepository.createPackage(newPackage);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    getAllPackages() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.adminRepository.findAllPackages();
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    deletePackage(packageId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield this.adminRepository.findPackageByIdAndDelete(packageId);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    updateStock(query) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield this.adminRepository.updateStock(query);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    updateImage(packageId, files) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                const images = yield (0, uploadToCloudinary_1.uploadImageToCloudinary)(files);
+                if (!(images === null || images === void 0 ? void 0 : images.success))
+                    throw new customErrors_1.BadRequestError("Failed to update package image");
+                const image = images === null || images === void 0 ? void 0 : images.results[0].url;
+                return yield ((_a = this.adminRepository) === null || _a === void 0 ? void 0 : _a.updatePackageImage(packageId, image));
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
 }
 exports.AdminService = AdminService;

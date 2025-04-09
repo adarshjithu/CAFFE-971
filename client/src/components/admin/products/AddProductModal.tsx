@@ -144,6 +144,17 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ isOpen, setIsOpen }) 
                                 />
                                 <span>Non-Veg</span>
                             </label>
+                            <label className="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
+                                <input
+                                    name="type"
+                                    checked={formData?.type == "none"}
+                                    type="checkbox"
+                                    onChange={handleChange}
+                                    value="none"
+                                    className="form-checkbox h-4 w-4 text-red-600 dark:bg-gray-800 dark:border-gray-600"
+                                />
+                                <span>None</span>
+                            </label>
                         </div>
                     </div>
 

@@ -1,45 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import toast from "react-hot-toast";
-import { getAllProducts, getProductsAndCategory } from "../../../services/adminService";
+import { createPackage, getProductsAndCategory } from "../../../services/adminService";
 import ButtonLoading from "../../loading/ButtonLoading";
 import { IProduct } from "../../../interface/IProduct";
+import AddProductInCategoryModal from "./AddProductInCategoryModal";
+import { useSidebar } from "../../../context/SidebarContext";
+import { useDispatch } from "react-redux";
 
 interface AddPackageModalProps {
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    onPackageCreated: () => void; // Callback when package is successfully created
 }
 
-interface PackageFormData {
-    name: string;
-    description: string;
-    price: string;
-    image: string;
-    mains: string[];
-    accompaniments: string[];
-    sidesAndBeverages: string[];
-}
-
-const AddPackageModal: React.FC<AddPackageModalProps> = ({ setIsOpen, onPackageCreated }) => {
+const AddPackageModal: React.FC<AddPackageModalProps> = ({ setIsOpen }) => {
     const [loading, setLoading] = useState(false);
     const [previewURL, setPreviewURL] = useState<string | null>(null);
     const [categoryNames, setCategoryNames] = useState<any[]>([]);
-    const [mains,setMains] = useState([])
-    const [accompaniments,setAccompaniments] = useState([])
-    const [sidesAndBeverages,setSidesAndBeverages] = useState([])
-    const [formData, setFormData] = useState<PackageFormData>({
+    const [categories, setCategories] = useState<any>({});
+    const dispatch = useDispatch();
+    const [addProductModal, setAddProductModal] = useState(false);
+    const [formData, setFormData] = useState<any>({
         name: "",
         description: "",
         price: "",
         image: "",
-        mains: [],
-        accompaniments: [],
-        sidesAndBeverages: [],
+        products: {},
+        minQuantity:10,
+        maxQuantity:1500
     });
-    const [imageFile, setImageFile] = useState<File | null>(null);
-    const [products, setProducts] = useState<IProduct[]>([]);
-    const [selectedTab, setSelectedTab] = useState();
+    const [imageFile, setImageFile] = useState<any>(null);
+    const [products, setProducts] = useState<any[]>([]);
+    const [selectedTab, setSelectedTab] = useState<any>();
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -49,41 +41,32 @@ const AddPackageModal: React.FC<AddPackageModalProps> = ({ setIsOpen, onPackageC
         }
     };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
-
-    const handleProductToggle = (productId: string, category: string) => {
-     
-    };
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
 
         try {
-            // Here you would typically:
-            // 1. Upload the image file to your server and get the URL
-            // 2. Create the package with all the form data
-            // 3. Show success message and close the modal
+            const products: any = {};
 
-            // Example (you'll need to implement your actual API call):
-            // const imageUrl = await uploadImage(imageFile);
-            // const packageData = {
-            //     ...formData,
-            //     image: imageUrl
-            // };
-            // await createPackage(packageData);
+            for (let i in categories) {
+                products[i] = categories[i]?.map((obj: any) => obj?._id);
+            }
 
-            toast.success("Package created successfully!");
-            onPackageCreated();
+            const form = new FormData();
+            form.append("name", formData?.name);
+            form?.append("description", formData?.description);
+            form?.append("image", imageFile);
+            form?.append("price", formData?.price);
+            form?.append("products", JSON.stringify(products));
+            form?.append("minQuantity",formData?.minQuantity)
+            form?.append("maxQuantity",formData?.maxQuantity)
+            
+
+            const res = await createPackage(form);
+            toast.success(res?.data?.message);
             setIsOpen(false);
         } catch (error) {
-            toast.error(error instanceof Error ? error.message : "Failed to create package");
+            toast.error(error as string);
         } finally {
             setLoading(false);
         }
@@ -93,10 +76,16 @@ const AddPackageModal: React.FC<AddPackageModalProps> = ({ setIsOpen, onPackageC
         const fetchData = async () => {
             try {
                 const res = await getProductsAndCategory();
-
+                const productsObj: any = {};
+                const category = res?.data?.data?.category;
+                for (let i of category) {
+                    productsObj[i] = [];
+                }
+                setFormData({ ...formData, products: productsObj });
+                setCategories(productsObj);
                 setCategoryNames(res?.data?.data?.category);
-                setSelectedTab(res?.data?.data?.category[0])
-                // setProducts(res?.data?.produc)
+                setSelectedTab(res?.data?.data?.category[0]);
+                setProducts(res?.data?.data?.products);
             } catch (error) {
                 toast.error(error instanceof Error ? error.message : "Failed to load products");
             }
@@ -104,17 +93,22 @@ const AddPackageModal: React.FC<AddPackageModalProps> = ({ setIsOpen, onPackageC
         fetchData();
     }, []);
 
-    // Filter products by category for the current tab
-    const filteredProducts = products.filter((product) => {
-        console.log(product);
-        if (selectedTab === "mains") return product?.category?.name === "main";
-        if (selectedTab === "accompaniments") return product.category === "accompaniment";
-        if (selectedTab === "sidesAndBeverages") return product.category === "side" || product.category === "beverage";
-        return false;
-    });
-
+    const removeProduct = (obj: any) => {
+        setCategories((prev: any) => ({
+            ...prev,
+            [selectedTab]: prev[selectedTab].filter((data: any) => data?._id !== obj?._id),
+        }));
+    };
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+            {addProductModal && (
+                <AddProductInCategoryModal
+                    categories={categories}
+                    setCategories={setCategories}
+                    selectedTab={selectedTab}
+                    setAddProductModal={setAddProductModal}
+                />
+            )}
             <div className="w-full max-w-2xl rounded-xl bg-white p-6 shadow-lg dark:bg-[black] max-h-[90vh] overflow-y-auto">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4">
@@ -133,10 +127,10 @@ const AddPackageModal: React.FC<AddPackageModalProps> = ({ setIsOpen, onPackageC
                             <input
                                 type="text"
                                 name="name"
+                                onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
                                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                                 placeholder="Enter package name"
                                 value={formData.name}
-                                onChange={handleInputChange}
                                 required
                             />
                         </div>
@@ -144,12 +138,12 @@ const AddPackageModal: React.FC<AddPackageModalProps> = ({ setIsOpen, onPackageC
                         <div>
                             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Price*</label>
                             <input
-                                type="text"
+                                type="number"
                                 name="price"
                                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                                 placeholder="Enter package price"
                                 value={formData.price}
-                                onChange={handleInputChange}
+                                onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
                                 required
                             />
                         </div>
@@ -162,9 +156,36 @@ const AddPackageModal: React.FC<AddPackageModalProps> = ({ setIsOpen, onPackageC
                             className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                             placeholder="Enter package description"
                             value={formData.description}
-                            onChange={handleInputChange}
                             rows={3}
+                            onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
                         />
+                    </div>
+                    {/* Purchase Quantity */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Min Quantity*</label>
+                            <input
+                                type="number"
+                                name="min"
+                                onChange={(e)=>setFormData({...formData,maxQuantity:e.target.value})}
+                                 value={formData?.maxQuantity}
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                                placeholder="Enter minimum quantity"
+                                
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Max Quantity*</label>
+                            <input
+                                type="number"
+                                 onChange={(e)=>setFormData({...formData,minQuantity:e.target.value})}
+                                name="max"
+                               value={formData?.minQuantity}
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                                placeholder="Enter maximum quantity"
+                                
+                            />
+                        </div>
                     </div>
 
                     {/* Image input */}
@@ -193,10 +214,11 @@ const AddPackageModal: React.FC<AddPackageModalProps> = ({ setIsOpen, onPackageC
 
                         {/* Category Tabs */}
                         <div className="flex border-b border-gray-200 dark:border-gray-700 mb-4">
-                            {categoryNames?.map((obj:string) => {
+                            {categoryNames?.map((obj: string) => {
                                 return (
                                     <button
                                         type="button"
+                                        key={obj}
                                         className={`py-2 px-4 font-medium text-sm ${
                                             selectedTab === obj
                                                 ? "text-[#4B164C] border-b-2 border-[#4B164C]"
@@ -204,41 +226,59 @@ const AddPackageModal: React.FC<AddPackageModalProps> = ({ setIsOpen, onPackageC
                                         }`}
                                         onClick={() => setSelectedTab(obj)}
                                     >
-                                        {obj} 
+                                        {obj}
                                     </button>
                                 );
                             })}
                         </div>
-
+                        {/* Add Product Button */}
+                        <div className="col-span-2 flex justify-start py-4">
+                            <button
+                                onClick={() => setAddProductModal(true)}
+                                type="button"
+                                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#4B164C] hover:bg-[#3a0f3a] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4B164C] transition-colors duration-200"
+                            >
+                                <svg
+                                    className="-ml-1 mr-2 h-5 w-5"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 20 20"
+                                    fill="currentColor"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        fillRule="evenodd"
+                                        d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                        clipRule="evenodd"
+                                    />
+                                </svg>
+                                Add Product
+                            </button>
+                        </div>
                         {/* Product List */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-60 overflow-y-auto p-2">
-                            {filteredProducts.length > 0 ? (
-                                filteredProducts.map((product) => (
-                                    <div
-                                        key={product._id}
-                                        className={`flex items-center p-2 rounded border ${
-                                            formData[selectedTab].includes(product._id)
-                                                ? "border-[#4B164C] bg-[#4B164C]/10"
-                                                : "border-gray-200 dark:border-gray-700"
-                                        }`}
-                                    >
-                                        <input
-                                            type="checkbox"
-                                            id={`product-${product._id}`}
-                                            checked={formData[selectedTab].includes(product._id)}
-                                            onChange={() => handleProductToggle(product._id, selectedTab)}
-                                            className="h-4 w-4 text-[#4B164C] focus:ring-[#4B164C] border-gray-300 rounded"
-                                        />
-                                        <label htmlFor={`product-${product._id}`} className="ml-2 flex-1">
-                                            <span className="block text-sm font-medium text-gray-700 dark:text-gray-300">{product.name}</span>
-                                            <span className="block text-xs text-gray-500 dark:text-gray-400">${product.price}</span>
-                                        </label>
-                                        {product.image && <img src={product.image} alt={product.name} className="w-10 h-10 rounded object-cover" />}
+                            {categories[selectedTab]?.map((product: IProduct) => (
+                                <div key={product?._id} className="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
+                                    <div className="flex-shrink-0 h-10 w-10 rounded-md overflow-hidden">
+                                        <img src={product?.image} alt="Product" className="h-full w-full object-cover" />
                                     </div>
-                                ))
-                            ) : (
-                                <p className="text-sm text-gray-500 col-span-2 py-4 text-center">No {selectedTab} products available</p>
-                            )}
+                                    <div className="ml-3 flex-1 min-w-0">
+                                        <p className="text-sm font-medium text-gray-900 dark:text-gray-200 truncate">{product?.name}</p>
+                                    </div>
+                                    <button
+                                        onClick={() => removeProduct(product)}
+                                        type="button"
+                                        className="ml-2 p-1 text-gray-400 hover:text-red-500 focus:outline-none"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path
+                                                fillRule="evenodd"
+                                                d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                                clipRule="evenodd"
+                                            />
+                                        </svg>
+                                    </button>
+                                </div>
+                            ))}
                         </div>
                     </div>
 

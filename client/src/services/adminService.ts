@@ -96,3 +96,62 @@ export const getProductsAndCategory = async () => {
         return erroHandler(error);    
     }
 };
+export const getProductByFilter = async (category:string,filter:string,search:string) => {
+    try {
+       
+        const response = await baseUrl.get(`/admin/package/products`,{params:{category,filter,search}});
+        return response;                       
+    } catch (error) {
+        return erroHandler(error);    
+    }
+};
+export const createPackage = async (formData:any) => {
+    try {
+       
+        const response = await baseUrl.post(`/admin/package`,formData,{headers:{'Content-Type':"multipart/form-data"}});
+        return response;                       
+    } catch (error) {
+        return erroHandler(error);    
+    }
+};
+export const getAllPackages = async () => {
+    try {
+       
+        const response = await baseUrl.get(`/admin/packages`);
+        return response;                       
+    } catch (error) {
+        return erroHandler(error);    
+    }
+};
+export const deletePackge = async (packageId:string) => {
+    try {
+       
+        const response = await baseUrl.delete(`/admin/packages?packageId=${packageId}`);
+        return response;                       
+    } catch (error) {
+        return erroHandler(error);    
+    }
+};
+export const updatePackageStock = async (packageId:string,stock:boolean) => {
+    try {
+       
+        const response = await baseUrl.patch(`/admin/package/stock?packageId=${packageId}&stock=${stock}`);
+        return response;                       
+    } catch (error) {
+        return erroHandler(error);    
+    }
+};
+export const updatePackageImage = async (formData:any,packageId:string) => {
+    try {
+       
+        const response = await baseUrl.patch(
+            `/admin/package/image?packageId=${packageId}`,
+            formData,
+           { headers: { 'Content-Type': 'multipart/form-data' }}
+          );
+          
+        return response;                       
+    } catch (error) {
+        return erroHandler(error);    
+    }
+};

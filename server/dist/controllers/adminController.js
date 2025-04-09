@@ -68,8 +68,8 @@ class AdminController {
     updateCategory(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                // const result = await this.adminService.updateCategory(req.query.categoryId as string, req.body, req.files);
-                // res.status(CREATED).json({ success: true, message: "Category successfully updated", data: result });
+                const result = yield this.adminService.updateCategory(req.query.categoryId, req.body, req.files);
+                res.status(CREATED).json({ success: true, message: "Category successfully updated", data: result });
             }
             catch (error) {
                 next(error);
@@ -148,6 +148,96 @@ class AdminController {
             try {
                 const result = yield this.adminService.getProductsAndCategory();
                 res.status(OK).json({ success: true, message: "", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   Get products by filtering
+    // @route  GET admin/package/products
+    // @access Admin
+    getProductsByfilter(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield this.adminService.getProductsByfilter(req.query);
+                res.status(OK).json({ success: true, message: "", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   Create a new package
+    // @route  POST admin/package
+    // @access Admin
+    createPackage(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (Object.keys(req.body).length == 0)
+                    throw new customErrors_1.EmptyRequestBodyError();
+                const result = yield this.adminService.createPackage(req.body, req.files);
+                res.status(OK).json({ success: true, message: "New package successfully added", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   Get all packages
+    // @route  GET admin/package
+    // @access Admin
+    getPackages(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield this.adminService.getAllPackages();
+                res.status(OK).json({ success: true, message: "", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   Get all packages
+    // @route  GET admin/package
+    // @access Admin
+    deletePackage(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                const result = yield this.adminService.deletePackage((_a = req === null || req === void 0 ? void 0 : req.query) === null || _a === void 0 ? void 0 : _a.packageId);
+                res.status(OK).json({ success: true, message: "Package successfuly deleted", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   Update stock
+    // @route  GET admin/package/stock
+    // @access Admin
+    updateStock(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield this.adminService.updateStock(req === null || req === void 0 ? void 0 : req.query);
+                res.status(OK).json({ success: true, message: "", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   Update package image
+    // @route  GET admin/package/image
+    // @access Admin
+    updatePackageImage(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b;
+            try {
+                if (!((_a = req === null || req === void 0 ? void 0 : req.query) === null || _a === void 0 ? void 0 : _a.packageId))
+                    throw new customErrors_1.EmptyRequestBodyError();
+                const result = yield this.adminService.updateImage((_b = req === null || req === void 0 ? void 0 : req.query) === null || _b === void 0 ? void 0 : _b.packageId, req.files);
+                res.status(OK).json({ success: true, message: "Package image successfully updated", data: result });
             }
             catch (error) {
                 next(error);

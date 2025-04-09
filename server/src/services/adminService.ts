@@ -1,6 +1,8 @@
 import { BadRequestError, NotFoundError } from "../constants/customErrors";
 import { ICategory } from "../interface/Models/ICategory";
 import { IProduct } from "../interface/Models/IProduct";
+import { IPackage } from "../interface/Models/Package";
+import Category from "../models/categoryModel";
 import { AdminRepository } from "../repositories/adminRepository";
 import { deleteImageFromCloudinary } from "../utils/cloudinary/deleteImageFromCloudinary";
 import { uploadImageToCloudinary } from "../utils/cloudinary/uploadToCloudinary";
@@ -30,6 +32,7 @@ export class AdminService {
     }
     async deleteCategory(categoryId: string): Promise<ICategory | null> {
         try {
+         
             return await this.adminRepository.findByIdAndDelete(categoryId);
         } catch (error) {
             throw error;
@@ -92,11 +95,11 @@ export class AdminService {
                     ...productData,
                     image: image,
                 };
-                
+
                 return await this.adminRepository.findProductByIdAndUpdate(productId, newProductObj);
             } else {
                 console.log(productData, files);
-                return await this.adminRepository.findProductByIdAndUpdate(productId, productData)
+                return await this.adminRepository.findProductByIdAndUpdate(productId, productData);
             }
         } catch (error) {
             throw error;
@@ -105,7 +108,66 @@ export class AdminService {
 
     async getProductsAndCategory(): Promise<any | null> {
         try {
-           return await this.adminRepository.getProductsAndCategory()
+            return await this.adminRepository.getProductsAndCategory();
+        } catch (error) {
+            throw error;
+        }
+    }
+    async getProductsByfilter(query: any): Promise<IProduct[] | null> {
+        try {
+            return await this.adminRepository.findProductsByFiltering(query);
+        } catch (error) {
+            throw error;
+        }
+    }
+    async createPackage(packages: any, files: any): Promise<any | null> {
+        try {
+            const images: any = await uploadImageToCloudinary(files);
+            if (!images.success) throw new BadRequestError("Failed to upload package image");
+
+            const image = images?.results[0].url;
+            const products = JSON.parse(packages?.products);
+
+            const newPackage =  {...packages,products,image};
+            
+
+            return await this.adminRepository.createPackage(newPackage);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+
+    async getAllPackages(): Promise<IPackage[] | null> {
+        try {
+            return await this.adminRepository.findAllPackages();
+        } catch (error) {
+            throw error;
+        }
+    }
+    async deletePackage(packageId:string): Promise<any | null> {
+        try {
+             await this.adminRepository.findPackageByIdAndDelete(packageId)
+         
+        } catch (error) {
+            throw error;
+        }
+    }
+    async updateStock(query:any): Promise<any | null> {
+        try {
+             await this.adminRepository.updateStock(query)
+            
+        } catch (error) {
+            throw error;
+        }
+    }
+    async updateImage(packageId:string,files:any): Promise<any | null> {
+        try {
+            const images:any = await uploadImageToCloudinary(files);
+            if(!images?.success) throw new BadRequestError("Failed to update package image");
+            const image =  images?.results[0].url;
+            return await this.adminRepository?.updatePackageImage(packageId,image)
+            
         } catch (error) {
             throw error;
         }
