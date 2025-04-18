@@ -1,5 +1,6 @@
 import { Utensils, Home, ShoppingBag, Calendar, Tag, Star } from "lucide-react";
 import { Outlet } from "react-router-dom"; // Changed import from "react-router" to "react-router-dom"
+import Header from "../components/user/Header/Header";
 
 const UserLayout = () => {
   return (
@@ -60,6 +61,7 @@ const UserLayout = () => {
 
       {/* Main Content Area */}
       <main className="flex-1 overflow-auto md:ml-20 pb-16 md:pb-0">
+        <Header/>
         <Outlet /> 
       </main>
     </div>

@@ -18,6 +18,8 @@ import UserLayout from "./layout/UserLayout";
 import Categories from "./pages/Admin/Categories";
 import Products from "./pages/Admin/Products";
 import Packages from "./pages/Admin/Packages";
+import Chairs from "./pages/Admin/Chairs";
+import Tables from "./pages/Admin/Tables";
 
 
 export default function App() {
@@ -31,6 +33,8 @@ export default function App() {
           <Route path="categories" element={<Categories/>}/>
           <Route path="products" element={<Products/>}/>
           <Route path="packages" element={<Packages/>}/>
+          <Route path="chairs" element={<Chairs />} />
+          <Route path="tables" element={<Tables />} />
         </Route>
 
 

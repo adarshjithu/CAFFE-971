@@ -209,13 +209,176 @@ class AdminService {
     }
     updateImage(packageId, files) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a;
             try {
                 const images = yield (0, uploadToCloudinary_1.uploadImageToCloudinary)(files);
                 if (!(images === null || images === void 0 ? void 0 : images.success))
                     throw new customErrors_1.BadRequestError("Failed to update package image");
                 const image = images === null || images === void 0 ? void 0 : images.results[0].url;
-                return yield ((_a = this.adminRepository) === null || _a === void 0 ? void 0 : _a.updatePackageImage(packageId, image));
+                return yield this.adminRepository.updatePackageImage(packageId, image);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    getCategoryAndProducts(packageId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.adminRepository.getCategoryAndProducts(packageId);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    getAllProductsByPackageCategory(query) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.adminRepository.getAllProductsByPackageCategory(query);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    deleteProductFromPackage(query) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.adminRepository.deleteProductFromPackage(query);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    addPackageProduct(query) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.adminRepository.addProductInPackage(query);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    editPackage(packageId, packageData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.adminRepository.editPackage(packageId, packageData);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    createChair(formData, files) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const images = yield (0, uploadToCloudinary_1.uploadImageToCloudinary)(files);
+                if (!(images === null || images === void 0 ? void 0 : images.success))
+                    throw new customErrors_1.BadRequestError("Failed to upload chair image");
+                const image = images === null || images === void 0 ? void 0 : images.results[0].url;
+                const newChairObj = Object.assign(Object.assign({}, formData), { image: image });
+                return yield this.adminRepository.createNewChair(newChairObj);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    getAllChairs() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.adminRepository.findAllChairs();
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    deleteChair(chairId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.adminRepository.deleteChairById(chairId);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    updateChair(chairId, formData, files) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                if ((files === null || files === void 0 ? void 0 : files.length) > 0) {
+                    const images = yield (0, uploadToCloudinary_1.uploadImageToCloudinary)(files);
+                    if (!(images === null || images === void 0 ? void 0 : images.success)) {
+                        throw new customErrors_1.BadRequestError("Failed to upload image to cloud server, something went wrong");
+                    }
+                    const image = images === null || images === void 0 ? void 0 : images.results[0].url;
+                    const newChairObj = Object.assign(Object.assign({}, formData), { image: image });
+                    return yield this.adminRepository.updateChair(chairId, newChairObj);
+                }
+                else {
+                    return yield ((_a = this.adminRepository) === null || _a === void 0 ? void 0 : _a.updateChair(chairId, formData));
+                }
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    createTable(formData, files) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const images = yield (0, uploadToCloudinary_1.uploadImageToCloudinary)(files);
+                if (!(images === null || images === void 0 ? void 0 : images.success))
+                    throw new customErrors_1.BadRequestError("Failed to upload image to the cloud server");
+                const image = images === null || images === void 0 ? void 0 : images.results[0].url;
+                const newFormData = Object.assign(Object.assign({}, formData), { image: image });
+                return yield this.adminRepository.createTable(newFormData);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    getAllTables() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.adminRepository.findAllTables();
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    deleteTable(tableId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.adminRepository.deleteTableById(tableId);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    updateTable(tableId, formData, files) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                console.log(formData);
+                if (files.length > 0) {
+                    const images = yield (0, uploadToCloudinary_1.uploadImageToCloudinary)(files);
+                    if (!(images === null || images === void 0 ? void 0 : images.success))
+                        throw new customErrors_1.BadRequestError("Failed to upload image to cloud server");
+                    const image = images === null || images === void 0 ? void 0 : images.results[0].url;
+                    console.log(image);
+                    const newFormData = Object.assign(Object.assign({}, formData), { image: image });
+                    return yield this.adminRepository.updateTableById(tableId, newFormData);
+                }
+                else {
+                    return yield this.adminRepository.updateTableById(tableId, formData);
+                }
             }
             catch (error) {
                 throw error;

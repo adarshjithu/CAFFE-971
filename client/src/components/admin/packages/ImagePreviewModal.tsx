@@ -2,7 +2,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { updatePackageImage } from "../../../services/adminService";
 import { useDispatch } from "react-redux";
-import { updateImageAction } from "../../../features/packageSlice";
+import { updateImageAction } from "../../../features/admin/packageSlice";
 import ButtonLoading from "../../loading/ButtonLoading";
 
 const ImagePreview = ({ imageUrl, setEditImageModal, packageId }: any) => {

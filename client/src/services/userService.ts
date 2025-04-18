@@ -1,9 +1,10 @@
 
 import { baseUrl, erroHandler } from "../api/baseUrl";
 
-export const getAllUsers = async () => {
+
+export const getAllPackages = async () => {
     try {
-        const response = await baseUrl.get("/v1/admin/users");
+        const response = await baseUrl.get("/packages");
         return response;
     } catch (error) {
         return erroHandler(error);

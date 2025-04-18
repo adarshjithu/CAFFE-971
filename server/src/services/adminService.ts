@@ -1,6 +1,8 @@
 import { BadRequestError, NotFoundError } from "../constants/customErrors";
 import { ICategory } from "../interface/Models/ICategory";
+import { IChair } from "../interface/Models/IChair";
 import { IProduct } from "../interface/Models/IProduct";
+import { ITable } from "../interface/Models/ITable";
 import { IPackage } from "../interface/Models/Package";
 import Category from "../models/categoryModel";
 import { AdminRepository } from "../repositories/adminRepository";
@@ -32,7 +34,6 @@ export class AdminService {
     }
     async deleteCategory(categoryId: string): Promise<ICategory | null> {
         try {
-         
             return await this.adminRepository.findByIdAndDelete(categoryId);
         } catch (error) {
             throw error;
@@ -128,15 +129,13 @@ export class AdminService {
             const image = images?.results[0].url;
             const products = JSON.parse(packages?.products);
 
-            const newPackage =  {...packages,products,image};
-            
+            const newPackage = { ...packages, products, image };
 
             return await this.adminRepository.createPackage(newPackage);
         } catch (error) {
             throw error;
         }
     }
-
 
     async getAllPackages(): Promise<IPackage[] | null> {
         try {
@@ -145,29 +144,150 @@ export class AdminService {
             throw error;
         }
     }
-    async deletePackage(packageId:string): Promise<any | null> {
+    async deletePackage(packageId: string): Promise<any | null> {
         try {
-             await this.adminRepository.findPackageByIdAndDelete(packageId)
+            await this.adminRepository.findPackageByIdAndDelete(packageId);
+        } catch (error) {
+            throw error;
+        }
+    }
+    async updateStock(query: any): Promise<any | null> {
+        try {
+            await this.adminRepository.updateStock(query);
+        } catch (error) {
+            throw error;
+        }
+    }
+    async updateImage(packageId: string, files: any): Promise<any | null> {
+        try {
+            const images: any = await uploadImageToCloudinary(files);
+            if (!images?.success) throw new BadRequestError("Failed to update package image");
+            const image = images?.results[0].url;
+            return await this.adminRepository.updatePackageImage(packageId, image);
+        } catch (error) {
+            throw error;
+        }
+    }
+    async getCategoryAndProducts(packageId: string): Promise<any | null> {
+        try {
+            return await this.adminRepository.getCategoryAndProducts(packageId);
+        } catch (error) {
+            throw error;
+        }
+    }
+    async getAllProductsByPackageCategory(query: any): Promise<any | null> {
+        try {
+            return await this.adminRepository.getAllProductsByPackageCategory(query);
+        } catch (error) {
+            throw error;
+        }
+    }
+    async deleteProductFromPackage(query: any): Promise<any | null> {
+        try {
+            return await this.adminRepository.deleteProductFromPackage(query);
+        } catch (error) {
+            throw error;
+        }
+    }
+    async addPackageProduct(query: any): Promise<any | null> {
+        try {
+            return await this.adminRepository.addProductInPackage(query);
+        } catch (error) {
+            throw error;
+        }
+    }
+    async editPackage(packageId: string, packageData: any): Promise<any | null> {
+        try {
+            return await this.adminRepository.editPackage(packageId, packageData);
+        } catch (error) {
+            throw error;
+        }
+    }
+    async createChair(formData: IChair, files: any): Promise<IChair | null> {
+        try {
+            const images: any = await uploadImageToCloudinary(files);
+            if (!images?.success) throw new BadRequestError("Failed to upload chair image");
+            const image = images?.results[0].url;
+            const newChairObj = { ...formData, image: image };
+
+            return await this.adminRepository.createNewChair(newChairObj);
+        } catch (error) {
+            throw error;
+        }
+    }
+    async getAllChairs(): Promise<IChair[] | null> {
+        try {
+            return await this.adminRepository.findAllChairs();
+        } catch (error) {
+            throw error;
+        }
+    }
+    async deleteChair(chairId: string): Promise<IChair | null> {
+        try {
+            return await this.adminRepository.deleteChairById(chairId);
+        } catch (error) {
+            throw error;
+        }
+    }
+    async updateChair(chairId: string, formData: IChair, files: any): Promise<IChair | null> {
+        try {
+            if (files?.length > 0) {
+                const images: any = await uploadImageToCloudinary(files);
+                if (!images?.success) {
+                    throw new BadRequestError("Failed to upload image to cloud server, something went wrong");
+                }
+                const image = images?.results[0].url;
+
+                const newChairObj = { ...formData, image: image };
+
+                return await this.adminRepository.updateChair(chairId, newChairObj);
+            } else {
+                return await this.adminRepository?.updateChair(chairId, formData);
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+    async createTable(formData: ITable, files: any): Promise<ITable | null> {
+        try {
+            const images: any = await uploadImageToCloudinary(files);
+            if (!images?.success) throw new BadRequestError("Failed to upload image to the cloud server");
+            const image = images?.results[0].url;
          
+            const newFormData = { ...formData, image: image };
+            return await this.adminRepository.createTable(newFormData);
         } catch (error) {
             throw error;
         }
     }
-    async updateStock(query:any): Promise<any | null> {
+    async getAllTables(): Promise<ITable[] | null> {
         try {
-             await this.adminRepository.updateStock(query)
-            
+            return await this.adminRepository.findAllTables();
+        } catch (error) {
+            throw error;
+        } 
+    }
+    async deleteTable(tableId:string): Promise<ITable| null> {
+        try {
+            return await this.adminRepository.deleteTableById(tableId);
         } catch (error) {
             throw error;
         }
     }
-    async updateImage(packageId:string,files:any): Promise<any | null> {
+    async updateTable(tableId:string,formData:ITable,files:any): Promise<ITable| null> {
         try {
-            const images:any = await uploadImageToCloudinary(files);
-            if(!images?.success) throw new BadRequestError("Failed to update package image");
-            const image =  images?.results[0].url;
-            return await this.adminRepository?.updatePackageImage(packageId,image)
-            
+          console.log(formData)
+            if(files.length>0){
+              const images:any = await uploadImageToCloudinary(files);
+              if(!images?.success) throw new BadRequestError("Failed to upload image to cloud server")
+                const image = images?.results[0].url;
+                console.log(image)
+               const newFormData ={...formData,image:image};
+               return await this.adminRepository.updateTableById(tableId,newFormData)
+            }else{
+                return await this.adminRepository.updateTableById(tableId,formData);
+            }
+           
         } catch (error) {
             throw error;
         }

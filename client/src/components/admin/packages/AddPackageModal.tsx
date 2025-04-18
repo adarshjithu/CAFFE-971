@@ -5,8 +5,9 @@ import { createPackage, getProductsAndCategory } from "../../../services/adminSe
 import ButtonLoading from "../../loading/ButtonLoading";
 import { IProduct } from "../../../interface/IProduct";
 import AddProductInCategoryModal from "./AddProductInCategoryModal";
-import { useSidebar } from "../../../context/SidebarContext";
 import { useDispatch } from "react-redux";
+import { createPackageAction } from "../../../features/admin/packageSlice";
+
 
 interface AddPackageModalProps {
     isOpen: boolean;
@@ -63,6 +64,7 @@ const AddPackageModal: React.FC<AddPackageModalProps> = ({ setIsOpen }) => {
             
 
             const res = await createPackage(form);
+            dispatch(createPackageAction(res?.data?.data))
             toast.success(res?.data?.message);
             setIsOpen(false);
         } catch (error) {
@@ -86,6 +88,7 @@ const AddPackageModal: React.FC<AddPackageModalProps> = ({ setIsOpen }) => {
                 setCategoryNames(res?.data?.data?.category);
                 setSelectedTab(res?.data?.data?.category[0]);
                 setProducts(res?.data?.data?.products);
+              
             } catch (error) {
                 toast.error(error instanceof Error ? error.message : "Failed to load products");
             }

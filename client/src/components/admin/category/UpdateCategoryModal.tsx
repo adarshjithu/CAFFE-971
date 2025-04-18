@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { addCategory, updateCategory } from "../../../services/adminService";
 import ButtonLoading from "../../loading/ButtonLoading";
 import { useDispatch } from "react-redux";
-import { createCategory, updateCategoryAction } from "../../../features/categorySlice";
+import { createCategory, updateCategoryAction } from "../../../features/admin/categorySlice";
 import { ICategory } from "../../../interface/ICategory";
 
 interface UpdateCategoryModalProps {

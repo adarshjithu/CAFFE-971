@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { AdminService } from "../services/adminService";
-import { BadRequestError, EmptyRequestBodyError } from "../constants/customErrors";
+import { BadRequestError, EmptyRequestBodyError, NotFoundError } from "../constants/customErrors";
 import { STATUS_CODES } from "../constants/statusCodes";
 
 const { OK, CREATED } = STATUS_CODES;
@@ -160,7 +160,6 @@ export class AdminController {
     // @access Admin
     async updateStock(req: Request, res: Response, next: NextFunction) {
         try {
-            
             const result = await this.adminService.updateStock(req?.query);
             res.status(OK).json({ success: true, message: "", data: result });
         } catch (error) {
@@ -172,12 +171,161 @@ export class AdminController {
     // @access Admin
     async updatePackageImage(req: Request, res: Response, next: NextFunction) {
         try {
+            if (!req?.query?.packageId) throw new EmptyRequestBodyError();
 
-            if(!req?.query?.packageId) throw new EmptyRequestBodyError();
-
-            
-            const result = await this.adminService.updateImage(req?.query?.packageId as string,req.files);
+            const result = await this.adminService.updateImage(req?.query?.packageId as string, req.files);
             res.status(OK).json({ success: true, message: "Package image successfully updated", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   Get all category and products for editing package
+    // @route  GET admin/package/category/products
+    // @access Admin
+    async getCategoryAndProducts(req: Request, res: Response, next: NextFunction) {
+        try {
+            if (!req?.query?.packageId) throw new EmptyRequestBodyError();
+            const result = await this.adminService.getCategoryAndProducts(req?.query?.packageId as string);
+            res.status(OK).json({ success: true, message: "", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   Get products list for package edit
+    // @route  GET admin/package/productlist
+    // @access Admin
+    async getProductListForPackageEdit(req: Request, res: Response, next: NextFunction) {
+        try {
+            if (Object.keys(req.query).length !== 2) throw new EmptyRequestBodyError();
+            const result = await this.adminService.getAllProductsByPackageCategory(req.query);
+            res.status(OK).json({ success: true, message: "", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   Delete product from packages
+    // @route  GET admin/package/product
+    // @access Admin
+    async deletePackageProduct(req: Request, res: Response, next: NextFunction) {
+        try {
+            if (Object.keys(req.query).length !== 3) throw new EmptyRequestBodyError();
+            const result = await this.adminService.deleteProductFromPackage(req.query);
+            res.status(OK).json({ success: true, message: "The product Successfully removed from the package", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   add product in packages
+    // @route  PUT admin/package/product
+    // @access Admin
+    async addPackageProduct(req: Request, res: Response, next: NextFunction) {
+        try {
+            if (Object.keys(req.query).length !== 3) throw new EmptyRequestBodyError();
+            const result = await this.adminService.addPackageProduct(req.query);
+            res.status(OK).json({ success: true, message: "The product Successfully removed from the package", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    // @desc   add product in packages
+    // @route  PUT admin/package
+    // @access Admin
+    async editPackage(req: Request, res: Response, next: NextFunction) {
+        try {
+            const result = await this.adminService.editPackage(req.query.packageId as string, req.body);
+            res.status(OK).json({ success: true, message: "The  package data successfully updated", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   Create Chair
+    // @route  POST admin/chair
+    // @access Admin
+    async createChair(req: Request, res: Response, next: NextFunction) {
+        try {
+            const result = await this.adminService.createChair(req.body, req.files);
+            res.status(OK).json({ success: true, message: "New chair has been successfully added", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   Get all chairs
+    // @route  GET admin/chairs
+    // @access Admin
+    async getAllChairs(req: Request, res: Response, next: NextFunction) {
+        try {
+            const result = await this.adminService.getAllChairs();
+            res.status(OK).json({ success: true, message: "", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   Delete chair
+    // @route  DELETE admin/chairs
+    // @access Admin
+    async deleteChair(req: Request, res: Response, next: NextFunction) {
+        try {
+            if (!req?.query?.chairId) throw new NotFoundError("Failed to delete the chair document, Chair Id not found");
+            const result = await this.adminService.deleteChair(req?.query?.chairId as string);
+            res.status(OK).json({ success: true, message: "The chair has been successfully deleted", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   Update chair
+    // @route  PUT admin/chair
+    // @access Admin
+    async updateChair(req: Request, res: Response, next: NextFunction) {
+        try {
+            if (!req?.query?.chairId) throw new NotFoundError("Failed to delete the chair document, Chair Id not found");
+            const result = await this.adminService.updateChair(req?.query?.chairId as string, req?.body, req.files);
+            res.status(OK).json({ success: true, message: "The chair has been successfully updated", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   Create table
+    // @route  PUT admin/table
+    // @access Admin
+    async createTable(req: Request, res: Response, next: NextFunction) {
+        try {
+            const result = await this.adminService.createTable(req.body, req.files);
+            res.status(OK).json({ success: true, message: "The table has been successfully added", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   Get all tables
+    // @route  GET admin/tables
+    // @access Admin
+    async getAllTables(req: Request, res: Response, next: NextFunction) {
+        try {
+            const result = await this.adminService.getAllTables();
+            res.status(OK).json({ success: true, message: "", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   Delete table
+    // @route  DELETE admin/table
+    // @access Admin
+    async deleteTable(req: Request, res: Response, next: NextFunction) {
+        try {
+            const result = await this.adminService.deleteTable(req?.query?.tableId as string);
+            res.status(OK).json({ success: true, message: "Table has been deleted successfully", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   Update table
+    // @route  PUT admin/table
+    // @access Admin
+    async updateTable(req: Request, res: Response, next: NextFunction) {
+        try {
+            if(!req?.query?.tableId) throw new NotFoundError("Table Id not found")
+            const result = await this.adminService.updateTable(req?.query?.tableId as string,req?.body,req?.files);
+            res.status(OK).json({ success: true, message: "Table has been updated successfully", data: result });
         } catch (error) {
             next(error);
         }

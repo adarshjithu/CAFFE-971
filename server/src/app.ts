@@ -3,6 +3,7 @@ import http from "http";
 import cors from 'cors'
 import adminRouter from "./routes/adminRoutes";
 import { errorHandler } from "./middewares.ts/errorHandler";
+import userRouter from "./routes/userRoutes";
 const app = express();
 app.use(express.json());
 app.use(
@@ -14,5 +15,6 @@ app.use(
     })
 );
 app.use('/admin',adminRouter)
+app.use('/',userRouter)
 app.use(errorHandler)
 export const Server = http.createServer(app);

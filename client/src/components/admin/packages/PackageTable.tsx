@@ -15,12 +15,13 @@ import { IRootState } from "../../../app/store";
 import DeleteModal from "../../ui/modal/DeleteModal";
 
 import AddPackageModal from "./AddPackageModal";
-import { addPackageAction, deletePackageAction, updateStockAction } from "../../../features/packageSlice";
+import { addPackageAction, deletePackageAction, updateStockAction } from "../../../features/admin/packageSlice";
 import { IPackage } from "../../../interface/IPackage";
 import Badge from "../../ui/badge/Badge";
 import ImagePreview from "./ImagePreviewModal";
 import { findProductCount } from "../../../utils/util";
 import EditPackageCategory from "./EditPackageCategory";
+import EditPackageModal from "./EditPackage";
 
 export default function PackageTable() {
     const [isOpen, setIsOpen] = useState(false);
@@ -30,6 +31,7 @@ export default function PackageTable() {
     const [packageData, setPackageData] = useState<IPackage>();
     const packages = useSelector((data: IRootState) => data?.package?.packages);
     const [editImageModal,setEditImageModal] = useState(false);
+    const [editPackageModal,setEditPackageModal] = useState(false)
 
 
 
@@ -78,10 +80,19 @@ export default function PackageTable() {
     return (
         <>
             <AddButton onClick={onClick} text="Add Package" />
-             {categoryModal&&<EditPackageCategory packageId={packageData?._id}/>}
+             
+
+             
+             {categoryModal&&<EditPackageCategory packageId={packageData?._id} setCategoryModal={setCategoryModal}/>}
+            
             {isOpen && <AddPackageModal isOpen={isOpen} setIsOpen={setIsOpen} />}
+            
             <DeleteModal isDeleteModalOpen={isDeleteModalOpen} handleDelete={handleDelete} text={"Package"} />
+            
             {editImageModal&&<ImagePreview setEditModalOpen={setEditImageModal} setEditImageModal={setEditImageModal} packageId={packageData?._id} imageUrl={packageData?.image||''}/>}
+            
+            {editPackageModal&&<EditPackageModal packageData={packageData} setEditPackageModal={setEditPackageModal}/>}
+
             <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
                 <div className="max-w-full overflow-x-auto">
                     {/* <DeleteModal isOpen={isOpen} handleDelete={handleDelete} /> */}
@@ -164,7 +175,7 @@ export default function PackageTable() {
                                     <TableCell className="px-4 py-3 text-start text-theme-sm">
                                         <div onClick={()=>{setPackageData(data);setCategoryModal(true)}} className="cursor-pointer flex flex-col gap-3 text-gray-700 dark:text-white">
                                             {/* Products with badge */}
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-2 hover:text-[blue]">
                                                 <span className="font-medium">
                                                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100">
                                                     {findProductCount(data?.products)}
@@ -179,7 +190,7 @@ export default function PackageTable() {
                                     <TableCell className="px-4 py-3 text-start text-theme-sm">
                                         <div onClick={()=>{setCategoryModal(true);setPackageData(data)}} className="cursor-pointer flex flex-col gap-3 text-gray-700 dark:text-white">
                                            {/* Categories with badge */}
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-2 hover:text-[blue]">
                                                 <span className="font-medium">
                                                   
                                                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-100">
@@ -199,7 +210,8 @@ export default function PackageTable() {
                                         <div className="flex gap-3">
                                             <button
                                                 onClick={() => {
-                                                
+                                                setPackageData(data);
+                                                setEditPackageModal(true)
                                                 }}
                                                 className="text-blue-500 hover:text-blue-700"
                                             >

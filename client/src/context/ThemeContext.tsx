@@ -1,5 +1,3 @@
-
-
 import type React from "react";
 import { createContext, useState, useContext, useEffect } from "react";
 
@@ -12,23 +10,14 @@ type ThemeContextType = {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>("light");
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") as Theme | null;
-    const initialTheme = savedTheme || "light"; // Default to light theme
-
-    // Check if the path starts with "/admin"
-    if (window.location.pathname.startsWith("/admin")) {
-      setTheme(initialTheme);
-    } else {
-      setTheme("light"); // Always light mode outside /admin
-    }
-
+    const initialTheme = savedTheme || "light";
+    setTheme(initialTheme);
     setIsInitialized(true);
   }, []);
 
@@ -44,10 +33,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [theme, isInitialized]);
 
   const toggleTheme = () => {
-    // Only allow theme toggling if the user is in /admin
-    if (window.location.pathname.startsWith("/admin")) {
-      setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-    }
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
 
   return (

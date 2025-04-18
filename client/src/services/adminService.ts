@@ -1,66 +1,62 @@
-
 import { baseUrl, erroHandler } from "../api/baseUrl";
+import Header from "../components/user/Header/Header";
 import { ICategory } from "../interface/ICategory";
 
-export const addCategory = async (category:any) => {
+export const addCategory = async (category: any) => {
     try {
-        const response = await baseUrl.post("/admin/category",category,{headers:{'Content-Type':"multipart/form-data"}});
+        const response = await baseUrl.post("/admin/category", category, { headers: { "Content-Type": "multipart/form-data" } });
         return response;
     } catch (error) {
         return erroHandler(error);
     }
 };
-
 
 export const getCategories = async () => {
     try {
-        const response = await baseUrl.get("/admin/categories",);
+        const response = await baseUrl.get("/admin/categories");
         return response;
     } catch (error) {
         return erroHandler(error);
     }
 };
 
-
-export const deleteCategory = async (id:string) => {
+export const deleteCategory = async (id: string) => {
     try {
-        const response = await baseUrl.delete(`/admin/category?categoryId=${id}`,);
+        const response = await baseUrl.delete(`/admin/category?categoryId=${id}`);
         return response;
     } catch (error) {
         return erroHandler(error);
     }
 };
-export const updateCategory = async (id:string,categoryData:any) => {
+export const updateCategory = async (id: string, categoryData: any) => {
     try {
-        const response = await baseUrl.put(`/admin/category?categoryId=${id}`,categoryData,{headers:{"Content-Type":"multipart/form-data"}});
+        const response = await baseUrl.put(`/admin/category?categoryId=${id}`, categoryData, { headers: { "Content-Type": "multipart/form-data" } });
         return response;
     } catch (error) {
         return erroHandler(error);
     }
 };
-export const updateCategoryImage = async (id:string,image:any) => {
+export const updateCategoryImage = async (id: string, image: any) => {
     try {
-        const response = await baseUrl.patch(`/admin/category/categoryId=${id}`,{image:image});
+        const response = await baseUrl.patch(`/admin/category/categoryId=${id}`, { image: image });
         return response;
     } catch (error) {
         return erroHandler(error);
     }
 };
-
-
 
 // ---------------------------------------Product-----------------------------------------
-export const addProduct = async (product:any) => {
+export const addProduct = async (product: any) => {
     try {
-        const response = await baseUrl.post("/admin/product",product,{headers:{'Content-Type':"multipart/form-data"}});
+        const response = await baseUrl.post("/admin/product", product, { headers: { "Content-Type": "multipart/form-data" } });
         return response;
     } catch (error) {
         return erroHandler(error);
     }
 };
-export const updateProduct = async (product:any,productId:string) => {
+export const updateProduct = async (product: any, productId: string) => {
     try {
-        const response = await baseUrl.put(`/admin/product?productId=${productId}`,product,{headers:{'Content-Type':"multipart/form-data"}});
+        const response = await baseUrl.put(`/admin/product?productId=${productId}`, product, { headers: { "Content-Type": "multipart/form-data" } });
         return response;
     } catch (error) {
         return erroHandler(error);
@@ -74,84 +70,193 @@ export const getAllProducts = async () => {
         return erroHandler(error);
     }
 };
-export const deleteProduct = async (productId:string) => {
+export const deleteProduct = async (productId: string) => {
     try {
-        
         const response = await baseUrl.delete(`/admin/product?productId=${productId}`);
-        return response;                       
+        return response;
     } catch (error) {
-        return erroHandler(error);    
+        return erroHandler(error);
     }
 };
 
 // ---------------------------------------Packages-----------------------------------------
 
-
 export const getProductsAndCategory = async () => {
     try {
-        
         const response = await baseUrl.get(`/admin/package/details`);
-        return response;                       
+        return response;
     } catch (error) {
-        return erroHandler(error);    
+        return erroHandler(error);
     }
 };
-export const getProductByFilter = async (category:string,filter:string,search:string) => {
+export const getProductByFilter = async (category: string, filter: string, search: string) => {
     try {
-       
-        const response = await baseUrl.get(`/admin/package/products`,{params:{category,filter,search}});
-        return response;                       
+        const response = await baseUrl.get(`/admin/package/products`, { params: { category, filter, search } });
+        return response;
     } catch (error) {
-        return erroHandler(error);    
+        return erroHandler(error);
     }
 };
-export const createPackage = async (formData:any) => {
+export const createPackage = async (formData: any) => {
     try {
-       
-        const response = await baseUrl.post(`/admin/package`,formData,{headers:{'Content-Type':"multipart/form-data"}});
-        return response;                       
+        const response = await baseUrl.post(`/admin/package`, formData, { headers: { "Content-Type": "multipart/form-data" } });
+        return response;
     } catch (error) {
-        return erroHandler(error);    
+        return erroHandler(error);
     }
 };
 export const getAllPackages = async () => {
     try {
-       
         const response = await baseUrl.get(`/admin/packages`);
-        return response;                       
+        return response;
     } catch (error) {
-        return erroHandler(error);    
+        return erroHandler(error);
     }
 };
-export const deletePackge = async (packageId:string) => {
+export const deletePackge = async (packageId: string) => {
     try {
-       
         const response = await baseUrl.delete(`/admin/packages?packageId=${packageId}`);
-        return response;                       
+        return response;
     } catch (error) {
-        return erroHandler(error);    
+        return erroHandler(error);
     }
 };
-export const updatePackageStock = async (packageId:string,stock:boolean) => {
+export const updatePackageStock = async (packageId: string, stock: boolean) => {
     try {
-       
         const response = await baseUrl.patch(`/admin/package/stock?packageId=${packageId}&stock=${stock}`);
-        return response;                       
+        return response;
     } catch (error) {
-        return erroHandler(error);    
+        return erroHandler(error);
     }
 };
-export const updatePackageImage = async (formData:any,packageId:string) => {
+export const updatePackageImage = async (formData: any, packageId: string) => {
     try {
-       
-        const response = await baseUrl.patch(
-            `/admin/package/image?packageId=${packageId}`,
-            formData,
-           { headers: { 'Content-Type': 'multipart/form-data' }}
-          );
-          
-        return response;                       
+        const response = await baseUrl.patch(`/admin/package/image?packageId=${packageId}`, formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        return response;
     } catch (error) {
-        return erroHandler(error);    
+        return erroHandler(error);
+    }
+};
+export const categoryAndProducts = async (packageId: string, stock: boolean) => {
+    try {
+        const response = await baseUrl.patch(`/admin/package/stock?packageId=${packageId}&stock=${stock}`);
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+export const getFirstCategoryAndProducts = async (packageId: string) => {
+    try {
+        const response = await baseUrl.get(`/admin/package/category/products?packageId=${packageId}`);
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+export const getProductsByPackageIdAndCategory = async (packageId: string, category: string) => {
+    try {
+        const response = await baseUrl.get(`/admin/package/productlist?packageId=${packageId}&category=${category}`);
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+export const removeProductFromPackageCategory = async (packageId: string, category: string, productId: string) => {
+    try {
+        const response = await baseUrl.delete(`/admin/package/product?packageId=${packageId}&category=${category}&productId=${productId}`);
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+export const addProductFromPackageCategory = async (packageId: string, category: string, productId: string) => {
+    try {
+        const response = await baseUrl.patch(`/admin/package/product?packageId=${packageId}&category=${category}&productId=${productId}`);
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+export const editPackage = async (packageId: string, packageData: any) => {
+    try {
+        const response = await baseUrl.put(`/admin/package?packageId=${packageId}`, packageData);
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+
+// Chairs-----------------------------------------------------------------------------
+export const addChair = async (formData: any) => {
+    try {
+        const response = await baseUrl.post(`/admin/chair`, formData, { headers: { "Content-Type": "multipart/form-data" } });
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+export const deleteChair = async (chairId: string) => {
+    try {
+        const response = await baseUrl.delete(`/admin/chair?chairId=${chairId}`);
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+export const updateChair = async (chairId: string, formData: any) => {
+    try {
+        const response = await baseUrl.put(`/admin/chair?chairId=${chairId}`, formData, { headers: { "Content-Type": "multipart/form-data" } });
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+export const getAllChairs = async () => {
+    try {
+        const response = await baseUrl.get(`/admin/chairs`);
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+
+// Table Routes-------------------------------------------------------------------------
+
+export const addTable = async (formData: any) => {
+    try {
+        const response = await baseUrl.post(`/admin/table`, formData, { headers: { "Content-Type": "multipart/form-data" } });
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+
+export const deleteTable = async (tableId: string) => {
+    try {
+        const response = await baseUrl.delete(`/admin/table?tableId=${tableId}`);
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+
+
+export const getAllTables = async () => {
+    try {
+        const response = await baseUrl.get(`/admin/tables`);
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+export const updateTable = async (tableId: string, formData: any) => {
+    try {
+        const response = await baseUrl.put(`/admin/table?tableId=${tableId}`, formData, { headers: { "Content-Type": "multipart/form-data" } });
+        return response;
+    } catch (error) {
+        return erroHandler(error);
     }
 };

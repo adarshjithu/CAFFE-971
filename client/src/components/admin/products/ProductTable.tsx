@@ -14,8 +14,9 @@ import { IRootState } from "../../../app/store";
 import DeleteModal from "../../ui/modal/DeleteModal";
 import { ICategory } from "../../../interface/ICategory";
 import AddProductModal from "./AddProductModal";
-import { addAllProductsAction, deleteProductAction } from "../../../features/productSlice";
+
 import EditProductModal from "./EditProductModal";
+import { addAllProductsAction, deleteProductAction } from "../../../features/admin/productSlice";
 
 export default function ProductTable() {
     const [isOpen, setIsOpen] = useState(false);

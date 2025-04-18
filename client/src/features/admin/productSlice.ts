@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { IProduct } from "../interface/IProduct";
+import { IProduct } from "../../interface/IProduct";
+
 
 interface IInititalState {
     products: IProduct[];

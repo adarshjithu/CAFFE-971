@@ -5,7 +5,8 @@ import { addCategory, addProduct, getCategories } from "../../../services/adminS
 import ButtonLoading from "../../loading/ButtonLoading";
 import { useDispatch } from "react-redux";
 import { ICategory } from "../../../interface/ICategory";
-import { createProductAction } from "../../../features/productSlice";
+import { createProductAction } from "../../../features/admin/productSlice";
+
 
 interface AddProductModalProps {
     isOpen: boolean;

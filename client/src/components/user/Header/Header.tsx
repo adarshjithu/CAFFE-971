@@ -1,46 +1,30 @@
-import { Utensils, X, Home, ShoppingBag, Calendar, Tag, Star } from "lucide-react";
+import { Utensils, X, Home, ShoppingBag, Calendar, Tag, Star, Bell } from "lucide-react";
 import { useState } from "react";
+import { ThemeToggleButton } from "../../common/ThemeToggleButton";
 
-const Sidebar = () => {
+const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <div className="flex">
-      {/* Sidebar */}
-      <aside className={`bg-white text-black h-screen w-20 p-6 shadow-lg flex flex-col space-y-6 fixed transition-transform ${isMenuOpen ? "translate-x-0" : "-translate-x-20"} md:translate-x-0 items-center`}>
-        <div className="flex flex-col items-center space-y-4">
-          <Utensils className="text-2xl" />
-          <h1 className="text-sm font-bold">971</h1>
-        </div>
+ 
+      <div className="w-full flex items-center justify-between px-5 py-4 bg-white shadow-sm">
+                <div className="flex items-center space-x-4">
+                    <img src="/61f78fc8e031ece2f286631de8438d56.png" alt="Cafee 971 Logo" className="w-12 h-12 object-contain" />
+                    <h1 className="text-xl font-bold text-gray-800">CAFEE 971</h1>
+                </div>
+                 <div className="flex">
 
-        <nav className="flex flex-col space-y-6 text-lg items-center">
-          <Home className="hover:text-gray-600 transition cursor-pointer" />
-          <ShoppingBag className="hover:text-gray-600 transition cursor-pointer" />
-          <Calendar className="hover:text-gray-600 transition cursor-pointer" />
-          <Tag className="hover:text-gray-600 transition cursor-pointer" />
-          <Star className="hover:text-gray-600 transition cursor-pointer" />
-        </nav>
-
-        <button className="bg-[#BD9455] text-white px-4 py-2 rounded-full font-semibold shadow-md hover:bg-gray-800 transition">
-          <ShoppingBag />
-        </button>
-      </aside>
-
-      {/* Mobile Menu Button */}
-      <button 
-        className="md:hidden text-black text-2xl absolute top-4 left-4" 
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-      >
-        {isMenuOpen ? <X /> : "☰"}
-      </button>
-
-      {/* Main Content */}
-      <main className="flex-1 ml-0 md:ml-20 p-6">
-        <h2 className="text-3xl font-bold">Welcome to CAFFE 971</h2>
-        <p className="mt-4 text-lg">Enjoy the best coffee and food experience.</p>
-      </main>
-    </div>
+    
+                <button
+                    className="p-2 ml-2 rounded-full hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#BD9455]"
+                    aria-label="Notifications"
+                >
+                    <Bell className="w-6 h-6 text-gray-600" />
+                </button>
+                 </div>
+            </div>
+ 
   );
 };
 
-export default Sidebar;
+export default Header;

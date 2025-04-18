@@ -1,6 +1,6 @@
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "../../ui/table";
 import Badge from "../../ui/badge/Badge";
-import { Children, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +11,7 @@ import AddButton from "../../ui/button/AddButton";
 import AddCategoryModal from "./AddCategoryModal";
 import { deleteCategory, getCategories } from "../../../services/adminService";
 import { IRootState } from "../../../app/store";
-import { addCategoryAction, deleteCategoryAction } from "../../../features/categorySlice";
+import { addCategoryAction, deleteCategoryAction } from "../../../features/admin/categorySlice";
 import DeleteModal from "../../ui/modal/DeleteModal";
 import { ICategory } from "../../../interface/ICategory";
 import UpdateCategoryModal from "./UpdateCategoryModal";

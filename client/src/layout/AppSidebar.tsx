@@ -4,6 +4,8 @@ import { Link, useLocation } from "react-router";
 // Assume these icons are imported from an icon library
 import { CalenderIcon, ChevronDownIcon, GridIcon, HorizontaLDots, PlugInIcon, UserIcon } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
+import { ArmchairIcon, CookingPot, LayoutGridIcon, LayoutPanelTopIcon, PackageIcon, ShoppingBagIcon } from "lucide-react";
+
 
 type NavItem = {
     name: string;
@@ -20,19 +22,34 @@ const navItems: NavItem[] = [
     },
 
     {
-        icon: <UserIcon />,
+        icon: <ShoppingBagIcon className="w-2 h-2"/>,
         name: "Packages",
         path: "/admin/packages",
     },
     {
-        icon: <UserIcon />,
+        icon: <LayoutGridIcon  />,
         name: "Categories",
         path: "/admin/categories",
     },
     {
-        icon: <UserIcon />,
+        icon: <PackageIcon  />,
         name: "Products",
         path: "/admin/products",
+    },
+    {
+        icon: <ArmchairIcon/>,
+        name: "Chairs",
+        path: "/admin/chairs",
+    },
+    {
+        icon: <LayoutPanelTopIcon/>,
+        name: "Tables",
+        path: "/admin/tables",
+    },
+    {
+        icon: <CookingPot/>,
+        name: "Live Food Station",
+        path: "/admin/tables",
     },
     // {
     //     icon: <CalenderIcon />,

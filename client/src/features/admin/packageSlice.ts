@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { IPackage } from "../interface/IPackage";
+import { IPackage } from "../../interface/IPackage";
 
 interface IInititalState {
     packages: IPackage[];
@@ -15,7 +15,7 @@ const packageSlice = createSlice({
         addPackageAction: (state, action) => {
             state.packages = action.payload;
         },
-        createPackage: (state, action) => {
+        createPackageAction: (state, action) => {
             state.packages.unshift(action.payload);
         },
         deletePackageAction: (state, action) => {
@@ -49,5 +49,5 @@ const packageSlice = createSlice({
         }
     },
 });
-export const { addPackageAction, updateImageAction,createPackage, deletePackageAction,updatePackageAction,updateStockAction } = packageSlice.actions;
+export const { addPackageAction, updateImageAction,createPackageAction, deletePackageAction,updatePackageAction,updateStockAction } = packageSlice.actions;
 export default packageSlice.reducer;
