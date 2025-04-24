@@ -49,7 +49,17 @@ const navItems: NavItem[] = [
     {
         icon: <CookingPot/>,
         name: "Live Food Station",
-        path: "/admin/tables",
+        path: "/admin/live-foodstation",
+    },
+    {
+        icon: <CookingPot/>,
+        name: "Banner",
+        path: "/admin/banner",
+    },
+    {
+        icon: <CookingPot/>,
+        name: "Add ones",
+        path: "/admin/addones",
     },
     // {
     //     icon: <CalenderIcon />,

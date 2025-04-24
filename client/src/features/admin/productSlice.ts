@@ -20,8 +20,17 @@ const productSlice = createSlice({
     },
     deleteProductAction:(state,action)=>{
         state.products = state.products.filter((obj:IProduct)=>obj?._id!==action?.payload?._id)
+    },
+    changeStatusAction:(state,action)=>{
+        state.products = state.products?.map((obj:any)=>{
+            if(obj?._id==action?.payload?._id){
+                return {...obj,isActive:!obj?.isActive}
+            }
+            return obj;
+        })
+
     }
     },
 });
-export const { createProductAction,addAllProductsAction,deleteProductAction} = productSlice.actions;
+export const { createProductAction,addAllProductsAction,deleteProductAction,changeStatusAction} = productSlice.actions;
 export default productSlice.reducer;

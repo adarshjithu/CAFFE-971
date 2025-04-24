@@ -9,9 +9,13 @@ import { deleteImageFromCloudinary } from "../utils/cloudinary/deleteImageFromCl
 import { BaseRepository } from "./baseRepository";
 import Chair from "../models/chairModel";
 import { IChair } from "../interface/Models/IChair";
-import { NotFoundError } from "../constants/customErrors";
+import { BadRequestError, NotFoundError } from "../constants/customErrors";
 import { ITable } from "../interface/Models/ITable";
 import Table from "../models/tableModel";
+import FoodStation from "../models/foodStationModel";
+import { IFoodStation } from "../interface/Models/IFoodStation";
+import { IAddOn } from "../interface/Models/IAddons";
+import AddOn from "../models/addonModel";
 
 export class AdminRepository extends BaseRepository {
     constructor() {
@@ -69,13 +73,76 @@ export class AdminRepository extends BaseRepository {
             throw error;
         }
     }
-    async findProducts(): Promise<IProduct[] | null> {
+    async updateProductStatus(productId: string): Promise<IProduct | null> {
         try {
-            return await Product.find().sort({ _id: -1 }).populate("category");
+            return await Product.findByIdAndUpdate(
+                { _id: productId },
+                [
+                    {
+                        $set: {
+                            isActive: { $not: "$isActive" }, // flips true to false, false to true
+                        },
+                    },
+                ],
+                { new: true }
+            );
         } catch (error) {
             throw error;
         }
     }
+    async findProducts(filter: any): Promise<any | null> {
+        const { type, isActive, search, categoryName, page } = filter;
+        const matchStage: any = {};
+
+        // Basic filters
+        if (type && type !== "all") {
+            matchStage.type = type;
+        }
+
+        if (isActive && isActive !== "all") {
+            matchStage.isActive = isActive === "active";
+        }
+
+        if (search) {
+            matchStage.name = { $regex: search, $options: "i" };
+        }
+
+        const pipeline: any[] = [
+            { $match: matchStage },
+
+            // Join with Category collection
+            {
+                $lookup: {
+                    from: "categories", // your actual collection name (case-sensitive!)
+                    localField: "category",
+                    foreignField: "_id",
+                    as: "category",
+                },
+            },
+            // Flatten the array (category is an array after $lookup)
+            { $unwind: "$category" },
+        ];
+
+        // Add category name filter if needed
+        if (categoryName && categoryName !== "all") {
+            pipeline.push({
+                $match: {
+                    "category.name": { $regex: categoryName, $options: "i" },
+                },
+            });
+        }
+
+        // Sort by latest
+        pipeline.push({ $sort: { _id: -1 } });
+        pipeline.push({ $skip: (Number(page) - 1) * 10 });
+        pipeline.push({ $limit: 10 });
+
+        const products = await Product.aggregate(pipeline);
+        const allProductCount = await Product?.aggregate([{ $group: { _id: null, count: { $sum: 1 } } }]);
+
+        return { products: products, count: allProductCount[0]?.count };
+    }
+
     async deleteProductById(productId: string): Promise<IProduct | null> {
         try {
             return await Product.findByIdAndDelete(productId);
@@ -269,36 +336,36 @@ export class AdminRepository extends BaseRepository {
     }
     async findAllChairs(): Promise<IChair[] | null> {
         try {
-            return await Chair.find().sort({_id:-1});
+            return await Chair.find().sort({ _id: -1 });
         } catch (error) {
             throw error;
         }
     }
-    async deleteChairById(chairId:string): Promise<IChair | null> {
+    async deleteChairById(chairId: string): Promise<IChair | null> {
         try {
-            const image = await Chair.findOne({_id:chairId});
-            if(image) await deleteImageFromCloudinary(image.image);
-            return await Chair.findByIdAndDelete(chairId)
+            const image = await Chair.findOne({ _id: chairId });
+            if (image) await deleteImageFromCloudinary(image.image);
+            return await Chair.findByIdAndDelete(chairId);
         } catch (error) {
             throw error;
         }
     }
-    async updateChair(chairId:string,formData:any): Promise<IChair | null> {
+    async updateChair(chairId: string, formData: any): Promise<IChair | null> {
         try {
-            if(formData?.image){
-                const chairData = await Chair.findOne({_id:chairId});
-               if(chairData) await deleteImageFromCloudinary(chairData?.image)
+            if (formData?.image) {
+                const chairData = await Chair.findOne({ _id: chairId });
+                if (chairData) await deleteImageFromCloudinary(chairData?.image);
             }
-             const res =  await Chair?.findByIdAndUpdate(chairId,formData,{new:true});
-             if(!res) throw new NotFoundError('Already removed from the database');
-             return res;
+            const res = await Chair?.findByIdAndUpdate(chairId, formData, { new: true });
+            if (!res) throw new NotFoundError("Already removed from the database");
+            return res;
         } catch (error) {
             throw error;
         }
     }
-    async createTable(formData:any): Promise<ITable | null> {
+    async createTable(formData: any): Promise<ITable | null> {
         try {
-            console.log(formData)
+            console.log(formData);
             const newTable = new Table(formData);
             await newTable.save();
             return newTable;
@@ -308,26 +375,101 @@ export class AdminRepository extends BaseRepository {
     }
     async findAllTables(): Promise<ITable[] | null> {
         try {
-             return await Table.find().sort({_id:-1})
+            return await Table.find().sort({ _id: -1 });
         } catch (error) {
             throw error;
         }
     }
-    async deleteTableById(tableId:string): Promise<ITable| null> {
+    async deleteTableById(tableId: string): Promise<ITable | null> {
         try {
-             return await Table.findByIdAndDelete(tableId)
+            return await Table.findByIdAndDelete(tableId);
         } catch (error) {
             throw error;
         }
     }
-    async updateTableById(tableId:string,formData:any): Promise<ITable| null> {
+    async updateTableById(tableId: string, formData: any): Promise<ITable | null> {
         try {
-            if(formData?.image){
-                const table = await Table.findOne({_id:tableId});
-               if(table) await deleteImageFromCloudinary(table?.image);
+            if (formData?.image) {
+                const table = await Table.findOne({ _id: tableId });
+                if (table) await deleteImageFromCloudinary(table?.image);
             }
 
-            return await Table?.findByIdAndUpdate(tableId,formData,{new:true})
+            return await Table?.findByIdAndUpdate(tableId, formData, { new: true });
+        } catch (error) {
+            throw error;
+        }
+    }
+    async createNewFoodStation(formData: any): Promise<IFoodStation | null> {
+        try {
+            const newFoodStation = new FoodStation(formData);
+            await newFoodStation.save();
+            return newFoodStation;
+        } catch (error) {
+            throw error;
+        }
+    }
+    async findByIdAndDeleteFoodStation(foodStationId: string): Promise<IFoodStation | null> {
+        try {
+            const foodStation = await FoodStation.findByIdAndDelete(foodStationId);
+            if (!foodStation) throw new NotFoundError("Food station not found for deletion");
+            return foodStation;
+        } catch (error) {
+            throw error;
+        }
+    }
+    async getAllFoodStations(): Promise<IFoodStation[] | null> {
+        try {
+            return await FoodStation.find().sort({ _id: -1 });
+        } catch (error) {
+            throw error;
+        }
+    }
+    async updateFoodStation(foodStationId: string, formData: any): Promise<IFoodStation | null> {
+        try {
+            if (formData?.image) {
+                const foodStation: any = await FoodStation.findOne({ _id: foodStationId });
+                if (foodStation) {
+                    await deleteImageFromCloudinary(foodStation?.image);
+                }
+            }
+
+            return await FoodStation.findByIdAndUpdate(foodStationId, formData, { new: true });
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async createAddon(formData: IAddOn): Promise<IAddOn | null> {
+        try {
+            const newAddOn = new AddOn(formData);
+            await newAddOn.save();
+            return newAddOn;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async updateAddOnById(addonId: string, formData: IAddOn): Promise<IAddOn | null> {
+        try {
+            const addOnData: any = await AddOn.findOne({ _id: addonId });
+            await deleteImageFromCloudinary(addOnData?.image);
+            const res = await AddOn.findByIdAndUpdate(addonId, formData, { new: true });
+            if (!res) throw new NotFoundError("The addon document not found");
+            return res;
+        } catch (error) {
+            throw error;
+        }
+    }
+    async deleteAddOn(addonId: string): Promise<IAddOn | null> {
+        try {
+            return await AddOn.findByIdAndDelete(addonId);
+        } catch (error) {
+            throw error;
+        }
+    }
+    async findAllAddons(): Promise<IAddOn[] | null> {
+        try {
+            return await AddOn.find({}).sort({_id:-1})
         } catch (error) {
             throw error;
         }

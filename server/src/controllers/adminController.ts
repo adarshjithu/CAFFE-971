@@ -69,7 +69,7 @@ export class AdminController {
     // @access Admin
     async getProducts(req: Request, res: Response, next: NextFunction) {
         try {
-            const result = await this.adminService.getProducts();
+            const result = await this.adminService.getProducts({ ...req?.query, ...req?.params });
             res.status(OK).json({ success: true, message: "", data: result });
         } catch (error) {
             next(error);
@@ -83,6 +83,18 @@ export class AdminController {
             if (!req?.query.productId) throw new EmptyRequestBodyError();
             const result = await this.adminService.deleteProduct(req.query.productId as string);
             res.status(OK).json({ success: true, message: "Product successfully deleted", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   Update product status
+    // @route  PATCH admin/product/status
+    // @access Admin
+    async updateProductStatus(req: Request, res: Response, next: NextFunction) {
+        try {
+            if (!req?.query.productId) throw new EmptyRequestBodyError();
+            const result = await this.adminService.updateProductStatus(req.query.productId as string);
+            res.status(OK).json({ success: true, message: "", data: result });
         } catch (error) {
             next(error);
         }
@@ -323,9 +335,102 @@ export class AdminController {
     // @access Admin
     async updateTable(req: Request, res: Response, next: NextFunction) {
         try {
-            if(!req?.query?.tableId) throw new NotFoundError("Table Id not found")
-            const result = await this.adminService.updateTable(req?.query?.tableId as string,req?.body,req?.files);
+            if (!req?.query?.tableId) throw new NotFoundError("Table Id not found");
+            const result = await this.adminService.updateTable(req?.query?.tableId as string, req?.body, req?.files);
             res.status(OK).json({ success: true, message: "Table has been updated successfully", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   Create live food station
+    // @route  PUT admin/food-station
+    // @access Admin
+    async createFoodStation(req: Request, res: Response, next: NextFunction) {
+        try {
+            if (Object.keys(req.body).length == 0) throw new EmptyRequestBodyError();
+            const result = await this.adminService.createFoodStation(req.body, req.files);
+            res.status(OK).json({ success: true, message: "New live food station has been added successfully", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   Delete live food station
+    // @route  DELETE admin/food-station
+    // @access Admin
+    async deleteFoodStation(req: Request, res: Response, next: NextFunction) {
+        try {
+            if (!req.query.foodStationId) throw new NotFoundError("Food Station Id not found");
+            const result = await this.adminService.deleteFoodStation(req.query.foodStationId as string);
+            res.status(OK).json({ success: true, message: " Live food station has been deleted successfully", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   Get live food station
+    // @route  GET admin/food-stations
+    // @access Admin
+    async getAllFoodStations(req: Request, res: Response, next: NextFunction) {
+        try {
+            const result = await this.adminService.getAllFoodStations();
+            res.status(OK).json({ success: true, message: "", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   Update live food station
+    // @route  PUT admin/food-station
+    // @access Admin
+    async updateFoodStation(req: Request, res: Response, next: NextFunction) {
+        try {
+            const result = await this.adminService.updateFoodStation(req.query.foodStationId as string, req.body, req.files);
+            res.status(OK).json({ success: true, message: "New live food station has been updated successfully", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   Create addon
+    // @route  POST admin/addon
+    // @access Admin
+    async createAddOn(req: Request, res: Response, next: NextFunction) {
+        try {
+            if (Object.values(req.body).length == 0 || req?.files?.length == 0) throw new EmptyRequestBodyError();
+            const result = await this.adminService.createAddOn(req.body, req.files);
+            res.status(OK).json({ success: true, message: "New addon successfully added", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   Update addon
+    // @route  PUT admin/addon
+    // @access Admin
+    async updateAddOn(req: Request, res: Response, next: NextFunction) {
+        try {
+            const result = await this.adminService.updateAddon(req.query.addonId as string, req.body, req.files);
+            res.status(OK).json({ success: true, message: "New addon successfully updated", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   delete addon
+    // @route  DELETE admin/addon
+    // @access Admin
+    async deleteAddOn(req: Request, res: Response, next: NextFunction) {
+        try {
+            if(!req.query.addonId) throw new EmptyRequestBodyError()
+            const result = await this.adminService.deleteAddOn(req.query.addonId as string);
+            res.status(OK).json({ success: true, message: "New addon successfully removed", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   Get all addons
+    // @route  GET admin/addons
+    // @access Admin
+    async getAllAddons(req: Request, res: Response, next: NextFunction) {
+        try {
+        
+            const result = await this.adminService.getAllAddons();
+            res.status(OK).json({ success: true, message: "", data: result });
         } catch (error) {
             next(error);
         }

@@ -7,4 +7,5 @@ export interface IProduct extends Document {
     category: any
     type: FoodTypes,
     image: string;
+    isActive:boolean
 }

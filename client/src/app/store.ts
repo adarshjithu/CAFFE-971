@@ -5,6 +5,9 @@ import packageReducer from '../features/admin/packageSlice'
 import productPackageReducer from  '../features/user/packageSlice'
 import chairReducer from '../features/admin/chairSlice'
 import tableReducer from '../features/admin/tableSlice'
+import foodStationReducer from '../features/admin/foodStationSlice'
+import addonReducer from '../features/admin/addOnSlice'
+
 
 export interface IRootState {
     category: Record<string, any>;
@@ -12,7 +15,9 @@ export interface IRootState {
     package: Record<string, any>; 
     productPackages:Record<string,any>;
     chair:Record<string,any>;
-    table:Record<string,any>
+    table:Record<string,any>;
+    foodStation:Record<string,any>;
+    addons:Record<string,any>
 }
 
 export const store = configureStore({
@@ -22,6 +27,8 @@ export const store = configureStore({
         package:packageReducer,
         productPackages:productPackageReducer,
         chair:chairReducer,
-        table:tableReducer
+        table:tableReducer,
+        foodStation:foodStationReducer,
+        addons:addonReducer
     },
 });

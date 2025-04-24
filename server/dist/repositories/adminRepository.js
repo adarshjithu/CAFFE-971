@@ -22,6 +22,8 @@ const baseRepository_1 = require("./baseRepository");
 const chairModel_1 = __importDefault(require("../models/chairModel"));
 const customErrors_1 = require("../constants/customErrors");
 const tableModel_1 = __importDefault(require("../models/tableModel"));
+const foodStationModel_1 = __importDefault(require("../models/foodStationModel"));
+const addonModel_1 = __importDefault(require("../models/addonModel"));
 class AdminRepository extends baseRepository_1.BaseRepository {
     constructor() {
         super(null);
@@ -95,14 +97,66 @@ class AdminRepository extends baseRepository_1.BaseRepository {
             }
         });
     }
-    findProducts() {
+    updateProductStatus(productId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield productModel_1.Product.find().sort({ _id: -1 }).populate("category");
+                return yield productModel_1.Product.findByIdAndUpdate({ _id: productId }, [
+                    {
+                        $set: {
+                            isActive: { $not: "$isActive" }, // flips true to false, false to true
+                        },
+                    },
+                ], { new: true });
             }
             catch (error) {
                 throw error;
             }
+        });
+    }
+    findProducts(filter) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            const { type, isActive, search, categoryName, page } = filter;
+            const matchStage = {};
+            // Basic filters
+            if (type && type !== "all") {
+                matchStage.type = type;
+            }
+            if (isActive && isActive !== "all") {
+                matchStage.isActive = isActive === "active";
+            }
+            if (search) {
+                matchStage.name = { $regex: search, $options: "i" };
+            }
+            const pipeline = [
+                { $match: matchStage },
+                // Join with Category collection
+                {
+                    $lookup: {
+                        from: "categories", // your actual collection name (case-sensitive!)
+                        localField: "category",
+                        foreignField: "_id",
+                        as: "category",
+                    },
+                },
+                // Flatten the array (category is an array after $lookup)
+                { $unwind: "$category" },
+            ];
+            // Add category name filter if needed
+            if (categoryName && categoryName !== "all") {
+                pipeline.push({
+                    $match: {
+                        "category.name": { $regex: categoryName, $options: "i" },
+                    },
+                });
+            }
+            // Sort by latest
+            pipeline.push({ $sort: { _id: -1 } });
+            pipeline.push({ $skip: (Number(page) - 1) * 10 });
+            pipeline.push({ $limit: 10 });
+            const products = yield productModel_1.Product.aggregate(pipeline);
+            const allProductCount = yield (productModel_1.Product === null || productModel_1.Product === void 0 ? void 0 : productModel_1.Product.aggregate([{ $group: { _id: null, count: { $sum: 1 } } }]));
+            return { products: products, count: (_a = allProductCount[0]) === null || _a === void 0 ? void 0 : _a.count };
         });
     }
     deleteProductById(productId) {
@@ -363,7 +417,7 @@ class AdminRepository extends baseRepository_1.BaseRepository {
                 }
                 const res = yield (chairModel_1.default === null || chairModel_1.default === void 0 ? void 0 : chairModel_1.default.findByIdAndUpdate(chairId, formData, { new: true }));
                 if (!res)
-                    throw new customErrors_1.NotFoundError('Already removed from the database');
+                    throw new customErrors_1.NotFoundError("Already removed from the database");
                 return res;
             }
             catch (error) {
@@ -413,6 +467,104 @@ class AdminRepository extends baseRepository_1.BaseRepository {
                         yield (0, deleteImageFromCloudinary_1.deleteImageFromCloudinary)(table === null || table === void 0 ? void 0 : table.image);
                 }
                 return yield (tableModel_1.default === null || tableModel_1.default === void 0 ? void 0 : tableModel_1.default.findByIdAndUpdate(tableId, formData, { new: true }));
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    createNewFoodStation(formData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const newFoodStation = new foodStationModel_1.default(formData);
+                yield newFoodStation.save();
+                return newFoodStation;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    findByIdAndDeleteFoodStation(foodStationId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const foodStation = yield foodStationModel_1.default.findByIdAndDelete(foodStationId);
+                if (!foodStation)
+                    throw new customErrors_1.NotFoundError("Food station not found for deletion");
+                return foodStation;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    getAllFoodStations() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield foodStationModel_1.default.find().sort({ _id: -1 });
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    updateFoodStation(foodStationId, formData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (formData === null || formData === void 0 ? void 0 : formData.image) {
+                    const foodStation = yield foodStationModel_1.default.findOne({ _id: foodStationId });
+                    if (foodStation) {
+                        yield (0, deleteImageFromCloudinary_1.deleteImageFromCloudinary)(foodStation === null || foodStation === void 0 ? void 0 : foodStation.image);
+                    }
+                }
+                return yield foodStationModel_1.default.findByIdAndUpdate(foodStationId, formData, { new: true });
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    createAddon(formData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const newAddOn = new addonModel_1.default(formData);
+                yield newAddOn.save();
+                return newAddOn;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    updateAddOnById(addonId, formData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const addOnData = yield addonModel_1.default.findOne({ _id: addonId });
+                yield (0, deleteImageFromCloudinary_1.deleteImageFromCloudinary)(addOnData === null || addOnData === void 0 ? void 0 : addOnData.image);
+                const res = yield addonModel_1.default.findByIdAndUpdate(addonId, formData, { new: true });
+                if (!res)
+                    throw new customErrors_1.NotFoundError("The addon document not found");
+                return res;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    deleteAddOn(addonId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield addonModel_1.default.findByIdAndDelete(addonId);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    findAllAddons() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield addonModel_1.default.find({}).sort({ _id: -1 });
             }
             catch (error) {
                 throw error;

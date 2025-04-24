@@ -66,6 +66,8 @@ export default function PackageTable() {
     };
 
     useEffect(() => {
+
+     
         const fetchData = async () => {
             try {
                 const res = await getAllPackages();

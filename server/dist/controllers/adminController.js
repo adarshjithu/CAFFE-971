@@ -99,7 +99,7 @@ class AdminController {
     getProducts(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield this.adminService.getProducts();
+                const result = yield this.adminService.getProducts(Object.assign(Object.assign({}, req === null || req === void 0 ? void 0 : req.query), req === null || req === void 0 ? void 0 : req.params));
                 res.status(OK).json({ success: true, message: "", data: result });
             }
             catch (error) {
@@ -117,6 +117,22 @@ class AdminController {
                     throw new customErrors_1.EmptyRequestBodyError();
                 const result = yield this.adminService.deleteProduct(req.query.productId);
                 res.status(OK).json({ success: true, message: "Product successfully deleted", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   Update product status
+    // @route  PATCH admin/product/status
+    // @access Admin
+    updateProductStatus(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (!(req === null || req === void 0 ? void 0 : req.query.productId))
+                    throw new customErrors_1.EmptyRequestBodyError();
+                const result = yield this.adminService.updateProductStatus(req.query.productId);
+                res.status(OK).json({ success: true, message: "", data: result });
             }
             catch (error) {
                 next(error);
@@ -439,6 +455,127 @@ class AdminController {
                     throw new customErrors_1.NotFoundError("Table Id not found");
                 const result = yield this.adminService.updateTable((_b = req === null || req === void 0 ? void 0 : req.query) === null || _b === void 0 ? void 0 : _b.tableId, req === null || req === void 0 ? void 0 : req.body, req === null || req === void 0 ? void 0 : req.files);
                 res.status(OK).json({ success: true, message: "Table has been updated successfully", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   Create live food station
+    // @route  PUT admin/food-station
+    // @access Admin
+    createFoodStation(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (Object.keys(req.body).length == 0)
+                    throw new customErrors_1.EmptyRequestBodyError();
+                const result = yield this.adminService.createFoodStation(req.body, req.files);
+                res.status(OK).json({ success: true, message: "New live food station has been added successfully", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   Delete live food station
+    // @route  DELETE admin/food-station
+    // @access Admin
+    deleteFoodStation(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (!req.query.foodStationId)
+                    throw new customErrors_1.NotFoundError("Food Station Id not found");
+                const result = yield this.adminService.deleteFoodStation(req.query.foodStationId);
+                res.status(OK).json({ success: true, message: " Live food station has been deleted successfully", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   Get live food station
+    // @route  GET admin/food-stations
+    // @access Admin
+    getAllFoodStations(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield this.adminService.getAllFoodStations();
+                res.status(OK).json({ success: true, message: "", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   Update live food station
+    // @route  PUT admin/food-station
+    // @access Admin
+    updateFoodStation(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield this.adminService.updateFoodStation(req.query.foodStationId, req.body, req.files);
+                res.status(OK).json({ success: true, message: "New live food station has been updated successfully", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   Create addon
+    // @route  POST admin/addon
+    // @access Admin
+    createAddOn(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                if (Object.values(req.body).length == 0 || ((_a = req === null || req === void 0 ? void 0 : req.files) === null || _a === void 0 ? void 0 : _a.length) == 0)
+                    throw new customErrors_1.EmptyRequestBodyError();
+                const result = yield this.adminService.createAddOn(req.body, req.files);
+                res.status(OK).json({ success: true, message: "New addon successfully added", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   Update addon
+    // @route  PUT admin/addon
+    // @access Admin
+    updateAddOn(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield this.adminService.updateAddon(req.query.addonId, req.body, req.files);
+                res.status(OK).json({ success: true, message: "New addon successfully updated", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   delete addon
+    // @route  DELETE admin/addon
+    // @access Admin
+    deleteAddOn(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (!req.query.addonId)
+                    throw new customErrors_1.EmptyRequestBodyError();
+                const result = yield this.adminService.deleteAddOn(req.query.addonId);
+                res.status(OK).json({ success: true, message: "New addon successfully removed", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   Get all addons
+    // @route  GET admin/addons
+    // @access Admin
+    getAllAddons(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield this.adminService.getAllAddons();
+                res.status(OK).json({ success: true, message: "", data: result });
             }
             catch (error) {
                 next(error);

@@ -1,6 +1,8 @@
 import { BadRequestError, NotFoundError } from "../constants/customErrors";
+import { IAddOn } from "../interface/Models/IAddons";
 import { ICategory } from "../interface/Models/ICategory";
 import { IChair } from "../interface/Models/IChair";
+import { IFoodStation } from "../interface/Models/IFoodStation";
 import { IProduct } from "../interface/Models/IProduct";
 import { ITable } from "../interface/Models/ITable";
 import { IPackage } from "../interface/Models/Package";
@@ -67,9 +69,9 @@ export class AdminService {
             throw error;
         }
     }
-    async getProducts(): Promise<IProduct[] | null> {
+    async getProducts(filter:any): Promise<IProduct[] | null> {
         try {
-            return await this.adminRepository.findProducts();
+            return await this.adminRepository.findProducts(filter);
         } catch (error) {
             throw error;
         }
@@ -79,6 +81,13 @@ export class AdminService {
             const result = await this.adminRepository.deleteProductById(productId);
             if (!result) throw new NotFoundError("Failed to delete the product, Product not found");
             return result;
+        } catch (error) {
+            throw error;
+        }
+    }
+    async updateProductStatus(productId: string): Promise<IProduct | null> {
+        try {
+            return await this.adminRepository.updateProductStatus(productId)
         } catch (error) {
             throw error;
         }
@@ -253,7 +262,7 @@ export class AdminService {
             const images: any = await uploadImageToCloudinary(files);
             if (!images?.success) throw new BadRequestError("Failed to upload image to the cloud server");
             const image = images?.results[0].url;
-         
+
             const newFormData = { ...formData, image: image };
             return await this.adminRepository.createTable(newFormData);
         } catch (error) {
@@ -265,29 +274,123 @@ export class AdminService {
             return await this.adminRepository.findAllTables();
         } catch (error) {
             throw error;
-        } 
+        }
     }
-    async deleteTable(tableId:string): Promise<ITable| null> {
+    async deleteTable(tableId: string): Promise<ITable | null> {
         try {
             return await this.adminRepository.deleteTableById(tableId);
         } catch (error) {
             throw error;
         }
     }
-    async updateTable(tableId:string,formData:ITable,files:any): Promise<ITable| null> {
+    async updateTable(tableId: string, formData: ITable, files: any): Promise<ITable | null> {
         try {
-          console.log(formData)
-            if(files.length>0){
-              const images:any = await uploadImageToCloudinary(files);
-              if(!images?.success) throw new BadRequestError("Failed to upload image to cloud server")
+            if (files.length > 0) {
+                const images: any = await uploadImageToCloudinary(files);
+                if (!images?.success) throw new BadRequestError("Failed to upload image to cloud server");
                 const image = images?.results[0].url;
-                console.log(image)
-               const newFormData ={...formData,image:image};
-               return await this.adminRepository.updateTableById(tableId,newFormData)
-            }else{
-                return await this.adminRepository.updateTableById(tableId,formData);
+                console.log(image);
+                const newFormData = { ...formData, image: image };
+                return await this.adminRepository.updateTableById(tableId, newFormData);
+            } else {
+                return await this.adminRepository.updateTableById(tableId, formData);
             }
-           
+        } catch (error) {
+            throw error;
+        }
+    }
+    async createFoodStation(formData: IFoodStation, files: any): Promise<IFoodStation | null> {
+        try {
+            const images: any = await uploadImageToCloudinary(files);
+            if (!images?.success) throw new BadRequestError("Failed to upload food station image to cloud server");
+
+            const image = images?.results[0].url;
+
+            return await this.adminRepository.createNewFoodStation({...formData,image:image});
+        } catch (error) {
+            throw error;
+        }
+    }
+    async deleteFoodStation(foodStationId:string): Promise<IFoodStation | null> {
+        try {
+            return await this.adminRepository.findByIdAndDeleteFoodStation(foodStationId);
+        } catch (error) {
+            throw error;
+        }
+    }
+    async getAllFoodStations(): Promise<IFoodStation []| null> {
+        try {
+            return await this.adminRepository.getAllFoodStations();
+        } catch (error) {
+            throw error;
+        }
+    }
+    async updateFoodStation(foodStationId:string,formData:any,files:any): Promise<IFoodStation | null> {
+        try {
+
+            if(files?.length<=0){
+                    return await this.adminRepository.updateFoodStation(foodStationId,formData);
+
+            }else{
+              const images:any = await uploadImageToCloudinary(files);
+              if(!images?.success){
+                throw new BadRequestError("Failed to upload images to the cloud server")
+              }
+              
+              const image =  images?.results[0].url;
+              const newFormData =  {...formData,image:image};
+              return await this.adminRepository.updateFoodStation(foodStationId,newFormData);
+            }
+
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async createAddOn(formData:any,files:any): Promise<IAddOn | null> {
+        try {
+            const images:any = await uploadImageToCloudinary(files);
+            if(!images?.success) throw new BadRequestError('Failed to upload addon image to the cloud storage');
+            const image = images?.results[0].url;
+            const newFormData={
+                ...formData,image:image,price:parseInt(formData?.price)
+            }
+
+            return await this.adminRepository.createAddon(newFormData)
+        } catch (error) {
+            throw error;
+        }
+    }
+    async updateAddon(addonId:string,formData:any,files:any): Promise<IAddOn | null> {
+        try {
+          if(files?.length>0){
+            const images:any = await uploadImageToCloudinary(files);
+            if(!images?.success) throw new BadRequestError('Failed to upload addon image to the cloud storage');
+            const image = images?.results[0].url;
+            const newAddOnObj={
+                ...formData,image:image
+            }
+            return await this.adminRepository.updateAddOnById(addonId,newAddOnObj)
+            
+          }else{
+            return await this.adminRepository.updateAddOnById(addonId,formData)
+          }
+        } catch (error) {
+            throw error;
+        }
+    }
+    async deleteAddOn(addonId:string): Promise<IAddOn | null> {
+        try {
+          const res = await this.adminRepository.deleteAddOn(addonId);
+          if(!res) throw new NotFoundError('Failed to remove the addon the document not found');
+          return res;
+        } catch (error) {
+            throw error;
+        }
+    }
+    async getAllAddons(): Promise<IAddOn[] | null> {
+        try {
+          return await this.adminRepository.findAllAddons()
         } catch (error) {
             throw error;
         }

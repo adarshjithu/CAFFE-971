@@ -101,7 +101,7 @@ const TableModal = ({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAct
             <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-lg dark:bg-[black]">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-lg font-semibold text-gray-800 dark:text-white">Add Chair</h2>
+                    <h2 className="text-lg font-semibold text-gray-800 dark:text-white">Add Table</h2>
                     <button onClick={() => setIsOpen(false)} className="text-gray-500 hover:text-gray-800 dark:hover:text-white">
                         <X size={20} />
                     </button>

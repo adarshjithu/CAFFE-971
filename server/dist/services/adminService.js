@@ -92,10 +92,10 @@ class AdminService {
             }
         });
     }
-    getProducts() {
+    getProducts(filter) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield this.adminRepository.findProducts();
+                return yield this.adminRepository.findProducts(filter);
             }
             catch (error) {
                 throw error;
@@ -109,6 +109,16 @@ class AdminService {
                 if (!result)
                     throw new customErrors_1.NotFoundError("Failed to delete the product, Product not found");
                 return result;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    updateProductStatus(productId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.adminRepository.updateProductStatus(productId);
             }
             catch (error) {
                 throw error;
@@ -366,7 +376,6 @@ class AdminService {
     updateTable(tableId, formData, files) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log(formData);
                 if (files.length > 0) {
                     const images = yield (0, uploadToCloudinary_1.uploadImageToCloudinary)(files);
                     if (!(images === null || images === void 0 ? void 0 : images.success))
@@ -379,6 +388,119 @@ class AdminService {
                 else {
                     return yield this.adminRepository.updateTableById(tableId, formData);
                 }
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    createFoodStation(formData, files) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const images = yield (0, uploadToCloudinary_1.uploadImageToCloudinary)(files);
+                if (!(images === null || images === void 0 ? void 0 : images.success))
+                    throw new customErrors_1.BadRequestError("Failed to upload food station image to cloud server");
+                const image = images === null || images === void 0 ? void 0 : images.results[0].url;
+                return yield this.adminRepository.createNewFoodStation(Object.assign(Object.assign({}, formData), { image: image }));
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    deleteFoodStation(foodStationId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.adminRepository.findByIdAndDeleteFoodStation(foodStationId);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    getAllFoodStations() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.adminRepository.getAllFoodStations();
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    updateFoodStation(foodStationId, formData, files) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                if ((files === null || files === void 0 ? void 0 : files.length) <= 0) {
+                    return yield this.adminRepository.updateFoodStation(foodStationId, formData);
+                }
+                else {
+                    const images = yield (0, uploadToCloudinary_1.uploadImageToCloudinary)(files);
+                    if (!(images === null || images === void 0 ? void 0 : images.success)) {
+                        throw new customErrors_1.BadRequestError("Failed to upload images to the cloud server");
+                    }
+                    const image = images === null || images === void 0 ? void 0 : images.results[0].url;
+                    const newFormData = Object.assign(Object.assign({}, formData), { image: image });
+                    return yield this.adminRepository.updateFoodStation(foodStationId, newFormData);
+                }
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    createAddOn(formData, files) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const images = yield (0, uploadToCloudinary_1.uploadImageToCloudinary)(files);
+                if (!(images === null || images === void 0 ? void 0 : images.success))
+                    throw new customErrors_1.BadRequestError('Failed to upload addon image to the cloud storage');
+                const image = images === null || images === void 0 ? void 0 : images.results[0].url;
+                const newFormData = Object.assign(Object.assign({}, formData), { image: image, price: parseInt(formData === null || formData === void 0 ? void 0 : formData.price) });
+                return yield this.adminRepository.createAddon(newFormData);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    updateAddon(addonId, formData, files) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                if ((files === null || files === void 0 ? void 0 : files.length) > 0) {
+                    const images = yield (0, uploadToCloudinary_1.uploadImageToCloudinary)(files);
+                    if (!(images === null || images === void 0 ? void 0 : images.success))
+                        throw new customErrors_1.BadRequestError('Failed to upload addon image to the cloud storage');
+                    const image = images === null || images === void 0 ? void 0 : images.results[0].url;
+                    const newAddOnObj = Object.assign(Object.assign({}, formData), { image: image });
+                    return yield this.adminRepository.updateAddOnById(addonId, newAddOnObj);
+                }
+                else {
+                    return yield this.adminRepository.updateAddOnById(addonId, formData);
+                }
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    deleteAddOn(addonId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const res = yield this.adminRepository.deleteAddOn(addonId);
+                if (!res)
+                    throw new customErrors_1.NotFoundError('Failed to remove the addon the document not found');
+                return res;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    getAllAddons() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.adminRepository.findAllAddons();
             }
             catch (error) {
                 throw error;

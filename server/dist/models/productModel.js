@@ -31,5 +31,6 @@ const productSchema = new mongoose_1.Schema({
     category: { type: mongoose_1.default.Types.ObjectId, ref: 'Category', required: true },
     type: { type: String, enum: Object.values(FoodEnums_1.FoodTypes), required: true },
     image: { type: String, required: true },
+    isActive: { type: Boolean, required: true, default: true }
 }, { timestamps: true });
 exports.Product = mongoose_1.default.model("Product", productSchema);

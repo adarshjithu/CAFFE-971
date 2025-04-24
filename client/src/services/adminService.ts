@@ -1,6 +1,5 @@
 import { baseUrl, erroHandler } from "../api/baseUrl";
-import Header from "../components/user/Header/Header";
-import { ICategory } from "../interface/ICategory";
+
 
 export const addCategory = async (category: any) => {
     try {
@@ -62,9 +61,17 @@ export const updateProduct = async (product: any, productId: string) => {
         return erroHandler(error);
     }
 };
-export const getAllProducts = async () => {
+export const changeProductStatus = async (productId:string) => {
     try {
-        const response = await baseUrl.get("/admin/products");
+        const response = await baseUrl.patch(`/admin/product?productId=${productId}`);
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+export const getAllProducts = async (filter:any,page:number) => {
+    try {
+        const response = await baseUrl.get(`/admin/products/${page}`,{params:filter});
         return response;
     } catch (error) {
         return erroHandler(error);
@@ -255,6 +262,78 @@ export const getAllTables = async () => {
 export const updateTable = async (tableId: string, formData: any) => {
     try {
         const response = await baseUrl.put(`/admin/table?tableId=${tableId}`, formData, { headers: { "Content-Type": "multipart/form-data" } });
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+
+
+// Food Station-------------------------------------------------------------------------
+export const addFoodStation = async (formData: any) => {
+    try {
+ 
+        const response = await baseUrl.post(`/admin/food-station`, formData, { headers: { "Content-Type": "multipart/form-data" } });
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+export const deleteFoodStation = async (foodStationId: string) => {
+    try {
+        const response = await baseUrl.delete(`/admin/food-station?foodStationId=${foodStationId}`);
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+export const updateFoodStation = async (foodStationId:string,formData: any) => {
+    try {
+        const response = await baseUrl.put(`/admin/food-station?foodStationId=${foodStationId}`, formData, { headers: { "Content-Type": "multipart/form-data" } });
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+export const getAllFoodStation = async () => {
+    try {
+        const response = await baseUrl.get(`/admin/food-stations`);
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+
+//Addons--------------------------------------------------------------------------------
+
+
+export const createAddOn = async (formData:any) => {
+    try {
+        const response = await baseUrl.post(`/admin/addon`,formData,{headers:{"Content-Type":"multipart/form-data"}});
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+export const updateAddOn = async (addonId:string,formData:any) => {
+    try {
+        const response = await baseUrl.put(`/admin/addon?addonId=${addonId}`,formData,{headers:{"Content-Type":"multipart/form-data"}});
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+export const deleteAddOn = async (addonId:string) => {
+    try {
+        const response = await baseUrl.delete(`/admin/addon?addonId=${addonId}`);
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+export const getAllAddOnes = async () => {
+    try {
+        const response = await baseUrl.get(`/admin/addons`);
         return response;
     } catch (error) {
         return erroHandler(error);
