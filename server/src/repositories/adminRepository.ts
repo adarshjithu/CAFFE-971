@@ -469,7 +469,24 @@ export class AdminRepository extends BaseRepository {
     }
     async findAllAddons(): Promise<IAddOn[] | null> {
         try {
-            return await AddOn.find({}).sort({_id:-1})
+            return await AddOn.find({}).sort({ _id: -1 });
+        } catch (error) {
+            throw error;
+        }
+    }
+    async addOnChangeStatus(addonId: string): Promise<IAddOn | null> {
+        try {
+            return await AddOn.findByIdAndUpdate(
+                { _id: addonId },
+                [
+                    {
+                        $set: {
+                            isActive: { $not: "$isActive" },
+                        },
+                    },
+                ],
+                { new: true }
+            );
         } catch (error) {
             throw error;
         }

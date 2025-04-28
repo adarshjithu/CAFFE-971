@@ -10,8 +10,20 @@ export class UserController {
     // @access User
     async getAllPackages(req: Request, res: Response, next: NextFunction) {
         try {
-            const result = await this.userService.getAllPackages();
+            const result = await this.userService.getAllPackages(req.query.page as string);
             res.status(OK).json({ success: true, message: "", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   Get product by productId
+    // @route  GET /product
+    // @access User
+    async getProductById(req: Request, res: Response, next: NextFunction) {
+        try {
+            console.log(req.query)
+            // const result = await this.userService.getAllPackages(req.query.page as string);
+            // res.status(OK).json({ success: true, message: "", data: result });
         } catch (error) {
             next(error);
         }

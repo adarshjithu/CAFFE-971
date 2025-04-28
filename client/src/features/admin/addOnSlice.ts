@@ -30,8 +30,16 @@ const addonSlice = createSlice({
             }
             return obj;
         })
+    },
+    addonChangeStatusAction:(state,action)=>{
+     state.addons = state.addons.map((obj:IAddOn)=>{
+        if(obj?._id==action.payload){
+            return {...obj,isActive:!obj?.isActive}
+        }
+        return obj;
+     })
     }
     },
 });
-export const { createaddonAction,addAlladdonsAction,deleteaddonAction,updateaddonAction} = addonSlice.actions;
+export const { createaddonAction,addAlladdonsAction,deleteaddonAction,updateaddonAction,addonChangeStatusAction} = addonSlice.actions;
 export default addonSlice.reducer;

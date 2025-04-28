@@ -6,9 +6,9 @@ export class UserService {
 
     }
 
-    async getAllPackages():Promise<IPackage[]|null>{
+    async getAllPackages(page:string):Promise<IPackage[]|null>{
          try{
-          return  await  this.packageRepository.findAllPackages()
+          return  await  this.packageRepository.findAllPackages(page)
          }catch(error){
             throw error;
          }

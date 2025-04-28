@@ -1,39 +1,36 @@
-import { Utensils, Home, ShoppingBag, Calendar, Tag, Star } from "lucide-react";
+import { Utensils, Home, ShoppingBag, Calendar, Tag, Star, Armchair, Soup, PlusCircle } from "lucide-react";
 import { Outlet } from "react-router-dom"; // Changed import from "react-router" to "react-router-dom"
 import Header from "../components/user/Header/Header";
 
 const UserLayout = () => {
   return (
     <div className="flex flex-col md:flex-row h-screen w-full">
-      {/* Desktop Sidebar - Left Column */}
-      <aside className="hidden md:flex flex-col items-center bg-white text-black h-screen w-20 p-4 shadow-lg space-y-6 fixed">
-        <div className="flex flex-col items-center space-y-4">
-          <Utensils className="text-2xl" />
-          <h1 className="text-sm font-bold">971</h1>
-        </div>
 
-        <nav className="flex flex-col space-y-6 text-lg items-center">
-          <button className="hover:text-gray-600 transition cursor-pointer">
-            <Home />
-          </button>
-          <button className="hover:text-gray-600 transition cursor-pointer">
-            <ShoppingBag />
-          </button>
-          <button className="hover:text-gray-600 transition cursor-pointer">
-            <Calendar />
-          </button>
-          <button className="hover:text-gray-600 transition cursor-pointer">
-            <Tag />
-          </button>
-          <button className="hover:text-gray-600 transition cursor-pointer">
-            <Star />
-          </button>
-        </nav>
+<aside className="mt-20 hidden md:flex flex-col items-center bg-[#F9FAFB] text-black h-screen w-20 p-4 space-y-6 fixed">
+  
 
-        <button className="bg-[#BD9455] text-white p-3 rounded-full font-semibold shadow-md hover:bg-gray-800 transition">
-          <ShoppingBag size={20} />
+  <nav className="flex flex-col space-y-6 text-lg items-center">
+    {[
+      { icon: <Home />, label: 'Home' },
+      { icon: <ShoppingBag />, label: 'Packages' },
+      { icon: <Armchair />, label: 'Seating' },
+      { icon: <Soup />, label: 'LiveStation' },
+      { icon: <PlusCircle />, label: 'AddOns' },
+    ].map((item, index) => (
+      <div key={index} className="relative group flex flex-col items-center">
+        <button className="hover:text-gray-600 transition cursor-pointer">
+          {item.icon}
         </button>
-      </aside>
+        <span className="absolute left-14 top-1/2 -translate-y-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-10">
+          View {item.label}
+        </span>
+      </div>
+    ))}
+  </nav>
+
+
+</aside>
+
 
       {/* Mobile Bottom Navigation */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white text-black shadow-lg flex justify-around items-center p-3 z-10">

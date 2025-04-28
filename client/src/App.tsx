@@ -104,7 +104,7 @@ export default function App() {
         <Route path="/" element={<UserLayout />}>
           <Route index element={<Home />} />
           <Route path="address" element={<Address />} />
-          <Route path="product" element={<ProductDetails />} />
+          <Route path="product/:id" element={<ProductDetails />} />
           <Route path="fill-details" element={<FillDetails />} />
           <Route path="event-details" element={<EventDetails />} />
           <Route path="account-details" element={<AccountDetails />} />

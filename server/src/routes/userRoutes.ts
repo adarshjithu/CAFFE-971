@@ -10,5 +10,5 @@ const userService  = new UserService(packageRepository);
 const controller =  new UserController(userService);
 
 userRouter.get('/packages',(req,res,next)=>controller.getAllPackages(req,res,next))
-
+userRouter.get('/product',(req,res,next)=>controller.getProductById(req,res,next))
 export default userRouter;

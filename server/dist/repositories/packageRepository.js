@@ -16,10 +16,12 @@ class PackageRepository extends baseRepository_1.BaseRepository {
     constructor() {
         super(packageModel_1.Package);
     }
-    findAllPackages() {
+    findAllPackages(page) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield packageModel_1.Package.find({ isActive: true });
+                const res = yield packageModel_1.Package.aggregate([{ $facet: { packages: [{ $match: {} }, { $skip: (parseInt(page) - 1) * 20 }, { $limit: 20 }, { $sort: { _id: -1 } }], packageCount: [{ $group: { _id: null, count: { $sum: 1 } } }] } }]);
+                console.log(res);
+                return res;
             }
             catch (error) {
                 throw error;

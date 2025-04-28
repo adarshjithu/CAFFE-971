@@ -14,10 +14,10 @@ class UserService {
     constructor(packageRepository) {
         this.packageRepository = packageRepository;
     }
-    getAllPackages() {
+    getAllPackages(page) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield this.packageRepository.findAllPackages();
+                return yield this.packageRepository.findAllPackages(page);
             }
             catch (error) {
                 throw error;

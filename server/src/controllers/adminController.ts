@@ -395,7 +395,7 @@ export class AdminController {
         try {
             if (Object.values(req.body).length == 0 || req?.files?.length == 0) throw new EmptyRequestBodyError();
             const result = await this.adminService.createAddOn(req.body, req.files);
-            res.status(OK).json({ success: true, message: "New addon successfully added", data: result });
+            res.status(OK).json({ success: true, message: "New addon product successfully added", data: result });
         } catch (error) {
             next(error);
         }
@@ -406,7 +406,7 @@ export class AdminController {
     async updateAddOn(req: Request, res: Response, next: NextFunction) {
         try {
             const result = await this.adminService.updateAddon(req.query.addonId as string, req.body, req.files);
-            res.status(OK).json({ success: true, message: "New addon successfully updated", data: result });
+            res.status(OK).json({ success: true, message: " Successfully updated", data: result });
         } catch (error) {
             next(error);
         }
@@ -418,7 +418,7 @@ export class AdminController {
         try {
             if(!req.query.addonId) throw new EmptyRequestBodyError()
             const result = await this.adminService.deleteAddOn(req.query.addonId as string);
-            res.status(OK).json({ success: true, message: "New addon successfully removed", data: result });
+            res.status(OK).json({ success: true, message: "Addon product successfully removed", data: result });
         } catch (error) {
             next(error);
         }
@@ -431,6 +431,18 @@ export class AdminController {
         
             const result = await this.adminService.getAllAddons();
             res.status(OK).json({ success: true, message: "", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
+    // @desc   Change addon status
+    // @route  PATCH admin/addon
+    // @access Admin
+    async addOnChangeStatus(req: Request, res: Response, next: NextFunction) {
+        try {
+            
+            const result = await this.adminService.changeAddonStatus(req?.query.addonId as string);
+            res.status(OK).json({ success: true, message: "Addon product status successfully updated", data: result });
         } catch (error) {
             next(error);
         }

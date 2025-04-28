@@ -507,5 +507,15 @@ class AdminService {
             }
         });
     }
+    changeAddonStatus(addonId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.adminRepository.addOnChangeStatus(addonId);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
 }
 exports.AdminService = AdminService;

@@ -66,7 +66,7 @@ const AddPackageModal: React.FC<AddPackageModalProps> = ({ setIsOpen }) => {
             const res = await createPackage(form);
             dispatch(createPackageAction(res?.data?.data))
             toast.success(res?.data?.message);
-            setIsOpen(false);
+            // setIsOpen(false);
         } catch (error) {
             toast.error(error as string);
         } finally {

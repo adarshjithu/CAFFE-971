@@ -7,9 +7,11 @@ export class PackageRepository extends BaseRepository{
         super(Package)
     }
 
-   async findAllPackages():Promise<IPackage[]|null>{
+   async findAllPackages(page:string):Promise<any|null>{
            try{
-              return await Package.find({isActive:true})
+              const res =  await Package.aggregate([{$facet:{packages:[{$match:{}},{$skip:(parseInt(page)-1)*20},{$limit:20},{$sort:{_id:-1}}],packageCount:[{$group:{_id:null,count:{$sum:1}}}]}}])
+              console.log(res);
+              return res;
            }catch(error){
             throw error;
            }

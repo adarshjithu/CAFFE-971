@@ -571,5 +571,21 @@ class AdminRepository extends baseRepository_1.BaseRepository {
             }
         });
     }
+    addOnChangeStatus(addonId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield addonModel_1.default.findByIdAndUpdate({ _id: addonId }, [
+                    {
+                        $set: {
+                            isActive: { $not: "$isActive" },
+                        },
+                    },
+                ], { new: true });
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
 }
 exports.AdminRepository = AdminRepository;

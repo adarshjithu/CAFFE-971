@@ -7,7 +7,7 @@ const ProductCard = ({ data, title = "Deluxe Dinner Buffet" }: any) => {
 
   return (
     <div
-      onClick={() => navigate("/product")}
+      onClick={() => navigate(`/product/${data?._id}`)}
       className="cursor-pointer w-full sm:max-w-[280px] bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden"
     >
       {/* Image Section */}

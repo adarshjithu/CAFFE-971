@@ -339,3 +339,11 @@ export const getAllAddOnes = async () => {
         return erroHandler(error);
     }
 };
+export const addonChangeStatus = async (addonId:string) => {
+    try {
+        const response = await baseUrl.patch(`/admin/addon?addonId=${addonId}`);
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};

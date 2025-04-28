@@ -395,4 +395,11 @@ export class AdminService {
             throw error;
         }
     }
+    async changeAddonStatus(addonId:string): Promise<IAddOn | null> {
+        try {
+          return await this.adminRepository.addOnChangeStatus(addonId)
+        } catch (error) {
+            throw error;
+        }
+    }
 }

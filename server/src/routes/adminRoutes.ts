@@ -61,4 +61,5 @@ adminRouter.post('/addon',upload.any(),(req,res,next)=>controller.createAddOn(re
 adminRouter.put('/addon',upload.any(),(req,res,next)=>controller.updateAddOn(req,res,next))
 adminRouter.delete('/addon',(req,res,next)=>controller.deleteAddOn(req,res,next))
 adminRouter.get('/addons',(req,res,next)=>controller.getAllAddons(req,res,next))
+adminRouter.patch('/addon',(req,res,next)=>controller.addOnChangeStatus(req,res,next))
 export default adminRouter;

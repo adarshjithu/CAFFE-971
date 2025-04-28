@@ -57,4 +57,5 @@ adminRouter.post('/addon', upload_1.default.any(), (req, res, next) => controlle
 adminRouter.put('/addon', upload_1.default.any(), (req, res, next) => controller.updateAddOn(req, res, next));
 adminRouter.delete('/addon', (req, res, next) => controller.deleteAddOn(req, res, next));
 adminRouter.get('/addons', (req, res, next) => controller.getAllAddons(req, res, next));
+adminRouter.patch('/addon', (req, res, next) => controller.addOnChangeStatus(req, res, next));
 exports.default = adminRouter;

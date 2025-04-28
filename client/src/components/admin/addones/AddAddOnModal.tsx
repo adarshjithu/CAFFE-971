@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { createAddOn } from "../../../services/adminService";
 import { useDispatch } from "react-redux";
 import {  createaddonAction } from "../../../features/admin/addOnSlice";
+import ButtonLoading from "../../loading/ButtonLoading";
 
 interface AddAddOnModalProps {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,8 +14,9 @@ const AddAddOnModal: React.FC<AddAddOnModalProps> = ({ setIsOpen }) => {
     const [previewUrl, setPreviewUrl] = useState<string>("");
     const [image, setImage] = useState<File | null>(null);
     const [name, setName] = useState<string>("");
-    const [price, setPrice] = useState<number>(0);
+    const [price, setPrice] = useState<number>();
     const dispatch = useDispatch();
+    const [loading,setLoading] = useState(false)
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -38,13 +40,16 @@ const AddAddOnModal: React.FC<AddAddOnModalProps> = ({ setIsOpen }) => {
         formData.append("image", image);
 
         try {
+            setLoading(true)
             const res = await createAddOn(formData);
             const newAddOn = res?.data?.data;
             console.log(newAddOn)
             dispatch(createaddonAction(newAddOn));
             toast.success("Add-on created successfully!");
             setIsOpen(false);
+            setLoading(false)
         } catch (error) {
+            setLoading(false)
             toast.error((error as any)?.response?.data?.message || "Something went wrong");
         }
     };
@@ -110,7 +115,7 @@ const AddAddOnModal: React.FC<AddAddOnModalProps> = ({ setIsOpen }) => {
                             type="submit"
                             className="w-full rounded-md bg-[#4B164C] px-4 py-2 text-white text-sm font-medium hover:bg-[#3a123c] transition"
                         >
-                            Submit
+                           {loading?<ButtonLoading/>: 'Submit'}
                         </button>
                     </div>
                 </form>

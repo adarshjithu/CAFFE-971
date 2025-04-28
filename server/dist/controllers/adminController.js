@@ -531,7 +531,7 @@ class AdminController {
                 if (Object.values(req.body).length == 0 || ((_a = req === null || req === void 0 ? void 0 : req.files) === null || _a === void 0 ? void 0 : _a.length) == 0)
                     throw new customErrors_1.EmptyRequestBodyError();
                 const result = yield this.adminService.createAddOn(req.body, req.files);
-                res.status(OK).json({ success: true, message: "New addon successfully added", data: result });
+                res.status(OK).json({ success: true, message: "New addon product successfully added", data: result });
             }
             catch (error) {
                 next(error);
@@ -545,7 +545,7 @@ class AdminController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const result = yield this.adminService.updateAddon(req.query.addonId, req.body, req.files);
-                res.status(OK).json({ success: true, message: "New addon successfully updated", data: result });
+                res.status(OK).json({ success: true, message: " Successfully updated", data: result });
             }
             catch (error) {
                 next(error);
@@ -561,7 +561,7 @@ class AdminController {
                 if (!req.query.addonId)
                     throw new customErrors_1.EmptyRequestBodyError();
                 const result = yield this.adminService.deleteAddOn(req.query.addonId);
-                res.status(OK).json({ success: true, message: "New addon successfully removed", data: result });
+                res.status(OK).json({ success: true, message: "Addon product successfully removed", data: result });
             }
             catch (error) {
                 next(error);
@@ -576,6 +576,20 @@ class AdminController {
             try {
                 const result = yield this.adminService.getAllAddons();
                 res.status(OK).json({ success: true, message: "", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   Change addon status
+    // @route  PATCH admin/addon
+    // @access Admin
+    addOnChangeStatus(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield this.adminService.changeAddonStatus(req === null || req === void 0 ? void 0 : req.query.addonId);
+                res.status(OK).json({ success: true, message: "Addon product status successfully updated", data: result });
             }
             catch (error) {
                 next(error);
