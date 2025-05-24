@@ -13,7 +13,17 @@ const Header = () => {
         <h1 className="text-xl font-bold text-gray-800">CAFEE 971</h1>
       </div>
 
-   
+      {/* Search Box */}
+      <div className="flex items-center flex-1 justify-center px-6">
+        <div className="relative w-full max-w-md">
+          <input
+            type="text"
+            placeholder="Search..."
+            className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#BD9455] focus:border-transparent"
+          />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+        </div>
+      </div>
 
       {/* Notification Button */}
       <div className="flex">

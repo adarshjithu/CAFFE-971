@@ -17,6 +17,8 @@ import AboutUs from "./pages/User/AboutUs";
 import UserLayout from "./layout/UserLayout";
 import Banner from "./pages/Admin/Banner";
 import AddOnes from "./pages/Admin/AddOnes";
+import FoodPackagesScreen from "./pages/User/Packages";
+import Intro from "./pages/User/Intro";
 
 // Lazy loaded admin pages
 const Categories = lazy(() => import("./pages/Admin/Categories"));
@@ -102,13 +104,16 @@ export default function App() {
 
         {/* User Layout */}
         <Route path="/" element={<UserLayout />}>
-          <Route index element={<Home />} />
+          <Route index element={<Intro/>} />
           <Route path="address" element={<Address />} />
+          <Route path="home" element={<Home/>} />
           <Route path="product/:id" element={<ProductDetails />} />
           <Route path="fill-details" element={<FillDetails />} />
           <Route path="event-details" element={<EventDetails />} />
           <Route path="account-details" element={<AccountDetails />} />
           <Route path="my-profile" element={<Profile />} />
+          <Route path="packages" element={<FoodPackagesScreen />} />
+           
           <Route path="about-us" element={<AboutUs />} />
         </Route>
 

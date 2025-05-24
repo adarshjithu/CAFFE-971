@@ -46,6 +46,9 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({ isOpen, setIsOpen }
             if (res?.data?.success) toast.success(res?.data?.message);
             setIsOpen(false);
             setLoading(false);
+            setPreviewURL(null);
+            setName('');
+            setImage(null)
         } catch (error) {
             toast.error(error as string);
         }
