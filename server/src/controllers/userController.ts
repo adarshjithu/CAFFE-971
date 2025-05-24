@@ -21,9 +21,9 @@ export class UserController {
     // @access User
     async getProductById(req: Request, res: Response, next: NextFunction) {
         try {
-            console.log(req.query)
-            // const result = await this.userService.getAllPackages(req.query.page as string);
-            // res.status(OK).json({ success: true, message: "", data: result });
+           
+            const result = await this.userService.getProductsByPackageId(req?.query?.packageId as string);
+            res.status(OK).json({ success: true, message: "", data: result });
         } catch (error) {
             next(error);
         }

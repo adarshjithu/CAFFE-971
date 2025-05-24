@@ -1,9 +1,15 @@
-import { Outlet } from "react-router-dom"; // Changed import from "react-router" to "react-router-dom"
+import ResponsiveMenu from "./AppSidebar";
 
-const UserLayout = () => {
+const UserLayout = ({ children }: any) => {
     return (
-        <div className="flex flex-col md:flex-row h-screen w-full">
-            <Outlet />
+        <div
+            className="w-screen h-[100%] p-6 lg:p-16"
+            style={{
+                background: "linear-gradient(90deg, #004430, #04845E, #004430)",
+            }}
+        >
+            <ResponsiveMenu />
+            {children}
         </div>
     );
 };

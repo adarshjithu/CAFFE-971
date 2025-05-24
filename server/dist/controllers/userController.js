@@ -35,10 +35,10 @@ class UserController {
     // @access User
     getProductById(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             try {
-                console.log(req.query);
-                // const result = await this.userService.getAllPackages(req.query.page as string);
-                // res.status(OK).json({ success: true, message: "", data: result });
+                const result = yield this.userService.getProductsByPackageId((_a = req === null || req === void 0 ? void 0 : req.query) === null || _a === void 0 ? void 0 : _a.packageId);
+                res.status(OK).json({ success: true, message: "", data: result });
             }
             catch (error) {
                 next(error);

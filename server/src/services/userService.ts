@@ -13,4 +13,11 @@ export class UserService {
             throw error;
          }
     }
+    async getProductsByPackageId(packageId:string):Promise<any|null>{
+         try{
+          return  await  this.packageRepository.findPackageById(packageId);
+         }catch(error){
+            throw error;
+         }
+    }
 }

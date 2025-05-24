@@ -91,6 +91,10 @@ export class AdminRepository extends BaseRepository {
         }
     }
     async findProducts(filter: any): Promise<any | null> {
+        //  const res = await Product?.find().populate('category')
+
+        //  return {products:res,count:res?.length}
+      
         const { type, isActive, search, categoryName, page } = filter;
         const matchStage: any = {};
 
@@ -139,7 +143,7 @@ export class AdminRepository extends BaseRepository {
 
         const products = await Product.aggregate(pipeline);
         const allProductCount = await Product?.aggregate([{ $group: { _id: null, count: { $sum: 1 } } }]);
-
+        console.log(products)
         return { products: products, count: allProductCount[0]?.count };
     }
 

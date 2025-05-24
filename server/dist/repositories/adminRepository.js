@@ -115,7 +115,9 @@ class AdminRepository extends baseRepository_1.BaseRepository {
     }
     findProducts(filter) {
         return __awaiter(this, void 0, void 0, function* () {
+            //  const res = await Product?.find().populate('category')
             var _a;
+            //  return {products:res,count:res?.length}
             const { type, isActive, search, categoryName, page } = filter;
             const matchStage = {};
             // Basic filters
@@ -156,6 +158,7 @@ class AdminRepository extends baseRepository_1.BaseRepository {
             pipeline.push({ $limit: 10 });
             const products = yield productModel_1.Product.aggregate(pipeline);
             const allProductCount = yield (productModel_1.Product === null || productModel_1.Product === void 0 ? void 0 : productModel_1.Product.aggregate([{ $group: { _id: null, count: { $sum: 1 } } }]));
+            console.log(products);
             return { products: products, count: (_a = allProductCount[0]) === null || _a === void 0 ? void 0 : _a.count };
         });
     }
