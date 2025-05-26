@@ -3,14 +3,15 @@ import SearchBar from "../../components/user/Home/Search";
 import NotificationComponent from "../../components/user/Notification/NotificationComponent";
 import ProfileComponent from "../../components/user/Profile/ProfileComponent";
 import { PackageCard } from "../../components/user/Packages/PackageCard";
-import MostRatedProductCard from "../../components/user/Packages/MostRatedProductCard";
+import { MostRatedProductCard } from "../../components/user/Packages/MostRatedProductCard";
+
 
 const cardData = [
-    { id: 1, title: "Deluxe Package", price: "$120 / plate" },
-    { id: 2, title: "Premium Package", price: "$150 / plate" },
-    { id: 3, title: "Standard Package", price: "$100 / plate" },
-    { id: 4, title: "Family Package", price: "$130 / plate" },
-    { id: 5, title: "Budget Package", price: "$90 / plate" },
+    { id: 1, title: "Deluxe Package", price: "100 AED" },
+    { id: 2, title: "Premium ", price: "100 AED" },
+    { id: 3, title: "Standard Package", price: "100 AED" },
+    { id: 4, title: "Family Package", price: "100 AED" },
+    { id: 5, title: "Budget Package", price: "100 AED" },
 ];
 
 function Home() {
@@ -45,9 +46,12 @@ function Home() {
                         <PackageCard key={card.id} title={card.title} price={card.price} />
                     ))}
                 </div>
+                <div className="w-full flex justify-between items-center">
 
-                <h1 className="text-[26px] text-white mt-8">Most Rated</h1>
-                <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-4 gap-6">
+                <h1 className="text-[26px] text-white mt-8 mb-8">Most Rated</h1>
+                 <h2 className="mr-2 text-[#b38c50] cursor-pointer">See more</h2>
+                </div>
+                <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-12">
                     {[1,1,2,2,3].map((obj:any)=>{
                         return (
 

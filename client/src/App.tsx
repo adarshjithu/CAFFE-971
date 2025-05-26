@@ -12,6 +12,7 @@ import UserLayout from "./layout/UserLayout";
 import Banner from "./pages/Admin/Banner";
 import AddOnes from "./pages/Admin/AddOnes";
 import Intro from "./pages/User/Intro";
+import PackageExplore from "./pages/User/PackageExplore";
 
 // Lazy loaded admin pages
 const Categories = lazy(() => import("./pages/Admin/Categories"));
@@ -102,6 +103,14 @@ export default function App() {
                     element={
                         <UserLayout>
                             <Home />
+                        </UserLayout>
+                    }
+                />
+                <Route
+                    path="/package"
+                    element={
+                        <UserLayout>
+                            <PackageExplore />
                         </UserLayout>
                     }
                 />
