@@ -7,16 +7,19 @@ import ButtonLoading from "../../loading/ButtonLoading";
 
 function EditPackageModal({ packageData, setEditPackageModal }: any) {
     const dispatch = useDispatch()
-    const [loading,setLoading] = useState(false)
+    const [loading,setLoading] = useState(false);
+    const [isChanged,setIsChanged] = useState(false)
     const [formData, setFormData] = useState({
         name: "",
         description: "",
         price: "",
         minQuantity: "",
         maxQuantity: "",
+        foodType:""
     });
 
     useEffect(() => {
+        setIsChanged(false)
         if (packageData) {
             setFormData({
                 name: packageData.name || "",
@@ -24,16 +27,22 @@ function EditPackageModal({ packageData, setEditPackageModal }: any) {
                 price: packageData.price || "",
                 minQuantity: packageData.minQuantity || "",
                 maxQuantity: packageData.maxQuantity || "",
+                foodType:packageData?.foodType||''
             });
         }
     }, [packageData]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+        setIsChanged(true)
     };
 
     const handleSubmit = async () => {
         try {
+            if(!isChanged){
+                toast.error("No changes made")
+                return 
+            }
             setLoading(true)
             const res = await editPackage(packageData?._id, formData);
              dispatch(updatePackageAction(res?.data?.data))
@@ -45,6 +54,12 @@ function EditPackageModal({ packageData, setEditPackageModal }: any) {
             toast.error(error as string);
         }
     };
+
+
+    const handleProductTypeChange = (e:any)=>{
+        setIsChanged(true)
+        setFormData({...formData,foodType:e.target.value})
+    }
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">
@@ -106,6 +121,45 @@ function EditPackageModal({ packageData, setEditPackageModal }: any) {
                         </div>
                     </div>
                 </div>
+                <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Type</label>
+                        <div className="flex gap-4">
+                            <label className="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
+                                <input
+                                    name="foodType"
+                                    checked={formData?.foodType == "nonVeg"}
+                                    type="checkbox"
+                                    onChange={handleProductTypeChange}
+                                    value="nonVeg"
+                                    className="form-checkbox h-4 w-4 text-red-600 dark:bg-gray-800 dark:border-gray-600"
+                                />
+                                <span>Non Veg</span>
+                            </label>
+                            <label className="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
+                                <input
+                                    type="checkbox"
+                                    name="foodType"
+                                    checked={formData?.foodType == "pureVeg"}
+                                    onChange={handleProductTypeChange}
+                                    value="pureVeg"
+                                    className="form-checkbox h-4 w-4 text-green-600 dark:bg-gray-800 dark:border-gray-600"
+                                />
+                                <span>Pure Veg</span>
+                            </label>
+
+                            <label className="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
+                                <input
+                                    name="foodType"
+                                    checked={formData?.foodType == "mixed"}
+                                    type="checkbox"
+                                    onChange={handleProductTypeChange}
+                                    value="mixed"
+                                    className="form-checkbox h-4 w-4 text-red-600 dark:bg-gray-800 dark:border-gray-600"
+                                />
+                                <span>Mixed</span>
+                            </label>
+                        </div>
+                    </div>
 
                 {/* Footer Buttons */}
                 <div className="mt-6 flex justify-end space-x-3">

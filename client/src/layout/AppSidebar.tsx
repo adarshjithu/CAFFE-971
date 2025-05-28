@@ -1,16 +1,20 @@
 import { Home, PackageSearch, LayoutGrid, Utensils, ShoppingCart } from "lucide-react";
 import { useState } from "react";
+import { useLocation, useNavigate } from "react-router";
 
 const menuItems = [
-    { icon: Home, label: "Home" },
-    { icon: PackageSearch, label: "Package" },
-    { icon: LayoutGrid, label: "Seating" },
-    { icon: Utensils, label: "Live Food" },
-    { icon: ShoppingCart, label: "View Cart" },
+    { icon: Home, label: "Home",link:'home' },
+    { icon: PackageSearch, label: "Package" ,link:'package'},
+    { icon: LayoutGrid, label: "Seating",link:'seating' },
+    { icon: Utensils, label: "Live Food",link:'live-food' },
+    { icon: ShoppingCart, label: "View Cart",link:'cart' },
 ];
 
 function ResponsiveMenu() {
     const [activeIndex, setActiveIndex] = useState(0);
+
+    const endpoint = useLocation();
+    const navigate = useNavigate()
 
     return (
         <>
@@ -21,7 +25,7 @@ function ResponsiveMenu() {
                     const isActive = idx === activeIndex;
 
                     return (
-                        <div key={idx} onClick={() => setActiveIndex(idx)} className="flex flex-col items-center cursor-pointer group">
+                        <div key={idx} onClick={() => {setActiveIndex(idx);navigate(`/${item?.link}`)}} className="flex flex-col items-center cursor-pointer group">
                             <div
                                 className={`p-1.5 transition-all duration-200 ${
                                     isActive ? "bg-[#04845E] text-white" : "group-hover:bg-[#04845E] group-hover:text-white"
@@ -42,14 +46,14 @@ function ResponsiveMenu() {
             </div>
 
             {/* Mobile Bottom Bar */}
-            <div className="lg:hidden fixed bottom-0 left-0 right-0 mx-6 z-50">
+            {endpoint.pathname!=='/package'&&<div className="lg:hidden fixed bottom-0 left-0 right-0 mx-6 z-50">
                 <div className="bg-white flex justify-around items-center py-2 px-1 shadow text-black rounded-t-xl">
                     {menuItems.map((item, idx) => {
                         const Icon = item.icon;
                         const isActive = idx === activeIndex;
 
                         return (
-                            <div key={idx} onClick={() => setActiveIndex(idx)} className="flex flex-col items-center cursor-pointer group">
+                            <div key={idx} onClick={() => {setActiveIndex(idx);navigate(`/${item?.link}`)}} className="flex flex-col items-center cursor-pointer group">
                                 <div
                                     className={`p-1.5 transition-all duration-200 ${
                                         isActive ? "bg-[#04845E] text-white" : "group-hover:bg-[#04845E] group-hover:text-white"
@@ -68,7 +72,7 @@ function ResponsiveMenu() {
                         );
                     })}
                 </div>
-            </div>
+            </div>}
         </>
     );
 }

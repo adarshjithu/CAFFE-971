@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import categoryReducer from "../features/admin/categorySlice";
 import productReducer from "../features/admin/productSlice";
 import packageReducer from '../features/admin/packageSlice'
-import productPackageReducer from  '../features/user/packageSlice'
+
 import chairReducer from '../features/admin/chairSlice'
 import tableReducer from '../features/admin/tableSlice'
 import foodStationReducer from '../features/admin/foodStationSlice'
@@ -25,10 +25,12 @@ export const store = configureStore({
         category: categoryReducer,
         product: productReducer,
         package:packageReducer,
-        productPackages:productPackageReducer,
         chair:chairReducer,
         table:tableReducer,
         foodStation:foodStationReducer,
-        addons:addonReducer
+        addons:addonReducer,
+
+
+     
     },
 });

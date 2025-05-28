@@ -10,12 +10,15 @@ export class PackageRepository extends BaseRepository {
         super(Package);
     }
 
-    async findAllPackages(page: string): Promise<any | null> {
+    async findAllPackages(page: string, search: string): Promise<any | null> {
         try {
+            const matchStage = search
+                ? { name: { $regex: search, $options: "i" } } // Case-insensitive name search
+                : {};
             const res = await Package.aggregate([
                 {
                     $facet: {
-                        packages: [{ $match: {} }, { $skip: (parseInt(page) - 1) * 20 }, { $limit: 20 }, { $sort: { _id: -1 } }],
+                        packages: [{ $match: matchStage },  { $limit: 10*parseInt(page) }, { $sort: { _id: -1 } }],
                         packageCount: [{ $group: { _id: null, count: { $sum: 1 } } }],
                     },
                 },
@@ -26,15 +29,30 @@ export class PackageRepository extends BaseRepository {
             throw error;
         }
     }
-    async findPackageById(packageId: string): Promise<any | null> {
+    async findPackageById(packageId: string,category:string): Promise<any | null> {
         try {
-            const packageData = await Package.findById(packageId);
-            const mainProducts = packageData?.products.get("Mains");
-            const products = await Product?.find({ _id: { $in: mainProducts } });
-            const categoryData = [...packageData?.products.keys()];
-            const categories = await Category.find({ name: { $in: categoryData } });
+          
+            const packageData = await Package.findOne({_id:packageId});
+            const products = packageData?.products;
+             const categories = products.get(category);
+            const productData = await Product.find({_id:{$in:categories}})
+            return {products:productData,package:packageData};
 
-            return { products: products, categories: categories };
+            
+        } catch (error) {
+            throw error;
+        }
+    }
+    async findProductsByPackageId(packageId: string,category:string): Promise<any | null> {
+        try {
+          
+            const packageData = await Package.findOne({_id:packageId});
+            const products = packageData?.products;
+             const categories = products.get(category);
+            const productData = await Product.find({_id:{$in:categories}})
+            return {products:productData};
+
+            
         } catch (error) {
             throw error;
         }

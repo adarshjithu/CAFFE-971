@@ -14,20 +14,30 @@ class UserService {
     constructor(packageRepository) {
         this.packageRepository = packageRepository;
     }
-    getAllPackages(page) {
+    getAllPackages(page, search) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield this.packageRepository.findAllPackages(page);
+                return yield this.packageRepository.findAllPackages(page, search);
             }
             catch (error) {
                 throw error;
             }
         });
     }
-    getProductsByPackageId(packageId) {
+    getPackagesById(packageId, category) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield this.packageRepository.findPackageById(packageId);
+                return yield this.packageRepository.findPackageById(packageId, category);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    getProductsByPackageId(packageId, category) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.packageRepository.findProductsByPackageId(packageId, category);
             }
             catch (error) {
                 throw error;

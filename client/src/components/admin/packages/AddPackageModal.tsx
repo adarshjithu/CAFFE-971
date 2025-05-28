@@ -7,7 +7,7 @@ import { IProduct } from "../../../interface/IProduct";
 import AddProductInCategoryModal from "./AddProductInCategoryModal";
 import { useDispatch } from "react-redux";
 import { createPackageAction } from "../../../features/admin/packageSlice";
-
+import schema from "../../../validations/admin/AddpackageValidation";
 
 interface AddPackageModalProps {
     isOpen: boolean;
@@ -21,14 +21,16 @@ const AddPackageModal: React.FC<AddPackageModalProps> = ({ setIsOpen }) => {
     const [categories, setCategories] = useState<any>({});
     const dispatch = useDispatch();
     const [addProductModal, setAddProductModal] = useState(false);
+    const [error, setError] = useState({ name: "", description: "", price: "" });
     const [formData, setFormData] = useState<any>({
         name: "",
         description: "",
         price: "",
         image: "",
         products: {},
-        minQuantity:10,
-        maxQuantity:1500
+        minQuantity: 10,
+        maxQuantity: 1500,
+        foodType: "nonVeg",
     });
     const [imageFile, setImageFile] = useState<any>(null);
     const [products, setProducts] = useState<any[]>([]);
@@ -48,7 +50,6 @@ const AddPackageModal: React.FC<AddPackageModalProps> = ({ setIsOpen }) => {
 
         try {
             const products: any = {};
-
             for (let i in categories) {
                 products[i] = categories[i]?.map((obj: any) => obj?._id);
             }
@@ -59,21 +60,34 @@ const AddPackageModal: React.FC<AddPackageModalProps> = ({ setIsOpen }) => {
             form?.append("image", imageFile);
             form?.append("price", formData?.price);
             form?.append("products", JSON.stringify(products));
-            form?.append("minQuantity",formData?.minQuantity)
-            form?.append("maxQuantity",formData?.maxQuantity)
-            
+            form?.append("minQuantity", formData?.minQuantity);
+            form?.append("maxQuantity", formData?.maxQuantity);
+            form?.append("foodType",formData?.foodType)
+
+            await schema.validate({ name: formData?.name, description: formData?.description, price: formData?.price }, { abortEarly: false });
 
             const res = await createPackage(form);
-            dispatch(createPackageAction(res?.data?.data))
+            
+            dispatch(createPackageAction(res?.data?.data));
             toast.success(res?.data?.message);
             // setIsOpen(false);
-        } catch (error) {
-            toast.error(error as string);
+        } catch (err: any) {
+            const validationErrors: any = {};
+            if (err.inner) {
+                err.inner.forEach((error: any) => {
+                    validationErrors[error.path] = error.message;
+                });
+            }
+
+            setError(validationErrors);
         } finally {
             setLoading(false);
         }
     };
 
+    const handleProductTypeChange = (e: any) => {
+        setFormData({ ...formData, foodType: e.target.value });
+    };
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -88,7 +102,6 @@ const AddPackageModal: React.FC<AddPackageModalProps> = ({ setIsOpen }) => {
                 setCategoryNames(res?.data?.data?.category);
                 setSelectedTab(res?.data?.data?.category[0]);
                 setProducts(res?.data?.data?.products);
-              
             } catch (error) {
                 toast.error(error instanceof Error ? error.message : "Failed to load products");
             }
@@ -134,8 +147,8 @@ const AddPackageModal: React.FC<AddPackageModalProps> = ({ setIsOpen }) => {
                                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                                 placeholder="Enter package name"
                                 value={formData.name}
-                                required
                             />
+                            {error?.name && <span className="text-[red]">{error.name}</span>}
                         </div>
 
                         <div>
@@ -147,8 +160,8 @@ const AddPackageModal: React.FC<AddPackageModalProps> = ({ setIsOpen }) => {
                                 placeholder="Enter package price"
                                 value={formData.price}
                                 onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
-                                required
                             />
+                            {error?.price && <span className="text-[red]">{error.price}</span>}
                         </div>
                     </div>
 
@@ -162,6 +175,7 @@ const AddPackageModal: React.FC<AddPackageModalProps> = ({ setIsOpen }) => {
                             rows={3}
                             onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
                         />
+                        {error?.description && <span className="text-[red]">{error.description}</span>}
                     </div>
                     {/* Purchase Quantity */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -170,27 +184,64 @@ const AddPackageModal: React.FC<AddPackageModalProps> = ({ setIsOpen }) => {
                             <input
                                 type="number"
                                 name="min"
-                                onChange={(e)=>setFormData({...formData,maxQuantity:e.target.value})}
-                                 value={formData?.maxQuantity}
+                                onChange={(e) => setFormData({ ...formData, maxQuantity: e.target.value })}
+                                value={formData?.minQuantity}
                                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                                 placeholder="Enter minimum quantity"
-                                
                             />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Max Quantity*</label>
                             <input
                                 type="number"
-                                 onChange={(e)=>setFormData({...formData,minQuantity:e.target.value})}
+                                onChange={(e) => setFormData({ ...formData, minQuantity: e.target.value })}
                                 name="max"
-                               value={formData?.minQuantity}
+                                value={formData?.maxQuantity}
                                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                                 placeholder="Enter maximum quantity"
-                                
                             />
                         </div>
                     </div>
 
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Type</label>
+                        <div className="flex gap-4">
+                            <label className="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
+                                <input
+                                    name="foodType"
+                                    checked={formData?.foodType == "nonVeg"}
+                                    type="checkbox"
+                                    onChange={handleProductTypeChange}
+                                    value="nonVeg"
+                                    className="form-checkbox h-4 w-4 text-red-600 dark:bg-gray-800 dark:border-gray-600"
+                                />
+                                <span>Non Veg</span>
+                            </label>
+                            <label className="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
+                                <input
+                                    type="checkbox"
+                                    name="foodType"
+                                    checked={formData?.foodType == "pureVeg"}
+                                    onChange={handleProductTypeChange}
+                                    value="pureVeg"
+                                    className="form-checkbox h-4 w-4 text-green-600 dark:bg-gray-800 dark:border-gray-600"
+                                />
+                                <span>Pure Veg</span>
+                            </label>
+
+                            <label className="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
+                                <input
+                                    name="foodType"
+                                    checked={formData?.foodType == "mixed"}
+                                    type="checkbox"
+                                    onChange={handleProductTypeChange}
+                                    value="mixed"
+                                    className="form-checkbox h-4 w-4 text-red-600 dark:bg-gray-800 dark:border-gray-600"
+                                />
+                                <span>Mixed</span>
+                            </label>
+                        </div>
+                    </div>
                     {/* Image input */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Package Image*</label>
@@ -199,7 +250,6 @@ const AddPackageModal: React.FC<AddPackageModalProps> = ({ setIsOpen }) => {
                             accept="image/*"
                             onChange={handleImageChange}
                             className="block w-full text-sm text-gray-500 file:mr-4 file:rounded-md file:border-0 file:bg-[#4B164C] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-[#3a123c] dark:file:bg-[#4B164C]/90 dark:hover:file:bg-[#3a123c]/90"
-                            required
                         />
                     </div>
 

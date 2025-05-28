@@ -12,9 +12,10 @@ const cateringPackageSchema = new Schema<IPackage>(
             of: [{ type: mongoose.Types.ObjectId, ref: "Product" }],
             default: {},
         },
-        isActive:{type:Boolean,default:true},
-        minQuantity:{type:Number},
-        maxQuantity:{type:Number}
+        isActive: { type: Boolean, default: true },
+        minQuantity: { type: Number },
+        maxQuantity: { type: Number },
+        foodType: { type: String, enum: ["pureVeg", "nonVeg","mixed"], required: true },
     },
 
     { timestamps: true }

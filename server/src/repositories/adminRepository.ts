@@ -219,10 +219,11 @@ export class AdminRepository extends BaseRepository {
 
     async createPackage(packages: any): Promise<any | null> {
         try {
+            console.log(packages)
             const newPackage = new Package(packages);
             await newPackage.save();
             return newPackage;
-        } catch (error) {
+        } catch (error) { 
             throw error;
         }
     }

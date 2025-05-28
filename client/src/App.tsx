@@ -107,7 +107,7 @@ export default function App() {
                     }
                 />
                 <Route
-                    path="/package"
+                    path="/package/:id"
                     element={
                         <UserLayout>
                             <PackageExplore />

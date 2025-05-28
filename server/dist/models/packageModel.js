@@ -37,6 +37,7 @@ const cateringPackageSchema = new mongoose_1.Schema({
     },
     isActive: { type: Boolean, default: true },
     minQuantity: { type: Number },
-    maxQuantity: { type: Number }
+    maxQuantity: { type: Number },
+    foodType: { type: String, enum: ["pureVeg", "nonVeg", "mixed"], required: true },
 }, { timestamps: true });
 exports.Package = mongoose_1.default.model("Package", cateringPackageSchema);

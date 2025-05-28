@@ -1,4 +1,8 @@
 import { Document, ObjectId } from "mongoose";
+export enum FoodType {
+  PURE_VEG = 'pureVeg',
+  NON_VEG = 'nonVeg',
+}
 
 
 export interface IPackage extends Document{
@@ -10,4 +14,5 @@ export interface IPackage extends Document{
    isActive:boolean;
    minQuantity:number;
    maxQuantity:number;
+   foodType:FoodType
 }

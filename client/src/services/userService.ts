@@ -2,17 +2,25 @@
 import { baseUrl, erroHandler } from "../api/baseUrl";
 
 
-export const getAllPackages = async (page:any) => {
+export const getAllPackages = async (page:any,search:string) => {
     try {
-        const response = await baseUrl.get(`/packages?page=${page}`);
+        const response = await baseUrl.get(`/packages?page=${page}&search=${search}`);
         return response;
     } catch (error) {
         return erroHandler(error);
     }
 };
-export const getProductById = async (proId:string) => {
+export const getPackageById = async (proId:string,category:string) => {
     try {
-        const response = await baseUrl.get(`/product?packageId=${proId}`);
+        const response = await baseUrl.get(`/package?packageId=${proId}&category=${category}`);
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
+export const findProductsByPackageId = async (proId:string,category:string) => {
+    try {
+        const response = await baseUrl.get(`/package/products?packageId=${proId}&category=${category}`);
         return response;
     } catch (error) {
         return erroHandler(error);

@@ -246,6 +246,7 @@ class AdminRepository extends baseRepository_1.BaseRepository {
     createPackage(packages) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                console.log(packages);
                 const newPackage = new packageModel_1.Package(packages);
                 yield newPackage.save();
                 return newPackage;

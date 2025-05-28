@@ -8,6 +8,7 @@ export interface IPackage {
    image:string;
    products:any
    _id:any;
+   foodType:string
    createdAt:Date;
    updatedAt:Date
 }
