@@ -8,11 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PackageRepository = void 0;
 const packageModel_1 = require("../models/packageModel");
 const baseRepository_1 = require("./baseRepository");
 const productModel_1 = require("../models/productModel");
+const addonModel_1 = __importDefault(require("../models/addonModel"));
 class PackageRepository extends baseRepository_1.BaseRepository {
     constructor() {
         super(packageModel_1.Package);
@@ -60,6 +64,16 @@ class PackageRepository extends baseRepository_1.BaseRepository {
                 const categories = products.get(category);
                 const productData = yield productModel_1.Product.find({ _id: { $in: categories } });
                 return { products: productData };
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    findAllAddons() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield addonModel_1.default.find();
             }
             catch (error) {
                 throw error;

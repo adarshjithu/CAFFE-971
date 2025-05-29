@@ -1,6 +1,8 @@
 import { ShoppingBag, ShoppingBasket, ShoppingCart, Trash } from "lucide-react";
+import { useNavigate } from "react-router";
 
 function Intro() {
+    const navigate = useNavigate();
     return (
         <div
             className="pl-12 pt-12 lg:p-24 w-full h-[100%] lg:h-[850px] bg-cover bg-center bg-no-repeat flex flex-col"
@@ -18,12 +20,11 @@ function Intro() {
             <div className="w-full flex flex-row items-center justify-between lg:justify-end relative">
                 {/* Button */}
                 <div className="text-white bg-[#b38c50] flex items-center px-3 py-1 rounded-full text-sm sm:text-base sm:px-4 sm:py-2">
-  <div className="bg-black rounded-full p-2 mr-2 flex items-center justify-center">
-    <ShoppingBasket className="w-4 h-4 sm:w-5 sm:h-5" />
-  </div>
-  <span>Add to orders</span>
-</div>
-
+                    <div className="bg-black rounded-full p-2 mr-2 flex items-center justify-center">
+                        <ShoppingBasket className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </div>
+                    <span>Add to orders</span>
+                </div>
 
                 {/* Image */}
                 <img src="/intro/into-food.png" alt="" className="w-[200px] sm:w-[300px] object-contain" />
@@ -36,7 +37,7 @@ function Intro() {
                     <h1>Every Time</h1>
                 </div>
                 <h1 className="text-[18px text-[#b38c50] lg:text-[26px]">Event Dining Solutions</h1>
-                <button className="text-white rounded-4xl mt-4 border border-white px-4 py-2">Explore More</button>
+                <button onClick={()=>navigate('/home')} className="text-white rounded-4xl mt-4 border border-white px-4 py-2">Explore More</button>
             </div>
         </div>
     );

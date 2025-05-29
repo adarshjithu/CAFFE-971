@@ -1,3 +1,4 @@
+import { IAddOn } from "../interface/Models/IAddons";
 import { IPackage } from "../interface/Models/Package";
 import { PackageRepository } from "../repositories/packageRepository";
 
@@ -23,6 +24,13 @@ export class UserService {
       async getProductsByPackageId(packageId:string,category:string):Promise<any|null>{
          try{
             return  await  this.packageRepository.findProductsByPackageId(packageId,category);
+         }catch(error){
+            throw error;
+         }
+    }
+      async getAllAddons():Promise<IAddOn[]>{
+         try{
+            return  await  this.packageRepository.findAllAddons();
          }catch(error){
             throw error;
          }

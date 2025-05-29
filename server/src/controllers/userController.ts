@@ -42,4 +42,16 @@ export class UserController {
             next(error);
         }
     }
+    // @desc   Get products by packageId
+    // @route  GET /package/products
+    // @access User
+    async getAllAddons(req: Request, res: Response, next: NextFunction) {
+        try {
+           
+            const result = await this.userService.getAllAddons();
+            res.status(OK).json({ success: true, message: "", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
 }

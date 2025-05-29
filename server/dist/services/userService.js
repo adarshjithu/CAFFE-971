@@ -44,5 +44,15 @@ class UserService {
             }
         });
     }
+    getAllAddons() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.packageRepository.findAllAddons();
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
 }
 exports.UserService = UserService;
