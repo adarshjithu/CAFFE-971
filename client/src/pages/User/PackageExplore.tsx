@@ -1,10 +1,9 @@
 import { Armchair, Pencil } from "lucide-react";
-import ArrowButton from "../../components/ui/button/ArrowButton";
 import NotificationComponent from "../../components/user/Notification/NotificationComponent";
 import AddOnButton from "../../components/ui/button/AddOnButton";
 import NextButton from "../../components/ui/button/NextButton";
 import { ProductCard } from "../../components/user/Packages/ProductCard";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import toast from "react-hot-toast";
 import { findProductsByPackageId, getPackageById } from "../../services/userService";
@@ -16,6 +15,8 @@ import { useSelector } from "react-redux";
 import { IRootState } from "../../app/store";
 import AddonPromptModal from "../../components/user/PackageExplore/AddOnModal";
 import AddOne from "../../components/user/Addons/Addones";
+import BackButton from "../../components/ui/button/BackButton";
+import TablesModal from "../../components/user/Seating/Tables";
 
 function PackageExplore() {
     const [selectedTab, setSelectedTab] = useState("Mains");
@@ -28,7 +29,9 @@ function PackageExplore() {
     const [maxProductCount, setMaxProductCount] = useState({ mains: 2, sidesAndBeverages: 2, accompaniments: 4 });
     const { mains, sidesAndBeverages, accompaniments } = useSelector((data: IRootState) => data?.packageSelectionData);
     const [addonModal, setAddonModal] = useState(false);
-    const [showAddonList,setShowAddonList] = useState(false)
+    const [showAddonList, setShowAddonList] = useState(false);
+    const [seatingModal, setSeatingModal] = useState(false);
+
     // Change the selected tab
     const changeTab = (tab: string) => {
         setSelectedTab(tab);
@@ -36,9 +39,14 @@ function PackageExplore() {
 
     const handleAddonModal = (res: boolean) => {
         setAddonModal(false);
-        if(res){
-            setShowAddonList(true)
+        if (res) {
+            setShowAddonList(true);
         }
+    };
+
+    const handleNextToSeating = () => {
+        setShowAddonList(false);
+        setSeatingModal(true);
     };
 
     // Load package information and products in initial load
@@ -83,12 +91,12 @@ function PackageExplore() {
 
     return (
         <div className="lg:ml-24">
-            
             {addonModal && <AddonPromptModal handleAddonModal={handleAddonModal} />}
-            {showAddonList&&<AddOne setShowAddonList={setShowAddonList}/>}
+            {showAddonList && <AddOne setShowAddonList={setShowAddonList} handleNextToSeating={handleNextToSeating} />}
+            {seatingModal && <TablesModal setSeatingModal={setSeatingModal} />}
             {/* Top filter section */}
             <div className="w-full flex flex-wrap justify-center lg:justify-end items-center gap-x-2 gap-y-2">
-                <ArrowButton arrow="left" />
+                <BackButton arrow="left" />
 
                 {["All", "Pure Veg", "Non Veg"].map((filter) => (
                     <span
@@ -102,7 +110,10 @@ function PackageExplore() {
                     </span>
                 ))}
 
-                <span className="bg-[#B38C50] text-white px-2 py-2 text-[11px] lg:text-xs flex items-center rounded-2xl text-gray-700 shadow-sm">
+                <span
+                    onClick={() => setSeatingModal(true)}
+                    className="cursor-pointer bg-[#B38C50] text-white px-2 py-2 text-[11px] lg:text-xs flex items-center rounded-2xl text-gray-700 shadow-sm"
+                >
                     <span className="bg-[#B38C50] rounded-full p-[2px]">
                         <Armchair color="white" size={12} />
                     </span>
@@ -136,16 +147,17 @@ function PackageExplore() {
 
                                 <h1 className="text-xl lg:text-3xl font-medium text-[#B38C50]">{packageData?.name}</h1>
                                 <div className="lg:flex hidden">
-                                    <AddOnButton />
+                                    <AddOnButton setAddonModal={setShowAddonList} />
                                 </div>
                                 <div className="lg:flex hidden">
                                     <NextButton
                                         setAddonModal={setAddonModal}
                                         handleAddonModal={handleAddonModal}
                                         isActive={
-                                            mains.length === maxProductCount?.mains &&
-                                            sidesAndBeverages.length === maxProductCount?.sidesAndBeverages &&
-                                            accompaniments.length === maxProductCount?.accompaniments
+                                            true
+                                            // mains.length === maxProductCount?.mains &&
+                                            // sidesAndBeverages.length === maxProductCount?.sidesAndBeverages &&
+                                            // accompaniments.length === maxProductCount?.accompaniments
                                         }
                                     />
                                 </div>
@@ -202,6 +214,7 @@ function PackageExplore() {
                                     <ProductCardSkeleton />
                                 ) : (
                                     <ProductCard
+                                        key={product?._id}
                                         maxProductCount={maxProductCount}
                                         seletedTab={selectedTab}
                                         selectedTab={selectedTab}

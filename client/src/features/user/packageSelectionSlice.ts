@@ -4,6 +4,8 @@ const initialState: any = {
     mains: [],
     sidesAndBeverages: [],
     accompaniments: [],
+    addons: [],
+    tables:[]
 };
 
 const packageSelectionSlice = createSlice({
@@ -27,13 +29,28 @@ const packageSelectionSlice = createSlice({
             state.accompaniments.push(action?.payload);
         },
         removeFromAccompaniments: (state, action) => {
-         state.accompaniments =    state?.accompaniments.filter((id: string) => id !== action?.payload);
+            state.accompaniments = state?.accompaniments.filter((id: string) => id !== action?.payload);
         },
+        setAddons: (state, action) => {
+            state.addons.push(action?.payload);
+        },
+        removeAddon:(state,action)=>{
+            state.addons = state?.addons.filter((data:any)=>data!==action?.payload)
+        },
+        setTables:(state,action)=>{
+            state.tables.push(action.payload)
+        }
+        ,
+        removeTables:(state,action)=>{
+            state.tables = state?.tables?.filter((data:any)=>data!==action?.payload)
+        }
+        ,
         resetPackageSelection: () => initialState,
+
     },
 });
 
-export const { setMain, setSidesAndBeverages, setAccompaniments, resetPackageSelection, removeFromAccompaniments, removeFromMain, removeFromSides } =
+export const {setTables,removeTables,setAddons,removeAddon, setMain, setSidesAndBeverages, setAccompaniments, resetPackageSelection, removeFromAccompaniments, removeFromMain, removeFromSides } =
     packageSelectionSlice.actions;
 
 export default packageSelectionSlice.reducer;

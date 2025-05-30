@@ -5,6 +5,7 @@ const addOnSchema = new mongoose.Schema<IAddOn>({
     name:{type:String,required:true},
     image:{type:String,required:true},
     price:{type:Number,required:true},
+    foodType:{type:String,enums:['pureVeg','nonVeg']},
     isActive:{type:Boolean,default:true}
 },{timestamps:true})
 

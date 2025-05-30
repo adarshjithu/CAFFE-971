@@ -11,8 +11,12 @@ const userRouter = express_1.default.Router();
 const packageRepository = new packageRepository_1.PackageRepository();
 const userService = new userService_1.UserService(packageRepository);
 const controller = new userController_1.UserController(userService);
+// Packages Routes
 userRouter.get('/packages', (req, res, next) => controller.getAllPackages(req, res, next));
 userRouter.get('/package', (req, res, next) => controller.getProductById(req, res, next));
 userRouter.get('/package/products', (req, res, next) => controller.getProductsByPackageId(req, res, next));
+// Addons Routes
 userRouter.get('/addons', (req, res, next) => controller.getAllAddons(req, res, next));
+// Tables Routes
+userRouter.get('/tables', (req, res, next) => controller.getAllTables(req, res, next));
 exports.default = userRouter;

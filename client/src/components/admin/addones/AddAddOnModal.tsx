@@ -15,6 +15,7 @@ const AddAddOnModal: React.FC<AddAddOnModalProps> = ({ setIsOpen }) => {
     const [image, setImage] = useState<File | null>(null);
     const [name, setName] = useState<string>("");
     const [price, setPrice] = useState<number>();
+    const [foodType,setFoodType] = useState('nonVeg')
     const dispatch = useDispatch();
     const [loading,setLoading] = useState(false)
 
@@ -38,6 +39,7 @@ const AddAddOnModal: React.FC<AddAddOnModalProps> = ({ setIsOpen }) => {
         formData.append("name", name);
         formData.append("price", price.toString());
         formData.append("image", image);
+        formData?.append('foodType',foodType)
 
         try {
             setLoading(true)
@@ -100,6 +102,35 @@ const AddAddOnModal: React.FC<AddAddOnModalProps> = ({ setIsOpen }) => {
                             onChange={handleImageChange}
                             className="block w-full text-sm text-gray-500 file:mr-4 file:rounded-md file:border-0 file:bg-[#4B164C] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-[#3a123c] dark:file:bg-[#4B164C]/90 dark:hover:file:bg-[#3a123c]/90"
                         />
+                    </div>
+                     <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Type</label>
+                        <div className="flex gap-4">
+                            <label className="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
+                                <input
+                                    name="foodType"
+                                    checked={foodType=='nonVeg'}
+                                    type="checkbox"
+                                   onChange={(e)=>setFoodType(e.target.value)}
+                                    value="nonVeg"
+                                    className="form-checkbox h-4 w-4 text-red-600 dark:bg-gray-800 dark:border-gray-600"
+                                />
+                                <span>Non Veg</span>
+                            </label>
+                            <label className="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
+                                <input
+                                    type="checkbox"
+                                    name="foodType"
+                                    onChange={(e)=>setFoodType(e.target.value)}
+                                      checked={foodType=='pureVeg'}
+                                    value="pureVeg"
+                                    className="form-checkbox h-4 w-4 text-green-600 dark:bg-gray-800 dark:border-gray-600"
+                                />
+                                <span>Pure Veg</span>
+                            </label>
+
+                            
+                        </div>
                     </div>
 
                     {/* Image Preview */}

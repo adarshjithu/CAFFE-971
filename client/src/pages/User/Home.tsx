@@ -54,7 +54,7 @@ function Home() {
                     <h1 className="text-[26px] text-white mt-8 mb-8">Most Rated</h1>
                     <h2 className="mr-2 text-[#b38c50] cursor-pointer">See more</h2>
                 </div>
-                <MostRatedpackageList />
+                <MostRatedpackageList  />
             </div>
         </>
     );

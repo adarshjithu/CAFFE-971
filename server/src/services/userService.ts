@@ -1,4 +1,5 @@
 import { IAddOn } from "../interface/Models/IAddons";
+import { ITable } from "../interface/Models/ITable";
 import { IPackage } from "../interface/Models/Package";
 import { PackageRepository } from "../repositories/packageRepository";
 
@@ -31,6 +32,13 @@ export class UserService {
       async getAllAddons():Promise<IAddOn[]>{
          try{
             return  await  this.packageRepository.findAllAddons();
+         }catch(error){
+            throw error;
+         }
+    }
+      async getAllTables():Promise<ITable[]>{
+         try{
+            return  await  this.packageRepository.findAllTables();
          }catch(error){
             throw error;
          }

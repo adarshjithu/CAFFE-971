@@ -6,6 +6,8 @@ import { Product } from "../models/productModel";
 import Category from "../models/categoryModel";
 import { IAddOn } from "../interface/Models/IAddons";
 import AddOn from "../models/addonModel";
+import { ITable } from "../interface/Models/ITable";
+import Table from "../models/tableModel";
 
 export class PackageRepository extends BaseRepository {
     constructor() {
@@ -57,6 +59,13 @@ export class PackageRepository extends BaseRepository {
     async findAllAddons(): Promise<IAddOn[]> {
         try {
             return await AddOn.find();
+        } catch (error) {
+            throw error;
+        }
+    }
+    async findAllTables(): Promise<ITable[]> {
+        try {
+            return await Table.find();
         } catch (error) {
             throw error;
         }

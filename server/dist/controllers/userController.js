@@ -63,13 +63,27 @@ class UserController {
             }
         });
     }
-    // @desc   Get products by packageId
-    // @route  GET /package/products
+    // @desc   Get all addons 
+    // @route  GET /addons
     // @access User
     getAllAddons(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const result = yield this.userService.getAllAddons();
+                res.status(OK).json({ success: true, message: "", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    // @desc   Get all tables
+    // @route  GET /tables
+    // @access User
+    getAllTables(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield this.userService.getAllTables();
                 res.status(OK).json({ success: true, message: "", data: result });
             }
             catch (error) {

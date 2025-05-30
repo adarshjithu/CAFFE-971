@@ -7,7 +7,7 @@ import { createtableAction } from "../../../features/admin/tableSlice";
 import ButtonLoading from "../../loading/ButtonLoading";
 
 type FormDataType = {
-    name: string;
+    name: string; 
     image: File | null;
     width: string;
     height: string;

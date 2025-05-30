@@ -17,6 +17,7 @@ const packageModel_1 = require("../models/packageModel");
 const baseRepository_1 = require("./baseRepository");
 const productModel_1 = require("../models/productModel");
 const addonModel_1 = __importDefault(require("../models/addonModel"));
+const tableModel_1 = __importDefault(require("../models/tableModel"));
 class PackageRepository extends baseRepository_1.BaseRepository {
     constructor() {
         super(packageModel_1.Package);
@@ -74,6 +75,16 @@ class PackageRepository extends baseRepository_1.BaseRepository {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 return yield addonModel_1.default.find();
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    findAllTables() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield tableModel_1.default.find();
             }
             catch (error) {
                 throw error;

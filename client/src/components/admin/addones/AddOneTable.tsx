@@ -66,6 +66,7 @@ export default function AddonTable() {
     return (
         <>
             {addModal && <AddAddOnModal setIsOpen={setAddModal} />}
+
             <DeleteModal text="Addon" handleDelete={handleDelete} isDeleteModalOpen={deleteModal} />
 
             <AddButton text="Add New" onClick={onClick} />
@@ -92,6 +93,12 @@ export default function AddonTable() {
                                         Price
                                     </TableCell>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+                                        Food Type
+                                    </TableCell>
+                                    <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+                                        Created At
+                                    </TableCell>
+                                    <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
                                         Status
                                     </TableCell>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
@@ -114,6 +121,12 @@ export default function AddonTable() {
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                                 {obj?.price}
+                                            </TableCell>
+                                            <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                                {obj?.foodType}
+                                            </TableCell>
+                                            <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                                {new Date(obj?.createdAt).toDateString()}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                                 <select

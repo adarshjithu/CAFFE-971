@@ -79,7 +79,7 @@ export default function App() {
                         }
                     />
                     <Route
-                        path="addones"
+                        path="addons"
                         element={
                             <Suspense fallback={<div>Loading...</div>}>
                                 <AddOnes />
