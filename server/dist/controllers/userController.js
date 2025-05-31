@@ -91,5 +91,19 @@ class UserController {
             }
         });
     }
+    // @desc   Get all foodstations
+    // @route  GET /food-stations
+    // @access User
+    getFoodStations(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield this.userService.getAllFoodStations();
+                res.status(OK).json({ success: true, message: "", data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
 }
 exports.UserController = UserController;

@@ -4,4 +4,5 @@ export interface IFoodStation extends Document{
  description:string;
  image:string;
  type:string;
+ price:any
 }

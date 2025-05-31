@@ -8,7 +8,8 @@ const foodStationSchema = new mongoose_1.default.Schema({
     name: { type: String, required: true },
     type: { type: String, required: true },
     description: { type: String, required: true },
-    image: { type: String, required: true }
+    image: { type: String, required: true },
+    price: { type: String, required: true }
 }, { timestamps: true });
 const FoodStation = mongoose_1.default.model('FoodStation', foodStationSchema);
 exports.default = FoodStation;

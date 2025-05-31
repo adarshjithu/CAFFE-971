@@ -7,4 +7,5 @@ export interface IFoodStation{
  _id:any;
  createdAt:Date;
  updatedAt:Date;
+ price:any
 }

@@ -66,4 +66,16 @@ export class UserController {
             next(error);
         }
     }
+    // @desc   Get all foodstations
+    // @route  GET /food-stations
+    // @access User
+    async getFoodStations(req: Request, res: Response, next: NextFunction) {
+        try {
+           
+            const result = await this.userService.getAllFoodStations();
+            res.status(OK).json({ success: true, message: "", data: result });
+        } catch (error) {
+            next(error);
+        }
+    }
 }

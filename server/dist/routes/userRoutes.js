@@ -19,4 +19,6 @@ userRouter.get('/package/products', (req, res, next) => controller.getProductsBy
 userRouter.get('/addons', (req, res, next) => controller.getAllAddons(req, res, next));
 // Tables Routes
 userRouter.get('/tables', (req, res, next) => controller.getAllTables(req, res, next));
+// Food Station
+userRouter.get('/food-stations', (req, res, next) => controller.getFoodStations(req, res, next));
 exports.default = userRouter;

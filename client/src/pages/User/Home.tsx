@@ -4,7 +4,7 @@ import NotificationComponent from "../../components/user/Notification/Notificati
 import ProfileComponent from "../../components/user/Profile/ProfileComponent";
 import PackagesList from "../../components/user/Home/PackagesList";
 import MostRatedpackageList from "../../components/user/Home/MostRatedpackageList";
-import { use, useState } from "react";
+import {  useState } from "react";
 import toast from "react-hot-toast";
 
 function Home() {

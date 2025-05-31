@@ -64,5 +64,15 @@ class UserService {
             }
         });
     }
+    getAllFoodStations() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.packageRepository.findAllFoodStations();
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
 }
 exports.UserService = UserService;

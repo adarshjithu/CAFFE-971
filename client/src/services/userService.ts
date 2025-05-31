@@ -42,4 +42,12 @@ export const getAllTables = async () => {
         return erroHandler(error);
     }
 };
+export const getAllFoodStations = async () => {
+    try {
+        const response = await baseUrl.get(`/food-stations`);
+        return response;
+    } catch (error) {
+        return erroHandler(error);
+    }
+};
 

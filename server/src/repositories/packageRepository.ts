@@ -8,6 +8,8 @@ import { IAddOn } from "../interface/Models/IAddons";
 import AddOn from "../models/addonModel";
 import { ITable } from "../interface/Models/ITable";
 import Table from "../models/tableModel";
+import { IFoodStation } from "../interface/Models/IFoodStation";
+import FoodStation from "../models/foodStationModel";
 
 export class PackageRepository extends BaseRepository {
     constructor() {
@@ -36,10 +38,11 @@ export class PackageRepository extends BaseRepository {
     async findPackageById(packageId: string, category: string): Promise<any | null> {
         try {
             const packageData = await Package.findOne({ _id: packageId });
+            const categoryInfo = await Category.find()
             const products = packageData?.products;
             const categories = products.get(category);
             const productData = await Product.find({ _id: { $in: categories } });
-            return { products: productData, package: packageData };
+            return { products: productData, package: packageData ,category:categoryInfo};
         } catch (error) {
             throw error;
         }
@@ -66,6 +69,13 @@ export class PackageRepository extends BaseRepository {
     async findAllTables(): Promise<ITable[]> {
         try {
             return await Table.find();
+        } catch (error) {
+            throw error;
+        }
+    }
+    async findAllFoodStations(): Promise<IFoodStation[]> {
+        try {
+            return await FoodStation.find();
         } catch (error) {
             throw error;
         }

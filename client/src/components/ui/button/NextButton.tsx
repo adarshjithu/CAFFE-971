@@ -1,11 +1,11 @@
 import { ArrowRight } from "lucide-react";
 
-function NextButton({ isActive=true,setAddonModal }: any) {
+function NextButton({ isActive=true ,setModals}: any) {
 
 
   return (
     <button
-     onClick={()=>setAddonModal((data:any)=>true)}
+     onClick={()=>setModals('addon')}
       type="button"
       disabled={!isActive}
       className={`rounded-xl px-3 py-2 text-sm flex items-center gap-2 transition-all duration-200 font-medium ${

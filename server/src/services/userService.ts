@@ -1,4 +1,5 @@
 import { IAddOn } from "../interface/Models/IAddons";
+import { IFoodStation } from "../interface/Models/IFoodStation";
 import { ITable } from "../interface/Models/ITable";
 import { IPackage } from "../interface/Models/Package";
 import { PackageRepository } from "../repositories/packageRepository";
@@ -39,6 +40,13 @@ export class UserService {
       async getAllTables():Promise<ITable[]>{
          try{
             return  await  this.packageRepository.findAllTables();
+         }catch(error){
+            throw error;
+         }
+    }
+      async getAllFoodStations():Promise<IFoodStation[]>{
+         try{
+            return  await  this.packageRepository.findAllFoodStations();
          }catch(error){
             throw error;
          }

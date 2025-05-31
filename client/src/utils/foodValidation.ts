@@ -7,20 +7,14 @@ export interface FoodStationFormData {
     image: File | null;
 }
 
-export interface ValidationError {
-    name?: string;
-    description?: string;
-    type?: string;
-    image?: string;
-}
+export const validateFoodStationForm = (formData: any) => {
 
-export const validateFoodStationForm = (formData: any): ValidationError => {
-
-    const errors: ValidationError = {};
+    const errors :any = {};
 
     if (!formData.name.trim()) errors.name = "Name is required";
     if (!formData.description.trim()) errors.description = "Description is required";
     if (!formData.type.trim()) errors.type = "Type is required";
+    if(!formData?.price) errors.price = 'Price is Required'
 
 
 
