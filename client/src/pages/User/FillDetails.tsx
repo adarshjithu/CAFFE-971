@@ -33,7 +33,7 @@ function FillDetails() {
     };
 
     return (
-        <div className="lg:ml-24 px-4 py-6  h-full flex flex-col items-center">
+        <div className="lg:ml-24  py-6  h-full flex flex-col items-center">
             {/* Header */}
             <div className="w-full flex justify-between items-center mb-4">
                 <BackButton arrow="left" />
