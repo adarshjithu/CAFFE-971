@@ -8,4 +8,4 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const db_1 = require("./config/db");
 dotenv_1.default.config();
 (0, db_1.connectDb)();
-app_1.Server.listen(3000, '0.0.0.0', () => console.log("Server Connected Successfully"));
+app_1.Server.listen(3000, () => console.log("Server Connected Successfully"));
