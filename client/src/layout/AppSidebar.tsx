@@ -7,7 +7,7 @@ const menuItems = [
     { icon: PackageSearch, label: "Package", link: "packages" },
     { icon: LayoutGrid, label: "Seating", link: "seating" },
     { icon: Utensils, label: "Live Food", link: "live-food" },
-    { icon: ShoppingCart, label: "View Cart", link: "cart" },
+    { icon: ShoppingCart, label: "Contact", link: "contact" },
 ];
 
 function ResponsiveMenu() {
@@ -15,11 +15,12 @@ function ResponsiveMenu() {
 
     const endpoint = useLocation();
     const navigate = useNavigate();
-    console.log(endpoint?.pathname?.startsWith("/package"));
+    
 
     return (
         <>
             {/* Desktop/Tablet Sidebar */}
+            {!endpoint.pathname.startsWith("/success") && (
             <div className="hidden lg:flex fixed left-10 flex-col gap-2.5 p-4 bg-white rounded-3xl shadow text-black w-[65px]">
                 {menuItems.map((item, idx) => {
                     const Icon = item.icon;
@@ -51,7 +52,7 @@ function ResponsiveMenu() {
                         </div>
                     );
                 })}
-            </div>
+            </div>)}
 
             {/* Mobile Bottom Bar */}
             {/* Mobile Bottom Bar */}

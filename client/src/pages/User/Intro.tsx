@@ -5,7 +5,7 @@ function Intro() {
     const navigate = useNavigate();
     return (
         <div
-            className="pl-12 pt-12 lg:p-24 w-full h-[100%] lg:h-[850px] bg-cover bg-center bg-no-repeat flex flex-col"
+            className="pl-12 pt-12 lg:p-24 w-full h-screen lg:h-[850px] bg-cover bg-center bg-no-repeat flex flex-col"
             style={{ backgroundImage: `url('/intro/intro.png')` }}
         >
             <div className="w-full">

@@ -4,6 +4,9 @@ layer(base);
 @import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
+.input-custom::placeholder {
+  color: #15C48F;
+}
 
 @theme {
   --font-*: initial;

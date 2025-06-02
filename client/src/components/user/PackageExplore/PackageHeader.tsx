@@ -3,9 +3,11 @@ import { PackageDetailsSkeleton } from "./PackageDetailsLoading";
 import NextButton from "../../ui/button/NextButton";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../../app/store";
+import { useNavigate } from "react-router";
 
 function PackageHeader({setModals, maxProductCount, packageData, changeTab, selectedTab, categoryData }: any) {
     const { mains, sidesAndBeverages, accompaniments } = useSelector((data: IRootState) => data?.packageSelectionData);
+   const navigate =useNavigate()
     return (
         <div className="grid grid-cols-1 mt-6">
             {packageData ? (

@@ -2,52 +2,28 @@ import React from "react";
 
 const MAX_VALUE = 8;
 
-function ProgressBar({ count = 6 }: { count?: number }) {
+function RectangleProgressBar({ count = 0 }: { count?: number }) {
   const clampedValue = Math.min(Math.max(count, 0), MAX_VALUE);
+  const progressPercent = (clampedValue / MAX_VALUE) * 100;
 
-  const totalDash = 100;
-  const progressDash = (clampedValue / MAX_VALUE) * totalDash;
-  const remainingDash = 100 - progressDash;
+  const gradientStyle = {
+    backgroundImage: `conic-gradient(#B38C50 0% ${progressPercent}%, transparent ${progressPercent}% 100%)`,
+  };
 
   return (
-    <div className="relative w-16 h-16">
-      <svg
-        className="w-full h-full"
-        viewBox="0 0 36 36"
-        xmlns="http://www.w3.org/2000/svg"
+    <div className="relative w-40 h-12">
+      {/* Border progress layer */}
+      <div
+        className="absolute inset-0 rounded-md p-[3px]"
+        style={gradientStyle}
       >
-        {/* Full background circle */}
-        <circle
-          cx="18"
-          cy="18"
-          r="16"
-          fill="none"
-          className="stroke-current text-gray-200 dark:text-neutral-700"
-          strokeWidth="2"
-          strokeDasharray="100"
-        />
-        {/* Full progress circle */}
-        <circle
-          cx="18"
-          cy="18"
-          r="16"
-          fill="none"
-          className="stroke-current text-[#B38C50]"
-          strokeWidth="2"
-          strokeDasharray={`${progressDash} ${remainingDash}`}
-          strokeDashoffset="25"
-          strokeLinecap="round"
-        />
-      </svg>
-
-      {/* Center Text */}
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center select-none">
-        <span className="text-sm font-semibold text-[#B38C50]">
-          {clampedValue}/{MAX_VALUE}
-        </span>
+        {/* Inner white box */}
+        <div className="w-full h-full rounded-md bg-[white] flex items-center justify-center select-none font-semibold text-[#B38C50] text-sm">
+          Items ({clampedValue}/{MAX_VALUE})
+        </div>
       </div>
     </div>
   );
 }
 
-export default ProgressBar;
+export default RectangleProgressBar;

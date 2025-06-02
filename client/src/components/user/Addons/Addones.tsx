@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { AddOnCard } from "./AddOnCard";
 import { getAllAddOnes } from "../../../services/adminService";
 import { IAddOn } from "../../../interface/IAddon";
+import { useNavigate } from "react-router";
 
 const AddOne = ({ setModals }: any) => {
   const [addonList, setAddonList] = useState<IAddOn[]>([]);
   const [selectedFilter, setSelectedFilter] = useState("All");
-
+  const navigate = useNavigate()
   useEffect(() => {
     const fetchData = async () => {
       const res = await getAllAddOnes();
@@ -17,7 +18,7 @@ const AddOne = ({ setModals }: any) => {
 
   return (
     <div className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm flex items-center justify-center">
-      <div className="w-[95%] max-w-6xl max-h-[90vh] overflow-hidden bg-gradient-to-r from-[#004430] via-[#04845E] to-[#004430] rounded-2xl shadow-lg flex flex-col">
+      <div className="w-[95%] w-full h-full overflow-hidden bg-gradient-to-b from-[#004430] via-[#04845E] to-[#004430] lg:p-12 shadow-lg flex flex-col">
         {/* Header (Filter Buttons) */}
         <div className="flex justify-between items-center p-4 border-b border-white/10">
           <h2 className="text-white text-lg font-semibold">Choose Add-ons</h2>
@@ -58,13 +59,13 @@ const AddOne = ({ setModals }: any) => {
         {/* Footer Buttons */}
         <div className="flex justify-between items-center p-4 border-t border-white/10">
           <button
-           onClick={()=>setModals('noModal')}
+           onClick={()=>navigate(-1)}
             className="bg-[#B38C50] text-white px-4 py-2 rounded-lg hover:bg-[#a07c42]"
           >
             Back
           </button>
           <button
-            onClick={()=>setModals('seating')}
+            onClick={()=>navigate("/tables")}
             className="bg-[#B38C50] text-white px-4 py-2 rounded-lg hover:bg-[#a07c42]"
           >
             Next

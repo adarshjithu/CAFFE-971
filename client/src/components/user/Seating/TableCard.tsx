@@ -4,14 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeTables, setTables } from "../../../features/user/packageSelectionSlice";
 import { IRootState } from "../../../app/store";
 
-export const TableCard = ({ table }: { table: ITable }) => {
+export const TableCard = ({ table ,buttonVisibility}: { table: ITable,buttonVisibility:boolean }) => {
     const dispatch = useDispatch();
 
     const { tables } = useSelector((data: IRootState) => data?.packageSelectionData);
 
     return (
         <div
-            className="bg-[#015D42] lg:w-[400px] text-white relative border border-white rounded-br-[85px] rounded-[15px] p-2 shadow-lg flex items-center"
+            className="bg-[#015D42]  text-white relative border border-white rounded-br-[85px] rounded-[15px] p-2 shadow-lg flex items-center"
             style={{ borderWidth: "0.5px", borderColor: "rgba(255,255,255,0.3)" }}
         >
             <img src={table?.image} alt="most rated" className="w-34 h-34 rounded-lg mr-4 object-cover" />
@@ -43,7 +43,8 @@ export const TableCard = ({ table }: { table: ITable }) => {
             </div>
 
             {/* Plus Button - Adjusted positioning */}
-            {tables?.some((obj: any) => obj == table?._id) ? (
+            {buttonVisibility&&<>
+            {tables?.some((obj: any) => obj?._id == table?._id) ? (
                 <div
                     onClick={() => dispatch(removeTables(table?._id))}
                     className="absolute bottom-0  right-0 bg-[#B38C50] text-white p-5 rounded-full cursor-pointer"
@@ -51,10 +52,11 @@ export const TableCard = ({ table }: { table: ITable }) => {
                     <Trash color="white" size={20} />
                 </div>
             ) : (
-                <div onClick={() => dispatch(setTables(table?._id))} className=" absolute bottom-0 right-0 p-5 bg-white  rounded-full cursor-pointer">
+                <div onClick={() => dispatch(setTables(table))} className=" absolute bottom-0 right-0 p-5 bg-white  rounded-full cursor-pointer">
                     <Plus color="black" size={20} />
                 </div>
             )}
+            </>}
         </div>
     );
 };

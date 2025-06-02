@@ -1,11 +1,12 @@
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router";
 
 function NextButton({ isActive=true ,setModals}: any) {
 
-
+const navigate = useNavigate()
   return (
     <button
-     onClick={()=>setModals('addon')}
+     onClick={()=>navigate("/addons")}
       type="button"
       disabled={!isActive}
       className={`rounded-xl px-3 py-2 text-sm flex items-center gap-2 transition-all duration-200 font-medium ${

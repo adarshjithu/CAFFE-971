@@ -14,6 +14,15 @@ import AddOnes from "./pages/Admin/AddOnes";
 import Intro from "./pages/User/Intro";
 import PackageExplore from "./pages/User/PackageExplore";
 import AllPackages from "./pages/User/Packages";
+import FoodStation from "./components/user/FoodStation/FoodStation";
+import Addons from "./pages/User/Addons";
+import Seating from "./pages/User/Tables";
+import FillDetails from "./pages/User/FillDetails";
+import Address from "./pages/User/Address";
+import Success from "./pages/User/Success";
+import SeatingList from "./pages/User/SeatingList";
+import LiveFood from "./pages/User/LiveFood";
+import Contact from "./pages/User/Contact";
 
 // Lazy loaded admin pages
 const Categories = lazy(() => import("./pages/Admin/Categories"));
@@ -120,6 +129,78 @@ export default function App() {
                     element={
                         <UserLayout>
                             <PackageExplore />
+                        </UserLayout>
+                    }
+                />
+                <Route
+                    path="/foodStation"
+                    element={
+                        <UserLayout>
+                            <FoodStation />
+                        </UserLayout>
+                    }
+                />
+                <Route
+                    path="/addons"
+                    element={
+                        <UserLayout>
+                            <Addons />
+                        </UserLayout>
+                    }
+                />
+                <Route
+                    path="/tables"
+                    element={
+                        <UserLayout>
+                            <Seating />
+                        </UserLayout>
+                    }
+                />
+                <Route
+                    path="/fill-details"
+                    element={
+                        <UserLayout>
+                            <FillDetails />
+                        </UserLayout>
+                    }
+                />
+                <Route
+                    path="/address"
+                    element={
+                        <UserLayout>
+                            <Address />
+                        </UserLayout>
+                    }
+                />
+                <Route
+                    path="/success"
+                    element={
+                        <UserLayout>
+                            <Success />
+                        </UserLayout>
+                    }
+                />
+                <Route
+                    path="/seating"
+                    element={
+                        <UserLayout>
+                            <SeatingList />
+                        </UserLayout>
+                    }
+                />
+                <Route
+                    path="/live-food"
+                    element={
+                        <UserLayout>
+                            <LiveFood />
+                        </UserLayout>
+                    }
+                />
+                <Route
+                    path="/contact"
+                    element={
+                        <UserLayout>
+                            <Contact />
                         </UserLayout>
                     }
                 />

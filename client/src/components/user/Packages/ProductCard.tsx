@@ -81,7 +81,7 @@ export const ProductCard = ({ index, product, setSelectedTab, selectedTab, maxPr
             />
 
             {/* Action Button */}
-            {categories[tab]?.some((obj: any) => obj == product?._id) ? (
+            {categories[tab]?.some((obj: any) => obj?._id == product?._id) ? (
                 <div
                     onClick={() => removeProduct(product?._id)}
                     className="absolute bottom-2 right-2 bg-[#b38c50] p-3 xs:p-2 rounded-full cursor-pointer"
@@ -89,7 +89,7 @@ export const ProductCard = ({ index, product, setSelectedTab, selectedTab, maxPr
                     <Trash color="white" size={24} className="xs:w-5 xs:h-5" />
                 </div>
             ) : (
-                <div onClick={() => addProduct(product?._id)} className="absolute bottom-2 right-2 bg-white p-3 xs:p-2 rounded-full cursor-pointer">
+                <div onClick={() => addProduct(product)} className="absolute bottom-2 right-2 bg-white p-3 xs:p-2 rounded-full cursor-pointer">
                     <Plus color="black" size={24} className="xs:w-5 xs:h-5" />
                 </div>
             )}

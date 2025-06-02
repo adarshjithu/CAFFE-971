@@ -3,7 +3,7 @@ import NotificationComponent from "../../components/user/Notification/Notificati
 import AddOnButton from "../../components/ui/button/AddOnButton";
 import { ProductCard } from "../../components/user/Packages/ProductCard";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import toast from "react-hot-toast";
 import { findProductsByPackageId, getPackageById } from "../../services/userService";
 import { IProduct } from "../../interface/IProduct";
@@ -16,6 +16,8 @@ import TablesModal from "../../components/user/Seating/Tables";
 import PackageHeader from "../../components/user/PackageExplore/PackageHeader";
 import FixedMobileBottombar from "../../components/user/PackageExplore/FixedMobileBottombar";
 import FoodStation from "../../components/user/FoodStation/FoodStation";
+import { useDispatch } from "react-redux";
+import { setPackage } from "../../features/user/packageSelectionSlice";
 
 function PackageExplore() {
     // -------------------------------
@@ -29,22 +31,10 @@ function PackageExplore() {
     const [packageData, setPackageData] = useState<IPackage | null>(null);
     const [selectedFilter, setSelectedFilter] = useState("All");
     const [maxProductCount] = useState({ mains: 2, sidesAndBeverages: 2, accompaniments: 4 });
-    const [addonModal, setAddonModal] = useState(false);
-    const [seatingModal, setSeatingModal] = useState(false);
     const [categoryData, setCategoryData] = useState<Record<string, string>>({});
-    const [modals,setModals] = useState('noModal');
-    
-    
-    const allModals = ()=>{
-        switch(modals){
-            case 'noModal':return null;
-            case 'addon':return  <AddOne setModals={setModals}/>
-            case 'addonPrompt':return   <AddonPromptModal  />;
-            case 'seating':return  <TablesModal setModals={setModals} />
-            case 'foodStation': return <FoodStation setModals={setModals}/>
-            default:return null;
-        }
-    }
+    const [modals, setModals] = useState("noModal");
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     // -------------------------------
     // Handlers and helper functions
@@ -55,9 +45,19 @@ function PackageExplore() {
         setSelectedTab(tab);
     };
 
+    useEffect(() => {
+        const handlePopState = (e: PopStateEvent) => {
+            // Push the user back to the current page to prevent back navigation
+            navigate(location.pathname, { replace: true });
+        };
 
+        window.addEventListener("popstate", handlePopState);
 
-   
+        return () => {
+            window.removeEventListener("popstate", handlePopState);
+        };
+    }, [location.pathname, navigate]);
+
     // -------------------------------
     // Data fetching: Initial package data load on mount
     // -------------------------------
@@ -74,7 +74,7 @@ function PackageExplore() {
                 res?.data?.data?.category?.forEach((cat: any) => {
                     categoryMap[cat.name] = cat.image;
                 });
-
+                dispatch(setPackage(res?.data?.data?.package));
                 setCategoryData(categoryMap);
                 setProducts(res?.data?.data?.products);
                 setPackageData(res?.data?.data?.package);
@@ -125,7 +125,7 @@ function PackageExplore() {
             document.body.style.overflow = "auto";
         };
 
-        if (modals!=='noModal') {
+        if (modals !== "noModal") {
             lockScroll();
         } else {
             unlockScroll();
@@ -133,16 +133,14 @@ function PackageExplore() {
 
         // Cleanup on unmount or dependency change
         return () => unlockScroll();
-    }, [addonModal, seatingModal]);
+    }, []);
 
     // -------------------------------
     // Render component
     // -------------------------------
     return (
         <div className="lg:ml-24">
-            
-         
-        {allModals()}
+           
             {/* Top bar: Back button, Addon and Seating buttons, Notification */}
             <div className="w-full flex justify-between items-center flex-wrap gap-2">
                 <BackButton arrow="left" />
@@ -153,14 +151,14 @@ function PackageExplore() {
 
                     {/* Seating button opens seating modal */}
                     <span
-                        onClick={() => setModals('seating')}
+                        onClick={() => navigate("/tables")}
                         className="cursor-pointer bg-[#B38C50] text-white px-2 py-2 text-[11px] lg:text-xs flex items-center rounded-2xl shadow-sm"
                     >
                         <Armchair color="white" size={12} />
                         <span className="ml-1">Seating</span>
                     </span>
                     <span
-                        onClick={() => setModals('foodStation')}
+                        onClick={() => navigate("/foodStation")}
                         className="cursor-pointer bg-[#B38C50] text-white px-2 py-2 text-[11px] lg:text-xs flex items-center rounded-2xl shadow-sm"
                     >
                         <Flame color="white" size={12} />
@@ -232,7 +230,7 @@ function PackageExplore() {
             </div>
 
             {/* Fixed bottom bar */}
-           <FixedMobileBottombar packageData={packageData}/>
+            <FixedMobileBottombar packageData={packageData} />
         </div>
     );
 }

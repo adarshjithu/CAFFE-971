@@ -4,13 +4,14 @@ import { ITable } from "../../../interface/ITable";
 import { TableCard } from "./TableCard";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../../app/store";
+import { useNavigate } from "react-router";
 
 
 
-const TablesModal = ({ setModals }: any) => {
+const TablesModal = () => {
   const [tables, setTables] = useState<ITable[]>([]);
   const tableCount = useSelector((state: IRootState) => state.packageSelectionData);
-
+  const navigate =useNavigate()
   // Fetch all tables on mount
   useEffect(() => {
     const fetchTables = async () => {
@@ -36,7 +37,7 @@ const TablesModal = ({ setModals }: any) => {
     // Modal backdrop (covers full screen)
     <div className="fixed inset-0 z-50 bg-black/10 backdrop-blur-md flex items-center justify-center w-full h-full">
       {/* Modal container */}
-      <div className="bg-gradient-to-r from-[#004430] via-[#04845E] to-[#004430] w-full max-w-5xl h-[90vh] p-6 lg:p-12 rounded-2xl shadow-lg overflow-hidden flex flex-col">
+      <div className="bg-gradient-to-r from-[#004430] via-[#04845E] to-[#004430] w-full  h-full p-6 lg:p-12 rounded-2xl shadow-lg overflow-hidden flex flex-col">
         {/* Compact Header */}
         <div className="w-full mb-4 flex justify-center items-center gap-x-2 py-2 px-4">
           <h2 className="text-xl font-semibold text-white m-0">
@@ -53,9 +54,9 @@ const TablesModal = ({ setModals }: any) => {
             msOverflowStyle: "none",
           }}
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {tables.map((table) => (
-              <TableCard table={table} key={table._id} />
+              <TableCard buttonVisibility={true} table={table} key={table._id} />
             ))}
           </div>
         </div>
@@ -63,13 +64,13 @@ const TablesModal = ({ setModals }: any) => {
         {/* Bottom navigation buttons */}
         <div className="flex justify-between gap-4 w-full mt-6">
           <button
-            onClick={() => setModals('addon')}
+            onClick={() =>navigate(-1)}
             className="flex items-center justify-center bg-[#B38C50] text-white px-4 py-2 rounded-lg hover:bg-gray-200 transition"
           >
           
             <span className="ml-2">Back</span>
           </button>
-          <button onClick={()=>setModals('foodStation')} className="bg-[#B38C50] hover:bg-[#a07c42] text-white px-4 py-2 rounded-lg transition">
+          <button onClick={()=>navigate('/foodStation')} className="bg-[#B38C50] hover:bg-[#a07c42] text-white px-4 py-2 rounded-lg transition">
             Next
           </button>
         </div>
