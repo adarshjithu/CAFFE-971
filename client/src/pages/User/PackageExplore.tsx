@@ -228,6 +228,9 @@ function PackageExplore() {
                               />
                           ))}
             </div>
+            <div className="h-[150px]">
+
+            </div>
 
             {/* Fixed bottom bar */}
             <FixedMobileBottombar packageData={packageData} />
