@@ -22,7 +22,7 @@ function SeatingList() {
 
     return (
         <div className="lg:ml-24 h-full min-h-screen px-4 flex flex-col">
-            <div className="relative w-full mb-4 py-2 px-4 flex items-center justify-between">
+            <div className="relative w-full  mb-4 py-2 px-4 flex items-center justify-between">
                 {/* Left - Back Button */}
                 <BackButton arrow="left" />
                 {/* Center - Heading */}
