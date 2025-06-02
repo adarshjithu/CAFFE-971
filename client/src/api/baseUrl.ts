@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 export const baseUrl = axios.create({
-    baseURL: "http://3.111.36.225:3000",
+    baseURL: "https://dmt-360.com",
     headers: {
         "Content-Type": "application/json",
     },
