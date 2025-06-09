@@ -34,7 +34,7 @@ export class UserController {
     // @route  GET /package/products
     // @access User
     async getProductsByPackageId(req: Request, res: Response, next: NextFunction) {
-        try {
+    try {
            
             const result = await this.userService.getProductsByPackageId(req?.query?.packageId as string,req?.query?.category as string);
             res.status(OK).json({ success: true, message: "", data: result });

@@ -576,7 +576,7 @@ class AdminRepository extends baseRepository_1.BaseRepository {
         });
     }
     addOnChangeStatus(addonId) {
-        return __awaiter(this, void 0, void 0, function* () {
+            return __awaiter(this, void 0, void 0, function* () {
             try {
                 return yield addonModel_1.default.findByIdAndUpdate({ _id: addonId }, [
                     {
