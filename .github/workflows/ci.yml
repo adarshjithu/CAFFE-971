@@ -2,9 +2,9 @@ name: CI - React Client Build
 
 on:
   push:
-    branches: [main]     # or your default branch
+    branches: [master]     # or your default branch
   pull_request:
-    branches: [main]     # or target branch for PRs
+    branches: [master]     # or target branch for PRs
 
 jobs:
   build-client:
