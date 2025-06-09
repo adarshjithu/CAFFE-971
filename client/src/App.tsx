@@ -32,6 +32,8 @@ const Chairs = lazy(() => import("./pages/Admin/Chairs"));
 const Tables = lazy(() => import("./pages/Admin/Tables"));
 const LiveFoodStation = lazy(() => import("./pages/Admin/LiveFoodStation"));
 
+// routes
+
 export default function App() {
     return (
         <Router>
